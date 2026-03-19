@@ -446,7 +446,7 @@ export default function ZonaMundialHome(){
               {quote:"La IA me ayudó a acertar 7 resultados exactos seguidos. Es como tener a un experto en el bolsillo.",name:"Diego L.",age:"25 años",country:"Argentina",flag:"ar"},
             ].map((t,i)=>[
               <div key={i} style={{padding:24,borderRadius:20,background:BG2,border:"1px solid rgba(255,255,255,0.04)",display:"flex",flexDirection:"column"}}>
-                <div style={{fontSize:24,color:GOLD,marginBottom:12}}>"</div>
+                <div style={{fontSize:24,color:GOLD,marginBottom:12}}>&quot;</div>
                 <p style={{fontSize:15,color:"#fff",lineHeight:1.6,flex:1,fontStyle:"italic"}}>{t.quote}</p>
                 <div style={{display:"flex",alignItems:"center",gap:10,marginTop:16}}>
                   <Flag code={t.flag} w={24}/>
