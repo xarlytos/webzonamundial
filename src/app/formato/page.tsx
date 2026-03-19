@@ -63,22 +63,128 @@ const VENUES = [
 export default function FormatoPage() {
   return (
     <div style={{ background: BG, color: "#fff", fontFamily: "'Outfit',sans-serif", minHeight: "100vh" }}>
-      {/* Hero */}
+      {/* Hero - Nuevo contenido */}
       <section style={{ padding: "80px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center,rgba(201,168,76,0.08) 0%,transparent 60%)" }} />
         <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-          <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>Torneo</span>
+          <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>El Mundial más grande de la historia</span>
           <h1 style={{ fontSize: "clamp(32px,6vw,52px)", fontWeight: 900, marginTop: 16, lineHeight: 1.1 }}>
-            Formato <span style={{ color: GOLD }}>2026</span>
+            48 equipos, un nuevo formato épico <span style={{ color: GOLD }}>🆕</span>
           </h1>
-          <p style={{ color: MID, marginTop: 20, maxWidth: 600, margin: "20px auto 0", lineHeight: 1.7, fontSize: 17 }}>
-            El Mundial más grande de la historia: 48 selecciones, 104 partidos, 16 sedes y 3 países anfitriones.
+          <p style={{ color: MID, marginTop: 20, maxWidth: 600, margin: "20px auto 0", lineHeight: 1.7, fontSize: 18 }}>
+            El Mundial 2026 cambia para siempre
           </p>
         </div>
       </section>
 
-      {/* Stats */}
-      <section style={{ padding: "40px 20px", background: BG3 }}>
+      {/* 📊 Antes vs Ahora - Nueva sección */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+              <span style={{ color: GOLD }}>📊</span> Antes vs Ahora
+            </h2>
+          </div>
+
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: 24
+          }}>
+            {/* Qatar 2022 */}
+            <div style={{
+              padding: 28,
+              borderRadius: 16,
+              background: BG2,
+              border: "1px solid rgba(255,255,255,0.05)"
+            }}>
+              <div style={{ color: DIM, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+                Qatar 2022
+              </div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Formato Clásico</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, fontSize: 15 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Equipos</span>
+                  <span style={{ fontWeight: 600 }}>32</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Grupos</span>
+                  <span style={{ fontWeight: 600 }}>8 de 4</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Partidos</span>
+                  <span style={{ fontWeight: 600 }}>64</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Clasifican</span>
+                  <span style={{ fontWeight: 600 }}>16 (1º y 2º)</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: DIM }}>Duración</span>
+                  <span style={{ fontWeight: 600 }}>29 días</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 2026 */}
+            <div style={{
+              padding: 28,
+              borderRadius: 16,
+              background: BG2,
+              border: `1px solid ${GOLD}`,
+              position: "relative"
+            }}>
+              <div style={{
+                position: "absolute",
+                top: 12,
+                right: 12,
+                background: GOLD,
+                color: BG,
+                fontSize: 10,
+                fontWeight: 700,
+                padding: "4px 10px",
+                borderRadius: 20,
+                textTransform: "uppercase"
+              }}>
+                NUEVO
+              </div>
+              <div style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", marginBottom: 12 }}>
+                2026
+              </div>
+              <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 20 }}>Formato Ampliado</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, fontSize: 15 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Equipos</span>
+                  <span style={{ fontWeight: 700, color: GOLD }}>48</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Grupos</span>
+                  <span style={{ fontWeight: 700, color: GOLD }}>12 de 4</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Partidos</span>
+                  <span style={{ fontWeight: 700, color: GOLD }}>104</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Clasifican</span>
+                  <span style={{ fontWeight: 600 }}>32 (2+8 terceros)</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: 8, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <span style={{ color: DIM }}>Duración</span>
+                  <span style={{ fontWeight: 700, color: GOLD }}>39 días</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <span style={{ color: DIM }}>Nueva ronda</span>
+                  <span style={{ fontWeight: 600, color: GOLD }}>32avos de final</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats - Sección existente */}
+      <section style={{ padding: "40px 20px", background: BG }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))", gap: 24 }}>
             {[
@@ -98,8 +204,112 @@ export default function FormatoPage() {
         </div>
       </section>
 
-      {/* Tournament Phases */}
-      <section style={{ padding: "60px 20px" }}>
+      {/* 🎯 ¿Cómo funciona? - Nueva sección */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+              <span style={{ color: GOLD }}>🎯</span> ¿Cómo funciona?
+            </h2>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+            {/* FASE DE GRUPOS */}
+            <div style={{
+              padding: 28,
+              borderRadius: 16,
+              background: BG2,
+              border: "1px solid rgba(255,255,255,0.05)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
+                <div style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: "50%",
+                  background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20
+                }}>
+                  📋
+                </div>
+                <h3 style={{ fontSize: 22, fontWeight: 800 }}>FASE DE GRUPOS</h3>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+                <div style={{ padding: 16, background: BG, borderRadius: 12 }}>
+                  <div style={{ color: GOLD, fontSize: 28, fontWeight: 800 }}>12</div>
+                  <div style={{ color: MID, fontSize: 14 }}>grupos (A-L)</div>
+                </div>
+                <div style={{ padding: 16, background: BG, borderRadius: 12 }}>
+                  <div style={{ color: GOLD, fontSize: 28, fontWeight: 800 }}>4</div>
+                  <div style={{ color: MID, fontSize: 14 }}>equipos por grupo</div>
+                </div>
+                <div style={{ padding: 16, background: BG, borderRadius: 12 }}>
+                  <div style={{ color: GOLD, fontSize: 28, fontWeight: 800 }}>32</div>
+                  <div style={{ color: MID, fontSize: 14 }}>equipos avanzan</div>
+                </div>
+              </div>
+              <p style={{ marginTop: 20, color: DIM, lineHeight: 1.6, fontSize: 15 }}>
+                Los <strong style={{ color: "#fff" }}>2 mejores</strong> de cada grupo avanzan + los <strong style={{ color: "#fff" }}>8 mejores terceros</strong> = <strong style={{ color: GOLD }}>32 equipos</strong> en eliminatoria
+              </p>
+            </div>
+
+            {/* ELIMINATORIA */}
+            <div style={{
+              padding: 28,
+              borderRadius: 16,
+              background: BG2,
+              border: "1px solid rgba(255,255,255,0.05)"
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
+                <div style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: "50%",
+                  background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 20
+                }}>
+                  ⚔️
+                </div>
+                <h3 style={{ fontSize: 22, fontWeight: 800 }}>ELIMINATORIA</h3>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center" }}>
+                {[
+                  { name: "32avos", from: 32, to: 16 },
+                  { name: "Octavos", from: 16, to: 8 },
+                  { name: "Cuartos", from: 8, to: 4 },
+                  { name: "Semis", from: 4, to: 2 },
+                  { name: "Final", from: 2, to: 1 },
+                ].map((round, i) => (
+                  <div key={i} style={{
+                    flex: "1 1 140px",
+                    maxWidth: 160,
+                    padding: 16,
+                    background: BG,
+                    borderRadius: 12,
+                    textAlign: "center",
+                    border: i === 0 ? `1px solid ${GOLD}` : "1px solid transparent"
+                  }}>
+                    <div style={{ fontSize: 13, color: DIM, marginBottom: 4 }}>
+                      {round.from} → {round.to}
+                    </div>
+                    <div style={{ fontSize: 18, fontWeight: 700, color: i === 0 ? GOLD : "#fff" }}>
+                      {round.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tournament Phases - Sección existente */}
+      <section style={{ padding: "60px 20px", background: BG }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
@@ -144,7 +354,71 @@ export default function FormatoPage() {
         </div>
       </section>
 
-      {/* Venues */}
+      {/* ✅ Ventajas del nuevo formato - Nueva sección */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+              <span style={{ color: GOLD }}>✅</span> Ventajas del nuevo formato
+            </h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: 20 }}>
+            {[
+              { icon: "🌍", title: "Más países participan", desc: "Fútbol más global" },
+              { icon: "⚽", title: "Más partidos", desc: "Más diversión para los fans" },
+              { icon: "🎯", title: "Más equipos tienen chances", desc: "Hasta el tercero puede avanzar" },
+              { icon: "💰", title: "Economía", desc: "Más ingresos para el torneo" },
+              { icon: "🚀", title: "Desarrollo", desc: "Países pequeños debutan" },
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: 24,
+                borderRadius: 16,
+                background: BG2,
+                border: "1px solid rgba(255,255,255,0.05)"
+              }}>
+                <div style={{ fontSize: 32, marginBottom: 12 }}>{item.icon}</div>
+                <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 8 }}>{item.title}</h3>
+                <p style={{ color: DIM, fontSize: 14, lineHeight: 1.6 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ⚠️ Críticas - Nueva sección */}
+      <section style={{ padding: "60px 20px", background: BG }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+              <span style={{ color: GOLD }}>⚠️</span> Críticas
+            </h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 20 }}>
+            {[
+              { icon: "⚡", title: "Calidad", desc: "¿Se diluye con 48 equipos?" },
+              { icon: "😴", title: "Cansancio", desc: "104 partidos en total" },
+              { icon: "🗺️", title: "Logística", desc: "3 países, 16 sedes" },
+              { icon: "📅", title: "Calendario", desc: "39 días de competición" },
+            ].map((item, i) => (
+              <div key={i} style={{
+                padding: 24,
+                borderRadius: 16,
+                background: BG2,
+                border: "1px solid rgba(255,255,255,0.05)",
+                textAlign: "center"
+              }}>
+                <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 8 }}>{item.title}</h3>
+                <p style={{ color: DIM, fontSize: 14 }}>{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Venues - Sección existente */}
       <section style={{ padding: "60px 20px", background: BG3 }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
@@ -191,12 +465,12 @@ export default function FormatoPage() {
         </div>
       </section>
 
-      {/* Group Stage Format */}
-      <section style={{ padding: "60px 20px" }}>
+      {/* Group Stage Format - Sección existente */}
+      <section style={{ padding: "60px 20px", background: BG }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Fase de <span style={{ color: GOLD }}>Grupos</span>
+              Fase de <span style={{ color: GOLD }}>Grupos</span> Detallada
             </h2>
             <p style={{ color: MID, marginTop: 12, maxWidth: 500, margin: "12px auto 0" }}>
               12 grupos de 4 equipos. Los 2 primeros y los 8 mejores terceros avanzan a la fase eliminatoria.
@@ -230,22 +504,22 @@ export default function FormatoPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA - Nuevo con IA Coach */}
       <section style={{ padding: "80px 20px", textAlign: "center", background: BG3 }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ fontSize: 64, marginBottom: 24 }}>🏆</div>
+          <div style={{ fontSize: 64, marginBottom: 24 }}>🎯</div>
           <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
-            El Mundial más grande de la <span style={{ color: GOLD }}>historia</span>
+            Domina el formato con nuestra <span style={{ color: GOLD }}>IA Coach</span>
           </h2>
           <p style={{ color: MID, marginBottom: 32, fontSize: 16 }}>
-            No te pierdas ningún detalle del torneo que cambiará el fútbol para siempre.
+            Entiende todas las reglas, posibilidades y estrategias del nuevo formato épico del Mundial 2026.
           </p>
-          <Link href="/calendario" style={{
+          <Link href="/ia-coach" style={{
             padding: "16px 40px", borderRadius: 12,
             background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
             color: BG, fontWeight: 700, fontSize: 16, textDecoration: "none", display: "inline-block"
           }}>
-            Ver calendario completo
+            Pregúntale a la IA Coach →
           </Link>
         </div>
       </section>

@@ -241,7 +241,7 @@ export default function ZonaMundialHome(){
 
           {/* Features text */}
           <p style={{fontSize:"clamp(15px,2vw,20px)",fontWeight:600,color:GOLD,marginBottom:8,letterSpacing:1}}>
-            Predicciones · Fantasy · IA Coach
+            Predicciones · Fantasy · IA Coach · Trivia
           </p>
 
           <p style={{fontSize:"clamp(13px,1.6vw,16px)",color:MID,maxWidth:520,margin:"0 auto 24px",lineHeight:1.5}}>
@@ -284,7 +284,7 @@ export default function ZonaMundialHome(){
         <BallPattern opacity={0.008}/>
         <div style={{...mx,padding:"24px 16px",position:"relative",zIndex:1}}>
           <div style={{display:"grid",gridTemplateColumns:"repeat(6,1fr)",gap:8}}>
-            {[{v:"48",l:"Selecciones"},{v:"16",l:"Sedes"},{v:"104",l:"Partidos"},{v:"39",l:"Días"},{v:"3",l:"Países"},{v:"12",l:"Grupos"}].map(s=>(
+            {[{v:"48",l:"Selecciones"},{v:"16",l:"Sedes"},{v:"104",l:"Partidos"},{v:"12",l:"Grupos"},{v:"3",l:"Países"},{v:"12",l:"Módulos"}].map(s=>(
               <div key={s.l} style={{textAlign:"center"}}>
                 <div style={{fontSize:"clamp(22px,3.5vw,32px)",fontWeight:900,color:GOLD}}><AnimNum value={s.v}/></div>
                 <div style={{fontSize:11,color:DIM,fontWeight:500,marginTop:2}}>{s.l}</div>
@@ -293,6 +293,32 @@ export default function ZonaMundialHome(){
           </div>
         </div>
       </section>
+
+      {/* ═══════ FEATURES SECTION ═══════ */}
+      <FadeIn bg={BG3}>
+        <div style={{...mx,maxWidth:1000}}>
+          <SectionHead tag="La Plataforma" title="🎮 Todo lo que necesitas para vivir el Mundial"/>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))",gap:20}}>
+            {[
+              {icon:"🎯",title:"Predicciones con 8 Modos",desc:"Desde el resultado exacto hasta predicciones encadenadas. Más difícil = más puntos. ¿Te atreves con el primer goleador?",link:"/app/predicciones"},
+              {icon:"⚽",title:"Fantasy Football",desc:"Draft tu dream team con $100M. Elige formación, capitanes y usa chips especiales. Gana ligas privadas con amigos.",link:"/app/fantasy"},
+              {icon:"🧠",title:"Trivia Épica",desc:"5 modos: Daily, Speed Round, Battle Royale (100 jugadores), Death Match y Pre-match. ¿Cuánto sabes de fútbol?",link:"/app/trivia"},
+              {icon:"🤖",title:"IA Coach",desc:"¿Dudas en tu predicción? Nuestra IA analiza estadísticas, forma y te recomienda la mejor jugada. Tu asistente personal.",link:"/app/ia-coach"},
+            ].map((f,i)=>[
+              <Link key={f.title} href={f.link} style={{textDecoration:"none"}}>
+                <div className="card-h" style={{padding:24,borderRadius:20,background:BG2,border:"1px solid rgba(255,255,255,0.04)",cursor:"pointer",height:"100%",display:"flex",flexDirection:"column"}}>
+                  <div style={{fontSize:40,marginBottom:16}}>{f.icon}</div>
+                  <h3 style={{fontWeight:700,fontSize:18,marginBottom:10,color:GOLD}}>{f.title}</h3>
+                  <p style={{fontSize:14,color:MID,lineHeight:1.6,flex:1}}>{f.desc}</p>
+                  <div style={{marginTop:16,fontSize:13,fontWeight:600,color:GOLD,display:"flex",alignItems:"center",gap:6}}>
+                    Saber más <span>→</span>
+                  </div>
+                </div>
+              </Link>
+            ])}
+          </div>
+        </div>
+      </FadeIn>
 
       {/* ═══════ VENUES CAROUSEL ═══════ */}
       <FadeIn style={{paddingBottom:60}}>
@@ -387,14 +413,14 @@ export default function ZonaMundialHome(){
       </FadeIn>
 
       {/* ═══════ HOW IT WORKS ═══════ */}
-      <FadeIn>
+      <FadeIn bg={BG3}>
         <div style={{...mx,maxWidth:850}}>
-          <SectionHead tag="Cómo funciona" title="En 3 pasos estás dentro"/>
+          <SectionHead tag="Cómo funciona" title="Empieza en 3 pasos 👟"/>
           <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:32,position:"relative"}}>
             {[
-              {s:"01",icon:"👤",title:"Elige tu creador",desc:"Cada creador tiene su propia comunidad y ranking. Escoge al que más te represente."},
-              {s:"02",icon:"📝",title:"Pre-regístrate gratis",desc:"Email, Google o Apple — en 30 segundos tienes tu plaza reservada."},
-              {s:"03",icon:"🏟️",title:"Juega desde junio",desc:"Cuando empiece el torneo, predice resultados, arma tu Fantasy y compite."},
+              {s:"1️⃣",icon:"✉️",title:"Regístrate gratis",desc:"Email, nombre, listo. Menos de 30 segundos."},
+              {s:"2️⃣",icon:"📋",title:"Crea tu estrategia",desc:"Haz predicciones, arma tu fantasy, juega trivia."},
+              {s:"3️⃣",icon:"🏆",title:"Compite y gana",desc:"Sube en el ranking, gana monedas, desbloquea logros."},
             ].map((s,i)=>(
               <div key={s.s} style={{textAlign:"center",position:"relative"}}>
                 <div style={{display:"inline-flex",alignItems:"center",justifyContent:"center",width:64,height:64,borderRadius:18,background:`linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.03))`,border:"1px solid rgba(201,168,76,0.15)",marginBottom:16,position:"relative"}}>
@@ -405,6 +431,32 @@ export default function ZonaMundialHome(){
                 <p style={{fontSize:13,color:DIM,lineHeight:1.55}}>{s.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </FadeIn>
+
+      {/* ═══════ SOCIAL PROOF ═══════ */}
+      <FadeIn bg={BG}>
+        <div style={{...mx,maxWidth:900}}>
+          <SectionHead tag="Testimonios" title="Lo que dicen nuestros beta testers 💬"/>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))",gap:20}}>
+            {[
+              {quote:"La trivia Battle Royale es adictiva. Eliminar a 99 personas nunca fue tan satisfactorio.",name:"Carlos M.",age:"28 años",country:"México",flag:"mx"},
+              {quote:"Mi oficina tiene una liga privada. El que queda último paga las cervezas del mes.",name:"Ana R.",age:"34 años",country:"España",flag:"es"},
+              {quote:"La IA me ayudó a acertar 7 resultados exactos seguidos. Es como tener a un experto en el bolsillo.",name:"Diego L.",age:"25 años",country:"Argentina",flag:"ar"},
+            ].map((t,i)=>[
+              <div key={i} style={{padding:24,borderRadius:20,background:BG2,border:"1px solid rgba(255,255,255,0.04)",display:"flex",flexDirection:"column"}}>
+                <div style={{fontSize:24,color:GOLD,marginBottom:12}}>"</div>
+                <p style={{fontSize:15,color:"#fff",lineHeight:1.6,flex:1,fontStyle:"italic"}}>{t.quote}</p>
+                <div style={{display:"flex",alignItems:"center",gap:10,marginTop:16}}>
+                  <Flag code={t.flag} w={24}/>
+                  <div>
+                    <div style={{fontWeight:700,fontSize:14}}>{t.name}</div>
+                    <div style={{fontSize:12,color:DIM}}>{t.age}, {t.country}</div>
+                  </div>
+                </div>
+              </div>
+            ])}
           </div>
         </div>
       </FadeIn>
@@ -454,14 +506,31 @@ export default function ZonaMundialHome(){
       <section style={{padding:"100px 16px",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center, rgba(201,168,76,0.06) 0%, transparent 60%)"}}/>
         <FieldBG/>
-        <div style={{position:"relative",maxWidth:660,margin:"0 auto",textAlign:"center"}}>
-          <h2 style={{fontSize:"clamp(28px,5vw,50px)",fontWeight:900,marginBottom:22,lineHeight:1.08}}>
-            El Mundial más grande de la historia.
-            <br/><span style={{background:`linear-gradient(135deg,${GOLD},${GOLD2})`,WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}}>Tu momento es ahora.</span>
+        <div style={{position:"relative",maxWidth:720,margin:"0 auto",textAlign:"center"}}>
+          <h2 style={{fontSize:"clamp(28px,5vw,44px)",fontWeight:900,marginBottom:16,lineHeight:1.08}}>
+            No te pierdas el mejor Mundial de tu vida 🏆
           </h2>
-          <p style={{fontSize:17,color:MID,marginBottom:36,maxWidth:480,margin:"0 auto 36px"}}>48 selecciones, 104 partidos, 39 días. Pre-regístrate gratis y sé de los primeros.</p>
+          <p style={{fontSize:16,color:MID,marginBottom:32,maxWidth:520,margin:"0 auto 32px"}}>
+            Los primeros <strong style={{color:GOLD}}>10,000 registrados</strong> reciben:
+          </p>
+          
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(160px,1fr))",gap:16,maxWidth:640,margin:"0 auto 40px"}}>
+            {[
+              {icon:"🎖️",title:"Badge Fundador",desc:"Exclusivo permanente"},
+              {icon:"💰",title:"1,000 monedas",desc:"Doble que los demás"},
+              {icon:"🎨",title:"Skin única",desc:"Solo para fundadores"},
+              {icon:"⏰",title:"Acceso 48h antes",desc:"Del lanzamiento oficial"},
+            ].map((b,i)=>[
+              <div key={i} style={{padding:20,borderRadius:16,background:`linear-gradient(135deg,${BG2},${BG3})`,border:"1px solid rgba(201,168,76,0.15)",textAlign:"center"}}>
+                <div style={{fontSize:32,marginBottom:8}}>{b.icon}</div>
+                <div style={{fontWeight:700,fontSize:14,color:GOLD,marginBottom:4}}>{b.title}</div>
+                <div style={{fontSize:12,color:DIM}}>{b.desc}</div>
+              </div>
+            ])}
+          </div>
+
           <Link href="/registro" style={{textDecoration:"none"}}>
-            <button className="gold-btn" style={{padding:"17px 44px",borderRadius:14,border:"none",cursor:"pointer",background:`linear-gradient(135deg,${GOLD},${GOLD2})`,color:BG,fontWeight:700,fontSize:18,fontFamily:"inherit"}}>Pre-regístrate gratis</button>
+            <button className="gold-btn" style={{padding:"17px 44px",borderRadius:14,border:"none",cursor:"pointer",background:`linear-gradient(135deg,${GOLD},${GOLD2})`,color:BG,fontWeight:700,fontSize:18,fontFamily:"inherit"}}>🚀 Pre-regístrate ahora</button>
           </Link>
           <p style={{fontSize:13,color:DARK,marginTop:14}}>Gratis · Sin compromiso · 30 segundos</p>
         </div>

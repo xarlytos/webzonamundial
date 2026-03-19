@@ -29,19 +29,30 @@ const WORLD_CUP_STATS = [
   { year: 2022, host: "Qatar", champion: "Argentina", runnerUp: "Francia", teams: 32 },
 ];
 
-const TOP_CHAMPIONS = [
-  { country: "Brasil", titles: 5, years: "1958, 1962, 1970, 1994, 2002", flag: "🇧🇷" },
-  { country: "Alemania", titles: 4, years: "1954, 1974, 1990, 2014", flag: "🇩🇪" },
-  { country: "Italia", titles: 4, years: "1934, 1938, 1982, 2006", flag: "🇮🇹" },
-  { country: "Argentina", titles: 3, years: "1978, 1986, 2022", flag: "🇦🇷" },
-  { country: "Francia", titles: 2, years: "1998, 2018", flag: "🇫🇷" },
+const ICONIC_MOMENTS = [
+  { year: 1930, title: "Uruguay", description: "El primero, 13 equipos", emoji: "🥇" },
+  { year: 1950, title: "El Maracanazo", description: "Brasil 1-2 Uruguay, 200,000 personas en silencio", emoji: "🏟️" },
+  { year: 1970, title: "Brasil de Pelé", description: "Mejor equipo de la historia", emoji: "👑" },
+  { year: 1986, title: "La mano de Dios", description: "Maradona vs Inglaterra", emoji: "✋" },
+  { year: 1994, title: "Escándalo en USA", description: "Escobar autogol, Romario campeón", emoji: "🇺🇸" },
+  { year: 2002, title: "Corea-Japón", description: "Corea semifinalista, Brasil pentacampeón", emoji: "🌏" },
+  { year: 2010, title: "España campeona", description: "El gol de Iniesta en la prórroga para la primera Copa de España", emoji: "🏆" },
+  { year: 2022, title: "Messi se consagra", description: "Argentina campeona, Mbappé hat-trick", emoji: "🐐" },
 ];
 
 const RECORDS = [
-  { title: "Más goles en Mundiales", holder: "Miroslav Klose", value: "16 goles", flag: "🇩🇪" },
-  { title: "Más partidos jugados", holder: "Lothar Matthäus", value: "25 partidos", flag: "🇩🇪" },
-  { title: "Más goles en un Mundial", holder: "Just Fontaine", value: "13 goles (1958)", flag: "🇫🇷" },
-  { title: "Mundiales como jugador", holder: "Antonio Carbajal, Lothar Matthäus, Rafael Márquez", value: "5 ediciones", flag: "🌍" },
+  { title: "Más títulos", holder: "Brasil", value: "5", flag: "🇧🇷" },
+  { title: "Más partidos jugados", holder: "Lothar Matthäus", value: "25", flag: "🇩🇪" },
+  { title: "Más goles", holder: "Miroslav Klose", value: "16 goles", flag: "🇩🇪" },
+  { title: "Más goles en un torneo", holder: "Just Fontaine", value: "13 en 1958", flag: "🇫🇷" },
+  { title: "Jugador más joven", holder: "Norman Whiteside", value: "17 años", flag: "🇬🇧" },
+  { title: "Jugador más viejo", holder: "Essam El-Hadary", value: "45 años, Egipto 2018", flag: "🇪🇬" },
+];
+
+const HOST_HISTORY = [
+  { country: "México", times: 3, years: "1970, 1986, 2026", emoji: "🇲🇽", description: "Primer país en organizar tres Mundiales" },
+  { country: "Estados Unidos", times: 2, years: "1994, 2026", emoji: "🇺🇸", description: "Récord de asistencia en 1994 con 3.6M de espectadores" },
+  { country: "Canadá", times: 1, years: "2026", emoji: "🇨🇦", description: "Primera vez como anfitrión en la historia" },
 ];
 
 export default function HistoriaPage() {
@@ -53,7 +64,7 @@ export default function HistoriaPage() {
         <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
           <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>Torneo</span>
           <h1 style={{ fontSize: "clamp(32px,6vw,52px)", fontWeight: 900, marginTop: 16, lineHeight: 1.1 }}>
-            Historia de los <span style={{ color: GOLD }}>Mundiales</span>
+            Momentos que hicieron <span style={{ color: GOLD }}>historia</span> 📜
           </h1>
           <p style={{ color: MID, marginTop: 20, maxWidth: 600, margin: "20px auto 0", lineHeight: 1.7, fontSize: 17 }}>
             Desde Uruguay 1930 hasta Qatar 2022. Revive la historia del torneo más importante del fútbol mundial.
@@ -61,29 +72,36 @@ export default function HistoriaPage() {
         </div>
       </section>
 
-      {/* Top Champions */}
+      {/* Iconic Moments */}
       <section style={{ padding: "60px 20px", background: BG3 }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Máximos <span style={{ color: GOLD }}>Campeones</span>
+              🏆 Momentos <span style={{ color: GOLD }}>icónicos</span>
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 20 }}>
-            {TOP_CHAMPIONS.map((team, i) => [
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
+            {ICONIC_MOMENTS.map((moment, i) => (
               <div key={i} style={{
-                padding: 28, borderRadius: 16, background: BG2,
+                padding: 24, borderRadius: 16, background: BG2,
                 border: "1px solid rgba(255,255,255,0.05)",
-                textAlign: "center",
-                borderTop: i === 0 ? `3px solid ${GOLD}` : undefined
+                position: "relative",
+                overflow: "hidden"
               }}>
-                <div style={{ fontSize: 48, marginBottom: 12 }}>{team.flag}</div>
-                <div style={{ fontSize: 36, fontWeight: 800, color: GOLD }}>{team.titles}</div>
-                <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>{team.country}</div>
-                <div style={{ fontSize: 12, color: DIM }}>{team.years}</div>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: i < 3 ? `linear-gradient(90deg,${GOLD},${GOLD2})` : "rgba(201,168,76,0.3)" }} />
+                <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 12 }}>
+                  <span style={{ fontSize: 40 }}>{moment.emoji}</span>
+                  <div>
+                    <span style={{ fontSize: 14, color: GOLD, fontWeight: 700 }}>{moment.year}</span>
+                    <h3 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>{moment.title}</h3>
+                  </div>
+                </div>
+                <p style={{ color: MID, fontSize: 14, lineHeight: 1.6, margin: 0 }}>
+                  {moment.description}
+                </p>
               </div>
-            ])}
+            ))}
           </div>
         </div>
       </section>
@@ -93,12 +111,12 @@ export default function HistoriaPage() {
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Récords <span style={{ color: GOLD }}>Históricos</span>
+              🏅 Récords <span style={{ color: GOLD }}>impresionantes</span>
             </h2>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {RECORDS.map((record, i) => [
+            {RECORDS.map((record, i) => (
               <div key={i} style={{
                 padding: 24, borderRadius: 16, background: BG2,
                 border: "1px solid rgba(255,255,255,0.05)",
@@ -117,13 +135,43 @@ export default function HistoriaPage() {
                   {record.value}
                 </div>
               </div>
-            ])}
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hosts 2026 History */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+              🇲🇽🇺🇸🇨🇦 Historia de las <span style={{ color: GOLD }}>sedes 2026</span>
+            </h2>
+            <p style={{ color: MID, marginTop: 16, maxWidth: 600, margin: "16px auto 0", fontSize: 16 }}>
+              Por primera vez en la historia, tres naciones compartirán la organización del Mundial
+            </p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
+            {HOST_HISTORY.map((host, i) => (
+              <div key={i} style={{
+                padding: 28, borderRadius: 16, background: BG2,
+                border: "1px solid rgba(255,255,255,0.05)",
+                textAlign: "center"
+              }}>
+                <div style={{ fontSize: 48, marginBottom: 16 }}>{host.emoji}</div>
+                <h3 style={{ fontSize: 22, fontWeight: 800, marginBottom: 8 }}>{host.country}</h3>
+                <div style={{ fontSize: 36, fontWeight: 800, color: GOLD, marginBottom: 8 }}>{host.times}x</div>
+                <div style={{ fontSize: 14, color: DIM, marginBottom: 12 }}>{host.years}</div>
+                <p style={{ color: MID, fontSize: 14, lineHeight: 1.5, margin: 0 }}>{host.description}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* All World Cups */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
+      <section style={{ padding: "60px 20px" }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
@@ -132,7 +180,7 @@ export default function HistoriaPage() {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 16 }}>
-            {WORLD_CUP_STATS.map((wc, i) => [
+            {WORLD_CUP_STATS.map((wc, i) => (
               <div key={i} style={{
                 padding: 20, borderRadius: 12, background: BG2,
                 border: "1px solid rgba(255,255,255,0.05)"
@@ -148,8 +196,28 @@ export default function HistoriaPage() {
                   <span style={{ color: DIM }}>{wc.runnerUp}</span>
                 </div>
               </div>
-            ])}
+            ))}
           </div>
+        </div>
+      </section>
+
+      {/* CTA Trivia */}
+      <section style={{ padding: "80px 20px", textAlign: "center", background: BG3 }}>
+        <div style={{ maxWidth: 600, margin: "0 auto" }}>
+          <div style={{ fontSize: 64, marginBottom: 24 }}>🎯</div>
+          <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
+            ¿Cuánto sabes de <span style={{ color: GOLD }}>historia</span>?
+          </h2>
+          <p style={{ color: MID, marginBottom: 32, fontSize: 16 }}>
+            Pon a prueba tus conocimientos con nuestra trivia de la historia de los Mundiales
+          </p>
+          <Link href="/trivia" style={{
+            padding: "16px 40px", borderRadius: 12,
+            background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
+            color: BG, fontWeight: 700, fontSize: 16, textDecoration: "none", display: "inline-block"
+          }}>
+            Juega Trivia →
+          </Link>
         </div>
       </section>
 
