@@ -1,9 +1,17 @@
 // src/app/selecciones/page.tsx
-// ZonaMundial.app — Las 48 selecciones del Mundial 2026
+// ZonaMundial.app — Las 48 selecciones del Mundial 2026 (Diseño mejorado)
 
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { GRUPOS, getSeleccionesByGrupo } from '@/data/selecciones';
+import { GRUPOS, getSeleccionesByGrupo, SELECCIONES } from '@/data/selecciones';
+import FlagImage from '@/components/FlagImage';
+
+const BG = "#060B14";
+const BG2 = "#0F1D32";
+const BG3 = "#0B1825";
+const GOLD = "#c9a84c";
+const GOLD2 = "#e8d48b";
+const MID = "#8a94b0";
 
 export const metadata: Metadata = {
   title: 'Las 48 Selecciones del Mundial 2026 — Plantillas, Grupos y Datos | ZonaMundial',
@@ -18,11 +26,156 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true, 'max-image-preview': 'large' },
 };
 
-export default function SeleccionesIndex() {
-  const grupos = Object.entries(GRUPOS);
+// Componente de tarjeta de selección
+function SeleccionCard({ team }: { team: typeof SELECCIONES[0] }) {
+  const getConfederacionColor = (conf: string) => {
+    switch (conf) {
+      case 'UEFA': return 'from-blue-500/20 to-blue-600/10';
+      case 'CONMEBOL': return 'from-yellow-500/20 to-yellow-600/10';
+      case 'CONCACAF': return 'from-red-500/20 to-red-600/10';
+      case 'CAF': return 'from-green-500/20 to-green-600/10';
+      case 'AFC': return 'from-purple-500/20 to-purple-600/10';
+      case 'OFC': return 'from-cyan-500/20 to-cyan-600/10';
+      default: return 'from-gray-500/20 to-gray-600/10';
+    }
+  };
 
   return (
-    <>
+    <Link
+      href={`/selecciones/${team.slug}`}
+      className="group relative block"
+    >
+      <div 
+        className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${getConfederacionColor(team.confederacion)} 
+          border border-white/5 hover:border-[#c9a84c]/50 transition-all duration-300
+          hover:shadow-[0_8px_32px_rgba(201,168,76,0.15)] hover:-translate-y-1`}
+        style={{ background: BG3 }}
+      >
+        {/* Banner de confederación */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#c9a84c]/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+        
+        <div className="p-4">
+          {/* Header con bandera y badge */}
+          <div className="flex items-start justify-between mb-3">
+            <div className="relative">
+              <FlagImage
+                code={team.flagCode}
+                alt={`Bandera de ${team.nombre}`}
+                width={80}
+                className="w-14 h-10 object-cover rounded-lg shadow-lg group-hover:scale-105 transition-transform duration-300"
+              />
+              {/* Sombra decorativa */}
+              <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-[#c9a84c]/20 rounded-full blur-xl group-hover:bg-[#c9a84c]/30 transition-colors" />
+            </div>
+            
+            <div className="flex flex-col items-end gap-1">
+              {team.esAnfitrion && (
+                <span className="px-2 py-0.5 text-[10px] font-bold bg-[#c9a84c]/20 text-[#c9a84c] rounded-full border border-[#c9a84c]/30">
+                  🏟️ ANFITRIÓN
+                </span>
+              )}
+              {team.esPlayoff && (
+                <span className="px-2 py-0.5 text-[10px] font-bold bg-orange-500/20 text-orange-400 rounded-full border border-orange-500/30">
+                  ⏳ PLAYOFF
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Nombre y confederación */}
+          <h3 className="font-bold text-white text-base mb-1 group-hover:text-[#c9a84c] transition-colors truncate">
+            {team.nombre}
+          </h3>
+          <p className="text-xs text-[#8a94b0] mb-3">{team.confederacion}</p>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-[#060B14]/50 rounded-lg p-2 text-center">
+              <p className="text-[10px] text-[#6a7a9a] uppercase tracking-wider">FIFA</p>
+              <p className="text-lg font-bold text-white">#{team.rankingFIFA || 'TBD'}</p>
+            </div>
+            <div className="bg-[#060B14]/50 rounded-lg p-2 text-center">
+              <p className="text-[10px] text-[#6a7a9a] uppercase tracking-wider">Grupo</p>
+              <p className="text-lg font-bold text-[#c9a84c]">{team.grupo}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Hover indicator */}
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#c9a84c] to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
+      </div>
+    </Link>
+  );
+}
+
+// Componente de grupo
+function GrupoSection({ letra, selecciones }: { letra: string; selecciones: typeof SELECCIONES }) {
+  return (
+    <div className="bg-[#0B1825] rounded-2xl overflow-hidden border border-white/5 hover:border-[#c9a84c]/20 transition-colors">
+      {/* Header del grupo */}
+      <div className="bg-gradient-to-r from-[#0F1D32] to-[#0B1825] px-5 py-4 border-b border-white/5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c9a84c] to-[#e8d48b] flex items-center justify-center shadow-lg">
+            <span className="text-[#060B14] font-black text-lg">{letra}</span>
+          </div>
+          <div>
+            <h3 className="font-bold text-white">Grupo {letra}</h3>
+            <p className="text-xs text-[#6a7a9a]">{selecciones.length} selecciones</p>
+          </div>
+        </div>
+        <Link 
+          href={`/grupos/grupo-${letra.toLowerCase()}`}
+          className="text-xs text-[#8a94b0] hover:text-[#c9a84c] transition-colors flex items-center gap-1"
+        >
+          Ver grupo <span className="text-lg">→</span>
+        </Link>
+      </div>
+
+      {/* Lista de selecciones */}
+      <div className="p-4 space-y-2">
+        {selecciones.map((team) => (
+          <Link
+            key={team.slug}
+            href={`/selecciones/${team.slug}`}
+            className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all group"
+          >
+            <FlagImage
+              code={team.flagCode}
+              alt={team.nombre}
+              width={40}
+              className="w-8 h-6 object-cover rounded shadow-md group-hover:scale-110 transition-transform"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-white truncate group-hover:text-[#c9a84c] transition-colors">
+                {team.nombre}
+              </p>
+              <p className="text-[10px] text-[#6a7a9a]">{team.confederacion}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs text-[#6a7a9a]">#{team.rankingFIFA || '-'}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default function SeleccionesIndex() {
+  const grupos = Object.entries(GRUPOS);
+  
+  // Selecciones destacadas (favoritos)
+  const favoritos = SELECCIONES.filter(s => 
+    ['argentina', 'francia', 'brasil', 'espana', 'inglaterra', 'portugal', 'alemania'].includes(s.slug)
+  );
+
+  // Selecciones a seguir
+  const aSeguir = SELECCIONES.filter(s => 
+    ['mexico', 'estados-unidos', 'canada', 'marruecos', 'noruega'].includes(s.slug)
+  );
+
+  return (
+    <div style={{ background: BG, minHeight: '100vh' }}>
       {/* Schema Breadcrumb */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org',
@@ -33,291 +186,186 @@ export default function SeleccionesIndex() {
         ],
       })}} />
 
-      <nav className="text-sm text-gray-400 mb-6">
-        <ol className="flex gap-2">
-          <li><Link href="/" className="hover:text-gold">Inicio</Link></li>
-          <li>/</li>
-          <li className="text-gold">Selecciones</li>
-        </ol>
-      </nav>
+      {/* Hero Section */}
+      <section className="relative overflow-hidden" style={{ padding: '80px 20px 60px' }}>
+        {/* Background effects */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_60%)]" />
+        <div className="absolute top-10 left-10 text-8xl opacity-[0.03] rotate-[-15deg]">⚽</div>
+        <div className="absolute bottom-10 right-10 text-7xl opacity-[0.03] rotate-[15deg]">🏆</div>
+        
+        <div className="max-w-6xl mx-auto relative">
+          {/* Breadcrumb */}
+          <nav className="flex items-center gap-2 text-sm text-[#6a7a9a] mb-6">
+            <Link href="/" className="hover:text-[#c9a84c] transition-colors">Inicio</Link>
+            <span>/</span>
+            <span className="text-[#c9a84c]">Selecciones</span>
+          </nav>
 
-      <header className="mb-10">
-        <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
-          Las 48 selecciones del Mundial 2026 🌍
-        </h1>
-        <p className="text-xl text-gray-300">
-          Por primera vez en la historia, 48 equipos competirán por la gloria mundialista en la edición más grande jamás disputada.
-        </p>
-      </header>
+          {/* Header */}
+          <div className="text-center max-w-3xl mx-auto">
+            <span className="inline-block px-3 py-1 rounded-full bg-[#c9a84c]/10 text-[#c9a84c] text-xs font-bold tracking-wider uppercase mb-4 border border-[#c9a84c]/20">
+              Mundial 2026
+            </span>
+            <h1 className="text-4xl md:text-6xl font-black text-white mb-4 leading-tight">
+              Las <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#c9a84c] to-[#e8d48b]">48</span> Selecciones
+            </h1>
+            <p className="text-lg text-[#8a94b0] mb-8">
+              Por primera vez en la historia, 48 equipos competirán por la gloria mundialista 
+              en la edición más grande jamás disputada.
+            </p>
 
-      {/* SPONSOR SLOT */}
-      <div className="w-full h-[90px] bg-[#0B1825] border border-[#1a2a3f] rounded-lg flex items-center justify-center mb-12" data-sponsor-slot="selecciones-hero">
-        <span className="text-gray-600 text-sm">Espacio patrocinador</span>
+            {/* Stats banner */}
+            <div className="flex flex-wrap justify-center gap-6">
+              {[
+                { value: '48', label: 'Selecciones', icon: '🌍' },
+                { value: '12', label: 'Grupos', icon: '📊' },
+                { value: '6', label: 'Confederaciones', icon: '🏆' },
+                { value: '104', label: 'Partidos', icon: '⚽' },
+              ].map((stat) => (
+                <div key={stat.label} className="flex items-center gap-3 px-4 py-2 bg-[#0F1D32] rounded-xl border border-white/5">
+                  <span className="text-2xl">{stat.icon}</span>
+                  <div className="text-left">
+                    <p className="text-xl font-black text-[#c9a84c]">{stat.value}</p>
+                    <p className="text-xs text-[#6a7a9a]">{stat.label}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Sponsor slot */}
+      <div className="max-w-6xl mx-auto px-4 mb-12">
+        <div className="w-full h-[90px] bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center" data-sponsor-slot="selecciones-hero">
+          <span className="text-[#4a5570] text-sm">Espacio patrocinador</span>
+        </div>
       </div>
 
-      {/* 🏆 FAVORITOS AL TÍTULO */}
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-3xl">🏆</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Favoritos al título</h2>
+      {/* Favoritos al título */}
+      <section className="max-w-6xl mx-auto px-4 mb-16">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+            <span className="text-2xl">🏆</span>
+          </div>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white">Favoritos al título</h2>
+            <p className="text-sm text-[#6a7a9a]">Los candidatos con mayor poder de fuego</p>
+          </div>
         </div>
-        <p className="text-gray-400 mb-6">Los candidatos con mayor poder de fuego para levantar el trofeo en julio de 2026.</p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {/* Argentina */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇦🇷</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Argentina</h3>
-            </div>
-            <p className="text-sm text-gray-400">Campeón defensor. Messi busca despedirse con una corona mundial en suelo americano.</p>
-          </div>
-
-          {/* Francia */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇫🇷</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Francia</h3>
-            </div>
-            <p className="text-sm text-gray-400">El mejor talento joven del planeta. Mbappé y Dembél lideran una generación dorada.</p>
-          </div>
-
-          {/* Brasil */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇧🇷</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Brasil</h3>
-            </div>
-            <p className="text-sm text-gray-400">Vinicius Jr., Endrick y Rodrygo forman el tridente más temible del torneo.</p>
-          </div>
-
-          {/* España */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇪🇸</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">España</h3>
-            </div>
-            <p className="text-sm text-gray-400">Lamine Yamal y Pedri lideran una revolución táctica que ya conquistó Europa.</p>
-          </div>
-
-          {/* Inglaterra */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Inglaterra</h3>
-            </div>
-            <p className="text-sm text-gray-400">Kane, Bellingham y Foden: tres estrellas en busca del título que escapa desde 1966.</p>
-          </div>
-
-          {/* Portugal */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇵🇹</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Portugal</h3>
-            </div>
-            <p className="text-sm text-gray-400">El último baile de CR7. Una generación completa busca coronar la era dorada.</p>
-          </div>
-
-          {/* Alemania */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇩🇪</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Alemania</h3>
-            </div>
-            <p className="text-sm text-gray-400">La Mannschaft busca redimirse en casa. Juegan en casa de tres de sus rivales.</p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+          {favoritos.map((team) => (
+            <SeleccionCard key={team.slug} team={team} />
+          ))}
         </div>
       </section>
 
-      {/* ⚡ EQUIPOS A SEGUIR */}
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-3xl">⚡</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Equipos a seguir</h2>
+      {/* Equipos a seguir */}
+      <section className="max-w-6xl mx-auto px-4 mb-16">
+        <div className="flex items-center gap-4 mb-6">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 flex items-center justify-center border border-blue-500/20">
+            <span className="text-2xl">⚡</span>
+          </div>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white">Equipos a seguir</h2>
+            <p className="text-sm text-[#6a7a9a]">Selecciones que prometen sorprender</p>
+          </div>
         </div>
-        <p className="text-gray-400 mb-6">Selecciones que prometen sorprender y dar la campanada en el torneo.</p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-          {/* México */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇲🇽</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">México</h3>
-            </div>
-            <p className="text-sm text-gray-400">Anfitrión con ventaja. La afición azteca convertirá cada estadio en el Azteca.</p>
-          </div>
-
-          {/* Estados Unidos */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇺🇸</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Estados Unidos</h3>
-            </div>
-            <p className="text-sm text-gray-400">Pulisic, Reyna y Pochettino lideran el proyecto más ambicioso del fútbol americano.</p>
-          </div>
-
-          {/* Canadá */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇨🇦</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Canadá</h3>
-            </div>
-            <p className="text-sm text-gray-400">Alphonso Davies es la estrella de una selección en ascenso que sueña en grande.</p>
-          </div>
-
-          {/* Marruecos */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇲🇦</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Marruecos</h3>
-            </div>
-            <p className="text-sm text-gray-400">Los héroes de Qatar buscan repetir la hazaña. Semifinalistas con hambre de más.</p>
-          </div>
-
-          {/* Noruega */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5 hover:border-gold/40 transition-colors group">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">🇳🇴</span>
-              <h3 className="text-lg font-bold text-white group-hover:text-gold transition-colors">Noruega</h3>
-            </div>
-            <p className="text-sm text-gray-400">Haaland + Ødegaard: la dupla letal que puede hacer historia para los vikingos.</p>
-          </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+          {aSeguir.map((team) => (
+            <SeleccionCard key={team.slug} team={team} />
+          ))}
         </div>
       </section>
 
-      {/* 🌎 CLASIFICADOS POR CONFEDERACIÓN */}
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="text-3xl">🌎</span>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Clasificados por confederación</h2>
-        </div>
-        <p className="text-gray-400 mb-6">El Mundial 2026 expande sus plazas para incluir a más selecciones de cada continente.</p>
-        
-        <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg overflow-hidden">
-          <table className="w-full">
-            <thead>
-              <tr className="bg-[#0F1D32]">
-                <th className="text-left px-6 py-4 text-gold font-bold">Confederación</th>
-                <th className="text-center px-6 py-4 text-gold font-bold">Plazas</th>
-                <th className="text-left px-6 py-4 text-gold font-bold">Notas</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#1a2a3f]">
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🇪🇺 UEFA</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">16</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">Máxima representación europea en la historia</td>
-              </tr>
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🌎 CONMEBOL</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">6+1</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">6 directas + 1 en repechaje intercontinental</td>
-              </tr>
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🇺🇸🇲🇽🇨🇦 CONCACAF</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">6</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">3 anfitriones + 3 plazas de clasificación</td>
-              </tr>
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🌍 CAF (África)</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">9</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">Cuatro plazas adicionales respecto a 2022</td>
-              </tr>
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🏆 AFC (Asia)</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">8</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">El fútbol asiático sigue creciendo con 4 plazas más</td>
-              </tr>
-              <tr className="hover:bg-[#0F1D32] transition-colors">
-                <td className="px-6 py-4 text-white font-medium">🌊 OFC (Oceanía)</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">1</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">Por primera vez, plaza garantizada para Oceanía</td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr className="bg-[#0F1D32]">
-                <td className="px-6 py-4 text-white font-bold">Total</td>
-                <td className="px-6 py-4 text-center">
-                  <span className="text-2xl font-bold text-gold">48</span>
-                </td>
-                <td className="px-6 py-4 text-gray-400">16 equipos más que en ediciones anteriores</td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
+      {/* Distribución por confederación */}
+      <section className="max-w-6xl mx-auto px-4 mb-16">
+        <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 md:p-8 border border-white/5">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-600/5 flex items-center justify-center border border-green-500/20">
+              <span className="text-2xl">🌎</span>
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-white">Clasificados por confederación</h2>
+              <p className="text-sm text-[#6a7a9a]">El Mundial 2026 expande sus plazas</p>
+            </div>
+          </div>
 
-      {/* GRID DE GRUPOS */}
-      <section className="mb-12">
-        <div className="flex items-center gap-3 mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-white">Los 12 grupos</h2>
-        </div>
-        <p className="text-gray-400 mb-6">Cada grupo con 4 selecciones. Los 2 primeros de cada grupo avanzan a la fase eliminatoria.</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {grupos.map(([letra, grupo]) => {
-            const equipos = getSeleccionesByGrupo(letra);
-            return (
-              <div key={letra} className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg overflow-hidden hover:border-gold/30 transition-colors">
-                <div className="bg-[#0F1D32] px-4 py-3 flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-gold">Grupo {letra}</h3>
-                  <Link href={`/grupos/grupo-${letra.toLowerCase()}`} className="text-sm text-gray-400 hover:text-gold">
-                    Ver grupo →
-                  </Link>
-                </div>
-                <div className="divide-y divide-[#1a2a3f]">
-                  {equipos.map(team => (
-                    <Link
-                      key={team.slug}
-                      href={`/selecciones/${team.slug}`}
-                      className="flex items-center justify-between p-3 hover:bg-[#0F1D32] transition-colors"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{team.emoji}</span>
-                        <div>
-                          <span className="text-white font-medium">{team.nombre}</span>
-                          {team.esAnfitrion && <span className="ml-2 text-xs text-gold">Anfitrión</span>}
-                          {team.esPlayoff && <span className="ml-2 text-xs text-orange-400">Playoff</span>}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <span className="text-sm text-gray-400">
-                          #{team.rankingFIFA || 'TBD'}
-                        </span>
-                        {team.mundiales > 0 && (
-                          <span className="ml-2 text-sm text-gold">🏆×{team.mundiales}</span>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {[
+              { name: 'UEFA', flag: '🇪🇺', plazas: 16, color: 'from-blue-500/20 to-blue-600/10' },
+              { name: 'CONMEBOL', flag: '🌎', plazas: '6+1', color: 'from-yellow-500/20 to-yellow-600/10' },
+              { name: 'CONCACAF', flag: '🌎', plazas: 6, color: 'from-red-500/20 to-red-600/10' },
+              { name: 'CAF', flag: '🌍', plazas: 9, color: 'from-green-500/20 to-green-600/10' },
+              { name: 'AFC', flag: '🏆', plazas: 8, color: 'from-purple-500/20 to-purple-600/10' },
+              { name: 'OFC', flag: '🌊', plazas: 1, color: 'from-cyan-500/20 to-cyan-600/10' },
+            ].map((conf) => (
+              <div key={conf.name} className={`bg-gradient-to-br ${conf.color} rounded-xl p-4 border border-white/5 hover:border-white/10 transition-colors text-center`}>
+                <span className="text-3xl mb-2 block">{conf.flag}</span>
+                <p className="text-2xl font-black text-[#c9a84c] mb-1">{conf.plazas}</p>
+                <p className="text-xs text-[#8a94b0]">{conf.name}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Los 12 grupos */}
+      <section className="max-w-6xl mx-auto px-4 mb-16">
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+            <span className="text-2xl">📊</span>
+          </div>
+          <div>
+            <h2 className="text-2xl md:text-3xl font-bold text-white">Los 12 grupos</h2>
+            <p className="text-sm text-[#6a7a9a]">Los 2 primeros avanzan a eliminatorias</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {grupos.map(([letra]) => {
+            const selecciones = getSeleccionesByGrupo(letra);
+            return (
+              <GrupoSection key={letra} letra={letra} selecciones={selecciones} />
             );
           })}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="mt-10 p-8 bg-gradient-to-r from-gold/10 to-transparent border border-gold/30 rounded-lg text-center">
-        <div className="text-4xl mb-4">🎯</div>
-        <h2 className="text-2xl font-bold text-white mb-3">¿Quién ganará el Mundial 2026?</h2>
-        <p className="text-gray-400 mb-6 max-w-lg mx-auto">Predice los resultados de todos los partidos, compite con tus amigos y demuestra quién es el mejor pronosticador.</p>
-        <Link href="/registro" className="px-8 py-4 bg-gold text-[#060B14] font-bold rounded-lg hover:bg-gold/90 transition-colors inline-block text-lg">
-          Regístrate gratis y empieza a predecir →
-        </Link>
+      {/* CTA Final */}
+      <section className="max-w-4xl mx-auto px-4 mb-16">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#c9a84c]/10 via-[#0B1825] to-[#0F1D32] border border-[#c9a84c]/20 p-8 md:p-12 text-center">
+          {/* Decoración */}
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#c9a84c]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
+          
+          <div className="relative">
+            <span className="text-5xl mb-4 block">🎯</span>
+            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
+              ¿Quién ganará el Mundial 2026?
+            </h2>
+            <p className="text-[#8a94b0] mb-8 max-w-xl mx-auto">
+              Predice los resultados de todos los partidos, compite con tus amigos y demuestra quién es el mejor pronosticador.
+            </p>
+            <Link 
+              href="/registro" 
+              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] transition-all hover:-translate-y-0.5"
+            >
+              Regístrate gratis y empieza a predecir
+              <span>→</span>
+            </Link>
+          </div>
+        </div>
       </section>
-    </>
+
+      {/* Sponsor footer */}
+      <div className="max-w-6xl mx-auto px-4 mb-8">
+        <div className="w-full h-[90px] bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center" data-sponsor-slot="selecciones-footer">
+          <span className="text-[#4a5570] text-sm">Espacio patrocinador</span>
+        </div>
+      </div>
+    </div>
   );
 }

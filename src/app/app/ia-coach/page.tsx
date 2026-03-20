@@ -74,6 +74,52 @@ export default function IACoachPage() {
         </div>
       </section>
 
+      {/* IA Image Section */}
+      <section style={{ padding: "60px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            <div>
+              <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Inteligencia Artificial</span>
+              <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
+                IA especializada en el <span style={{ color: GOLD }}>Mundial 2026</span>
+              </h2>
+              <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 24 }}>
+                Nuestra inteligencia artificial está entrenada específicamente para analizar los partidos y estadísticas del Mundial 2026. Obtén predicciones precisas y consejos personalizados.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {[
+                  { icon: "🔮", text: "Predicciones con probabilidad" },
+                  { icon: "📊", text: "Análisis de forma" },
+                  { icon: "⚠️", text: "Alertas inteligentes" },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
+                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    {item.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/ia mundial.jpeg" 
+                alt="IA Coach - Inteligencia Artificial" 
+                style={{
+                  borderRadius: 16,
+                  overflow: "hidden",
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.3)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  maxWidth: 350,
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                  margin: "0 auto"
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How it Works */}
       <section style={{ padding: "60px 20px", background: BG3 }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>

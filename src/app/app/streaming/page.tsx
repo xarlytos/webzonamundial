@@ -21,17 +21,17 @@ const CHAT_FEATURES = [
   { icon: "🎁", title: "Gana drops", desc: "Y recompensas exclusivas" },
 ]
 
+const MODES = [
+  { moment: "Pre-partido", duration: "30 min", desc: "Alineaciones, análisis, predicciones" },
+  { moment: "Partido", duration: "90+ min", desc: "Reacciones, chat, goles, polémicas" },
+  { moment: "Post-partido", duration: "30 min", desc: "Resumen, MVP,ária del VAR" },
+]
+
 const REWARDS = [
   { icon: "⏱️", title: "Monedas por tiempo", desc: "+10 monedas cada 10 minutos" },
   { icon: "🎁", title: "Drops especiales", desc: "Items exclusivos en momentos clave" },
   { icon: "📺", title: "Contenido exclusivo", desc: "Detrás de cámaras" },
   { icon: "🎤", title: "Meet & greet virtual", desc: "Conoce a los creadores" },
-]
-
-const MODES = [
-  { moment: "Pre-partido", duration: "30 min", desc: "Alineaciones, análisis, predicciones" },
-  { moment: "Partido", duration: "90+ min", desc: "Reacciones, chat, goles, polémicas" },
-  { moment: "Post-partido", duration: "30 min", desc: "Resumen, MVP, polémica del VAR" },
 ]
 
 export default function StreamingPage() {
@@ -51,49 +51,57 @@ export default function StreamingPage() {
         </div>
       </section>
 
-      {/* Watch Parties */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              🎬 <span style={{ color: GOLD }}>Watch Parties</span>
-            </h2>
-          </div>
-
-          <div style={{
-            padding: 32, borderRadius: 20, background: BG2,
-            border: "1px solid rgba(255,255,255,0.05)", textAlign: "center"
-          }}>
-            <p style={{ fontSize: 18, lineHeight: 1.8, marginBottom: 24 }}>
-              Los creadores hacen streaming <strong>mientras</strong> ven el partido:
-            </p>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 16 }}>
-              {[
-                "Reacciones en vivo a goles, polémicas, VAR",
-                "Chat comunitario para comentar",
-                "Predicciones en tiempo real",
-                "Encuestas: ¿Penalti o no?",
-                "Momentos épicos compartidos"
-              ].map((item, i) => (
-                <div key={i} style={{
-                  padding: 16, background: BG3, borderRadius: 12, fontSize: 14
-                }}>
-                  {item}
-                </div>
-              ))}
+      {/* Watch Parties + Imagen */}
+      <section style={{ padding: "80px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            <div>
+              <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Watch Parties</span>
+              <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
+                Vive el Mundial <span style={{ color: GOLD }}>acompañado</span>
+              </h2>
+              <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 24 }}>
+                Los creadores hacen streaming mientras ven el partido. Tú comentas, reaccionas y compartes la emoción con miles de fans.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {[
+                  { icon: "⚽", text: "Reacciones en vivo a goles y polémicas" },
+                  { icon: "💬", text: "Chat comunitario para comentar" },
+                  { icon: "🎯", text: "Predicciones en tiempo real" },
+                  { icon: "📊", text: "Encuestas: ¿Penalti o no?" },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
+                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    {item.text}
+                  </div>
+                ))}
+              </div>
             </div>
-            <p style={{ fontSize: 14, color: DIM, marginTop: 24, fontStyle: "italic" }}>
-              &ldquo;No es transmisión del partido. Es la experiencia de verlo acompañado.&rdquo;
-            </p>
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/streaming zona mundial.jpeg" 
+                alt="Streaming Zona Mundial" 
+                style={{
+                  borderRadius: 20,
+                  overflow: "hidden",
+                  boxShadow: "0 24px 50px rgba(0,0,0,0.4)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  maxWidth: 500,
+                  width: "100%",
+                  height: "auto",
+                  display: "block"
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
 
       {/* Creadores Oficiales */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <section style={{ padding: "80px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+            <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
               🎙️ Creadores <span style={{ color: GOLD }}>Oficiales</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>Tenemos creadores de todo tipo:</p>
@@ -118,10 +126,10 @@ export default function StreamingPage() {
       </section>
 
       {/* Chat Comunitario */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <section style={{ padding: "80px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+            <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
               💬 Chat <span style={{ color: GOLD }}>Comunitario</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>Durante los watch parties:</p>
@@ -143,10 +151,10 @@ export default function StreamingPage() {
       </section>
 
       {/* Rewards */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
+      <section style={{ padding: "80px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+            <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
               🎁 Rewards por <span style={{ color: GOLD }}>ver</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>Mientras más ves, más ganas:</p>
@@ -168,10 +176,10 @@ export default function StreamingPage() {
       </section>
 
       {/* Modos de Streaming */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
+      <section style={{ padding: "80px 20px", background: BG3 }}>
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
+            <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
               📅 Modos de <span style={{ color: GOLD }}>Streaming</span>
             </h2>
           </div>

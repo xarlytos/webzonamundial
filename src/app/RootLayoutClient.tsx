@@ -197,9 +197,16 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
       }}>
         <div style={{maxWidth:1200,margin:"0 auto",padding:"0 20px",height:64,display:"flex",alignItems:"center",justifyContent:"space-between"}}>
           {/* Logo */}
-          <Link href="/" style={{display:"flex",alignItems:"center",gap:3,cursor:"pointer",textDecoration:"none"}} onClick={closeMobile}>
-            <span style={{fontWeight:900,fontSize:20,color:"#fff",letterSpacing:-0.5}}>ZONA</span>
-            <span style={{fontWeight:900,fontSize:20,color:GOLD,letterSpacing:-0.5}}>MUNDIAL</span>
+          <Link href="/" style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",textDecoration:"none"}} onClick={closeMobile}>
+            <img 
+              src="/img/zonamundial-images/imagenes/IMG-20260302-WA0016-removebg-preview.png" 
+              alt="ZonaMundial Logo" 
+              style={{width:36,height:36,objectFit:"contain"}}
+            />
+            <div style={{display:"flex",alignItems:"center",gap:3}}>
+              <span style={{fontWeight:900,fontSize:20,color:"#fff",letterSpacing:-0.5}}>ZONA</span>
+              <span style={{fontWeight:900,fontSize:20,color:GOLD,letterSpacing:-0.5}}>MUNDIAL</span>
+            </div>
           </Link>
 
           {/* Desktop nav */}

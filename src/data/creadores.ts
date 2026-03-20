@@ -14,7 +14,12 @@ export interface Creador {
   contenido: string;
   paisFlag: string;
   pais: string;
+  imagen: string;
+  handle: string;
 }
+
+// Importar imágenes desde el archivo de imágenes
+import { CREADORES_IMGS } from './creadores-images';
 
 export const CREADORES: Creador[] = [
   {
@@ -30,6 +35,8 @@ export const CREADORES: Creador[] = [
     contenido: 'Análisis táctico, directos y contenido premium',
     paisFlag: 'es',
     pais: 'España',
+    imagen: CREADORES_IMGS.josecobo,
+    handle: '@josecobo',
   },
   {
     slug: 'svgiago',
@@ -44,6 +51,8 @@ export const CREADORES: Creador[] = [
     contenido: 'Streams en vivo, reacciones y gameplay',
     paisFlag: 'es',
     pais: 'España',
+    imagen: CREADORES_IMGS.svgiago,
+    handle: '@svgiago',
   },
   {
     slug: 'pimpeano',
@@ -56,8 +65,10 @@ export const CREADORES: Creador[] = [
     plataformaPrincipal: 'TikTok',
     bio: 'Creador de contenido viral sobre fútbol. Sus predicciones son leyenda entre sus seguidores.',
     contenido: 'Videos virales, memes y reacciones',
-    paisFlag: 'es',
-    pais: 'España',
+    paisFlag: 'ar',
+    pais: 'Argentina',
+    imagen: CREADORES_IMGS.pimpeano,
+    handle: '@pimpeano',
   },
   {
     slug: 'nachocp',
@@ -70,8 +81,10 @@ export const CREADORES: Creador[] = [
     plataformaPrincipal: 'YouTube',
     bio: 'Experto en estadísticas y datos del fútbol. Análisis profundo de cada selección del Mundial 2026.',
     contenido: 'Estadísticas, análisis de datos y scouting',
-    paisFlag: 'es',
-    pais: 'España',
+    paisFlag: 'ar',
+    pais: 'Argentina / España',
+    imagen: CREADORES_IMGS.nachocp,
+    handle: '@nachocp',
   },
   {
     slug: 'nereita',
@@ -86,6 +99,8 @@ export const CREADORES: Creador[] = [
     contenido: 'Lifestyle, fútbol femenino y entrevistas',
     paisFlag: 'es',
     pais: 'España',
+    imagen: CREADORES_IMGS.nereita,
+    handle: '@nereita',
   },
   {
     slug: 'elopi23',
@@ -98,8 +113,10 @@ export const CREADORES: Creador[] = [
     plataformaPrincipal: 'YouTube',
     bio: 'Creador de contenido especializado en fichajes y mercado de futbolistas sudamericanos.',
     contenido: 'Fichajes, rumores y análisis de mercado',
-    paisFlag: 'ar',
-    pais: 'Argentina',
+    paisFlag: 'es',
+    pais: 'España',
+    imagen: CREADORES_IMGS.elopi23,
+    handle: '@elopi23',
   },
   {
     slug: 'salvador',
@@ -114,6 +131,8 @@ export const CREADORES: Creador[] = [
     contenido: 'Narraciones en vivo y análisis post-partido',
     paisFlag: 'mx',
     pais: 'México',
+    imagen: CREADORES_IMGS.salvador,
+    handle: '@salvador',
   },
   {
     slug: 'franbar',
@@ -126,8 +145,10 @@ export const CREADORES: Creador[] = [
     plataformaPrincipal: 'Twitter',
     bio: 'Diseñador gráfico y amante del fútbol. Crea contenido visual espectacular sobre el deporte rey.',
     contenido: 'Diseño gráfico, infografías y datos visuales',
-    paisFlag: 'es',
-    pais: 'España',
+    paisFlag: 'ar',
+    pais: 'Argentina',
+    imagen: CREADORES_IMGS.franbar,
+    handle: '@franbar',
   },
 ];
 

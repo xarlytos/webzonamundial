@@ -4,7 +4,7 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  // Permitir imágenes externas (banderas, etc.)
+  // Permitir imágenes externas (banderas, estadios, etc.)
   images: {
     remotePatterns: [
       {
@@ -14,6 +14,14 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "zonamundial.app",
+      },
+      {
+        protocol: "https",
+        hostname: "upload.wikimedia.org",
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
       },
     ],
   },

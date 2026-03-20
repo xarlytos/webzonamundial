@@ -4,266 +4,336 @@ import Link from "next/link"
 
 const BG = "#060B14", BG2 = "#0F1D32", BG3 = "#0B1825", GOLD = "#c9a84c", GOLD2 = "#e8d48b", MID = "#8a94b0", DIM = "#6a7a9a"
 
-const LEVELS = [
-  { rank: "🥉", name: "Bronce", levels: "1-10", title: "Novato → Aficionado", color: "#cd7f32" },
-  { rank: "🥈", name: "Plata", levels: "11-25", title: "Experto → Profesional", color: "#c0c0c0" },
-  { rank: "🥇", name: "Oro", levels: "26-50", title: "Leyenda → Ídolo", color: GOLD },
-  { rank: "💎", name: "Diamante", levels: "51-99", title: "Mítico → Dios del Fútbol", color: "#b9f2ff" },
-  { rank: "👑", name: "Especial", levels: "100", title: "GOAT 🐐", color: "#ff6b9d" },
+const FORMATIONS = [
+  { form: "4-3-3", style: "Ofensivo" },
+  { form: "4-4-2", style: "Equilibrado" },
+  { form: "3-5-2", style: "Dominio" },
+  { form: "5-3-2", style: "Defensivo" },
+  { form: "4-2-3-1", style: "Posesión" },
+  { form: "3-4-3", style: "Todo ataque" },
 ]
 
-const XP_ACTIONS = [
-  { action: "Predicción acertada", xp: "+50-500" },
-  { action: "Trivia correcta", xp: "+10-50" },
-  { action: "Fantasy jornada", xp: "+100-1000" },
-  { action: "Logro desbloqueado", xp: "+200" },
-  { action: "Amigo invitado", xp: "+100" },
+const TACTICS = [
+  { name: "Posesión", use: "Contra equipos débiles" },
+  { name: "Contragolpe", use: "Contra equipos fuertes" },
+  { name: "Presión Alta", use: "Para arriesgar" },
+  { name: "Defensivo", use: "Proteger ventaja" },
+  { name: "Equilibrado", use: "Partidos normales" },
 ]
 
-const BENEFITS = [
-  { level: "Nivel 10", benefit: "Desbloquea ligas privadas" },
-  { level: "Nivel 25", benefit: "IA Coach pro completo" },
-  { level: "Nivel 50", benefit: "Badge exclusivo + Marco de avatar" },
-  { level: "Nivel 75", benefit: "Acceso a torneos exclusivos" },
-  { level: "Nivel 100", benefit: "GOAT Badge + Atención VIP + Eventos especiales" },
+const ACHIEVEMENTS_PREVIEW = [
+  { icon: "👑", name: "Campeón del Mundo", rarity: "Legendaria" },
+  { icon: "🏆", name: "Finalista", rarity: "Épica" },
+  { icon: "⭐", name: "Semifinalista", rarity: "Rara" },
+  { icon: "🏅", name: "Clasificado", rarity: "Común" },
 ]
 
-const ACHIEVEMENTS = {
-  predictions: [
-    { icon: "🎲", name: "Adivino", desc: "10 aciertos seguidos" },
-    { icon: "🔮", name: "Milagroso", desc: "Acierta resultado exacto de la final" },
-    { icon: "🐑", name: "Contrarian", desc: "Gana predicción social contra el 90%" },
-    { icon: "💎", name: "Diamante puro", desc: "Acierta en un Diamond Match (×3)" },
-  ],
-  fantasy: [
-    { icon: "👔", name: "Manager del mes", desc: "Gana liga mensual" },
-    { icon: "👁️", name: "Ojo de águila", desc: "Compra joya <$5M que haga >50 pts" },
-    { icon: "🛡️", name: "Invicto", desc: "Liga perfecta sin perder" },
-    { icon: "💰", name: "Trader", desc: "10 trades exitosos" },
-  ],
-  trivia: [
-    { icon: "🔥", name: "Racha loca", desc: "20 correctas seguidas" },
-    { icon: "⚡", name: "Velocista", desc: "Responde en <1 segundo" },
-    { icon: "🏛️", name: "Historiador", desc: "100 preguntas de historia" },
-    { icon: "🕵️", name: "Detective", desc: "50 preguntas visuales" },
-  ],
-  social: [
-    { icon: "📢", name: "Influencer", desc: "100 seguidores" },
-    { icon: "👑", name: "Líder", desc: "Crea liga con 50+ miembros" },
-    { icon: "🤝", name: "Amigo fiel", desc: "30 días jugando con el mismo amigo" },
-    { icon: "🌍", name: "Global", desc: "Juega contra alguien de cada continente" },
-  ],
+const ImgStyle = {
+  borderRadius: 20,
+  overflow: "hidden",
+  boxShadow: "0 24px 50px rgba(0,0,0,0.4)",
+  border: "1px solid rgba(255,255,255,0.08)",
+  maxWidth: 500,
+  width: "100%",
+  height: "auto",
+  display: "block"
 }
-
-const COINS = [
-  { action: "Acciones diarias", coins: "+50 monedas" },
-  { action: "Predicciones", coins: "+10-100 monedas" },
-  { action: "Logros", coins: "+500 monedas" },
-  { action: "Invitar amigos", coins: "+200 monedas" },
-]
-
-const SHOP_ITEMS = [
-  { item: "🎨 Skins de perfil" },
-  { item: "😎 Emojis personalizados" },
-  { item: "✨ Efectos especiales" },
-  { item: "🚀 Boosts para fantasy" },
-  { item: "💡 Pistas en trivia" },
-  { item: "🖼️ Marcos de avatar" },
-]
 
 export default function ModoCarreraPage() {
   return (
     <div style={{ background: BG, color: "#fff", fontFamily: "'Outfit',sans-serif", minHeight: "100vh" }}>
-      {/* Hero */}
-      <section style={{ padding: "80px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center,rgba(201,168,76,0.08) 0%,transparent 60%)" }} />
-        <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-          <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>Progresión</span>
-          <h1 style={{ fontSize: "clamp(32px,6vw,52px)", fontWeight: 900, marginTop: 16, lineHeight: 1.1 }}>
-            Tu camino hacia la <span style={{ color: GOLD }}>gloria 🚀</span>
+      {/* HERO */}
+      <section style={{ padding: "100px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center,rgba(201,168,76,0.1) 0%,transparent 60%)" }} />
+        
+        <div style={{ maxWidth: 900, margin: "0 auto", position: "relative" }}>
+          <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 3, textTransform: "uppercase" }}>Modo Carrera</span>
+          <h1 style={{ fontSize: "clamp(36px,7vw,56px)", fontWeight: 900, marginTop: 20, lineHeight: 1.1 }}>
+            Conviértete en el <span style={{ color: GOLD }}>Seleccionador</span>
           </h1>
-          <p style={{ color: MID, marginTop: 20, maxWidth: 600, margin: "20px auto 0", lineHeight: 1.7, fontSize: 17 }}>
-            Cada predicción, cada trivia, cada fantasy... suma. Sube de nivel, desbloquea recompensas, conviértete en una leyenda de ZonaMundial.
+          <p style={{ color: MID, marginTop: 24, maxWidth: 600, margin: "24px auto 0", lineHeight: 1.7, fontSize: 18 }}>
+            Dirige una selección nacional. Elige tu nación, forma tu plantilla y guía a tu equipo hacia la gloria mundialista.
           </p>
-        </div>
-      </section>
-
-      {/* Sistema de Niveles */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Sistema de <span style={{ color: GOLD }}>Niveles</span>
-            </h2>
-          </div>
-
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
-              <thead>
-                <tr style={{ borderBottom: `1px solid ${GOLD}40` }}>
-                  <th style={{ padding: "16px", textAlign: "left", color: GOLD }}>Rango</th>
-                  <th style={{ padding: "16px", textAlign: "left", color: GOLD }}>Niveles</th>
-                  <th style={{ padding: "16px", textAlign: "left", color: GOLD }}>Título</th>
-                </tr>
-              </thead>
-              <tbody>
-                {LEVELS.map((level, i) => (
-                  <tr key={i} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                    <td style={{ padding: "16px" }}>
-                      <span style={{ fontSize: 20, marginRight: 8 }}>{level.rank}</span>
-                      <span style={{ color: level.color, fontWeight: 600 }}>{level.name}</span>
-                    </td>
-                    <td style={{ padding: "16px", color: MID }}>{level.levels}</td>
-                    <td style={{ padding: "16px" }}>{level.title}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          
+          <div style={{ marginTop: 40, display: "flex", gap: 16, justifyContent: "center", flexWrap: "wrap" }}>
+            <Link href="/registro" style={{
+              padding: "16px 36px", borderRadius: 14,
+              background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
+              color: BG, fontWeight: 800, fontSize: 16, textDecoration: "none", display: "inline-block",
+              boxShadow: "0 8px 32px rgba(201,168,76,0.3)"
+            }}>
+              🚀 Nueva Carrera
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* XP por acción */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              XP por <span style={{ color: GOLD }}>acción</span>
-            </h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(200px,1fr))", gap: 20 }}>
-            {XP_ACTIONS.map((action, i) => (
-              <div key={i} style={{
-                padding: 24, borderRadius: 16, background: BG2,
-                border: "1px solid rgba(255,255,255,0.05)", textAlign: "center"
-              }}>
-                <div style={{ fontSize: 28, fontWeight: 800, color: GOLD, marginBottom: 8 }}>{action.xp}</div>
-                <div style={{ fontSize: 14, color: DIM }}>{action.action}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Beneficios por nivel */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Beneficios por <span style={{ color: GOLD }}>nivel</span>
-            </h2>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {BENEFITS.map((benefit, i) => (
-              <div key={i} style={{
-                display: "flex", alignItems: "center", gap: 20,
-                padding: 20, borderRadius: 12, background: BG2,
-                border: "1px solid rgba(255,255,255,0.05)"
-              }}>
-                <div style={{
-                  padding: "8px 16px", borderRadius: 8,
-                  background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
-                  color: BG, fontWeight: 700, fontSize: 14, whiteSpace: "nowrap"
-                }}>
-                  {benefit.level}
-                </div>
-                <div style={{ fontSize: 15 }}>{benefit.benefit}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Sistema de Logros */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Sistema de <span style={{ color: GOLD }}>Logros</span>
-            </h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 32 }}>
-            {Object.entries(ACHIEVEMENTS).map(([category, items]) => (
-              <div key={category} style={{ background: BG2, borderRadius: 16, padding: 24, border: "1px solid rgba(255,255,255,0.05)" }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: GOLD, textTransform: "capitalize" }}>
-                  {category === "predictions" ? "🎯 Predicciones" :
-                   category === "fantasy" ? "⚽ Fantasy" :
-                   category === "trivia" ? "🧠 Trivia" : "👥 Social"}
-                </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  {items.map((item, i) => (
-                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <span style={{ fontSize: 20 }}>{item.icon}</span>
-                      <div>
-                        <div style={{ fontWeight: 600, fontSize: 14 }}>{item.name}</div>
-                        <div style={{ fontSize: 12, color: DIM }}>{item.desc}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Monedas y Tienda */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              🪙 Monedas y <span style={{ color: GOLD }}>Tienda</span>
-            </h2>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 32 }}>
-            {/* Ganar monedas */}
-            <div style={{ background: BG2, borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.05)" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20, color: GOLD }}>Gana monedas</h3>
+      {/* SELECCIÓN DE NACIÓN */}
+      <section style={{ padding: "80px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            {/* Texto */}
+            <div>
+              <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Paso 1</span>
+              <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
+                Elige tu <span style={{ color: GOLD }}>Nación</span>
+              </h2>
+              <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 32 }}>
+                Selecciona una de las 48 selecciones del Mundial 2026. Cada una tiene un nivel de dificultad según su Overall.
+              </p>
+              
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {COINS.map((coin, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: i < COINS.length - 1 ? "1px solid rgba(255,255,255,0.05)" : "none" }}>
-                    <span style={{ fontSize: 14 }}>{coin.action}</span>
-                    <span style={{ fontSize: 14, color: GOLD, fontWeight: 600 }}>{coin.coins}</span>
+                {[
+                  { icon: "⭐⭐⭐⭐⭐", name: "Élite", color: "#22c55e" },
+                  { icon: "⭐⭐⭐⭐", name: "Muy Fuerte", color: "#3b82f6" },
+                  { icon: "⭐⭐⭐", name: "Fuerte", color: "#f59e0b" },
+                  { icon: "⭐⭐", name: "Media", color: "#f97316" },
+                ].map((d, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, padding: 14, borderRadius: 12, background: BG2 }}>
+                    <span style={{ fontSize: 16 }}>{d.icon}</span>
+                    <span style={{ fontWeight: 600, color: d.color }}>{d.name}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Gastar en tienda */}
-            <div style={{ background: BG2, borderRadius: 16, padding: 28, border: "1px solid rgba(255,255,255,0.05)" }}>
-              <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 20, color: GOLD }}>Gasta en</h3>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                {SHOP_ITEMS.map((item, i) => (
-                  <div key={i} style={{ padding: 12, background: BG3, borderRadius: 8, fontSize: 14, textAlign: "center" }}>
-                    {item.item}
+            {/* Imagen */}
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/elige nacion modo carrera.jpeg" 
+                alt="Selección de nación" 
+                style={ImgStyle}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PLANTILLA */}
+      <section style={{ padding: "80px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            
+            {/* Imagen */}
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/alineacion modo carrera.jpeg" 
+                alt="Plantilla" 
+                style={ImgStyle}
+              />
+            </div>
+
+            {/* Texto */}
+            <div>
+              <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Paso 2</span>
+              <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
+                Forma tu <span style={{ color: GOLD }}>Plantilla</span>
+              </h2>
+              <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 32 }}>
+                36 jugadores disponibles. Elige entre 23-26 para tu convocatoria final.
+              </p>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12 }}>
+                {[
+                  { label: "Plantilla", value: "36" },
+                  { label: "Convocatoria", value: "23-26" },
+                  { label: "Porteros", value: "Min 2" },
+                  { label: "Overall", value: "0-99" },
+                ].map((item, i) => (
+                  <div key={i} style={{ padding: 20, borderRadius: 12, background: BG2, textAlign: "center" }}>
+                    <div style={{ fontSize: 28, fontWeight: 800, color: GOLD }}>{item.value}</div>
+                    <div style={{ fontSize: 12, color: DIM }}>{item.label}</div>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FORMACIONES Y TACTICAS */}
+      <section style={{ padding: "80px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Paso 3</span>
+          <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 32 }}>
+            Configura <span style={{ color: GOLD }}>Tácticas</span>
+          </h2>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 32 }}>
+            {/* Formaciones */}
+            <div style={{ padding: 28, borderRadius: 20, background: BG2, border: "1px solid rgba(255,255,255,0.05)" }}>
+              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD }}>📋 6 Formaciones</h3>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12 }}>
+                {FORMATIONS.map((f, i) => (
+                  <div key={i} style={{ padding: 16, borderRadius: 12, background: BG3, textAlign: "center" }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: GOLD, marginBottom: 4 }}>{f.form}</div>
+                    <div style={{ fontSize: 12, color: DIM }}>{f.style}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tácticas */}
+            <div style={{ padding: 28, borderRadius: 20, background: BG2, border: "1px solid rgba(255,255,255,0.05)" }}>
+              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD }}>🎮 5 Estilos</h3>
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {TACTICS.map((t, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 14, borderRadius: 10, background: BG3 }}>
+                    <span style={{ fontWeight: 600, fontSize: 15 }}>{t.name}</span>
+                    <span style={{ fontSize: 12, color: DIM }}>{t.use}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* TORNEO */}
+      <section style={{ padding: "80px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            
+            {/* Contenido */}
+            <div>
+              <div style={{ marginBottom: 32 }}>
+                <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800, marginBottom: 24 }}>
+                  🏟️ El Torneo
+                </h2>
+              </div>
+
+              {/* Fases */}
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 12, marginBottom: 24 }}>
+                {[
+                  { phase: "Grupos", teams: "48", color: "#3b82f6" },
+                  { phase: "16avos", teams: "32", color: "#8b5cf6" },
+                  { phase: "Octavos", teams: "16", color: "#ec4899" },
+                  { phase: "Cuartos", teams: "8", color: "#f59e0b" },
+                  { phase: "Semis", teams: "4", color: "#ef4444" },
+                  { phase: "Final", teams: "2", color: GOLD },
+                ].map((p, i) => (
+                  <div key={i} style={{ padding: "12px 18px", borderRadius: 10, background: BG2, border: `1px solid ${p.color}40`, textAlign: "center", minWidth: 75 }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: p.color }}>{p.teams}</div>
+                    <div style={{ fontSize: 11, color: DIM }}>{p.phase}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Sistema de puntos */}
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+                <div style={{ padding: "12px 24px", borderRadius: 10, background: BG2, border: "1px solid #22c55e40", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "#22c55e" }}>3 pts</div>
+                  <div style={{ fontSize: 11, color: DIM }}>Victoria</div>
+                </div>
+                <div style={{ padding: "12px 24px", borderRadius: 10, background: BG2, border: "1px solid #f59e0b40", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "#f59e0b" }}>1 pt</div>
+                  <div style={{ fontSize: 11, color: DIM }}>Empate</div>
+                </div>
+                <div style={{ padding: "12px 24px", borderRadius: 10, background: BG2, border: "1px solid rgba(255,255,255,0.1)", textAlign: "center" }}>
+                  <div style={{ fontSize: 20, fontWeight: 800, color: "#fff" }}>0 pts</div>
+                  <div style={{ fontSize: 11, color: DIM }}>Derrota</div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 20 }}>
+                <span style={{ fontSize: 13, color: DIM }}>Prórroga y penaltis en eliminatorias</span>
+              </div>
+            </div>
+
+            {/* Imagen */}
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/grupos modo carrera.jpeg" 
+                alt="Fase de grupos" 
+                style={ImgStyle}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PARTIDOS */}
+      <section style={{ padding: "80px 20px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            {/* Texto */}
+            <div>
+              <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>Paso 4</span>
+              <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
+                ⚽ Jugando <span style={{ color: GOLD }}>Partidos</span>
+              </h2>
+              <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 32 }}>
+                Partidos simulados en tiempo real. Toma decisiones tácticas clave y vive cada momento.
+              </p>
+              
+              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                {[
+                  { icon: "⏱️", text: "Velocidad 1x, 2x, 4x y pausa" },
+                  { icon: "🎲", text: "Decisiones: Atacar, Equilibrado, Defender" },
+                  { icon: "📝", text: "Narración en vivo" },
+                  { icon: "⚽", text: "Goles con goleadores reales" },
+                ].map((item, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
+                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    {item.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Imagen */}
+            <div>
+              <img 
+                src="/img/zonamundial-images/imagenes/gol messi modo carrera.jpeg" 
+                alt="Partido en vivo" 
+                style={ImgStyle}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* LOGROS */}
+      <section style={{ padding: "80px 20px", background: BG3 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
+              🏅 Logros
+            </h2>
+            <p style={{ color: MID, marginTop: 12 }}>10 logros exclusivos por desbloquear</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 16 }}>
+            {ACHIEVEMENTS_PREVIEW.map((a, i) => (
+              <div key={i} style={{ padding: 24, borderRadius: 16, background: BG2, border: "1px solid rgba(255,255,255,0.05)", textAlign: "center" }}>
+                <div style={{ fontSize: 48, marginBottom: 12 }}>{a.icon}</div>
+                <div style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{a.name}</div>
+                <div style={{ fontSize: 11, color: DIM, textTransform: "uppercase", letterSpacing: 1 }}>{a.rarity}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section style={{ padding: "80px 20px", textAlign: "center" }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ fontSize: 64, marginBottom: 24 }}>🎯</div>
-          <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
-            ¿Listo para empezar tu <span style={{ color: GOLD }}>carrera?</span>
+      <section style={{ padding: "100px 20px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(201,168,76,0.1) 0%, transparent 60%)" }} />
+        
+        <div style={{ maxWidth: 600, margin: "0 auto", position: "relative" }}>
+          <div style={{ fontSize: 64, marginBottom: 24 }}>🏆</div>
+          <h2 style={{ fontSize: "clamp(28px,5vw,44px)", fontWeight: 900, marginBottom: 16 }}>
+            ¡Empieza tu camino!
           </h2>
-          <p style={{ color: MID, marginBottom: 32, fontSize: 16 }}>
-            Cada punto cuenta. Cada nivel te acerca más a la cima del ranking mundial.
+          <p style={{ color: MID, marginBottom: 40, fontSize: 18 }}>
+            Elige tu nación y lleva a tu selección a la gloria.
           </p>
           <Link href="/registro" style={{
-            padding: "16px 40px", borderRadius: 12,
+            padding: "18px 44px", borderRadius: 14,
             background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
-            color: BG, fontWeight: 700, fontSize: 16, textDecoration: "none", display: "inline-block"
+            color: BG, fontWeight: 800, fontSize: 18, textDecoration: "none", display: "inline-block",
+            boxShadow: "0 8px 32px rgba(201,168,76,0.35)"
           }}>
-            Empieza tu carrera → Pre-regístrate
+            🚀 Nueva Carrera
           </Link>
         </div>
       </section>

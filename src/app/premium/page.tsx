@@ -5,55 +5,69 @@ import Link from "next/link";
 const BG = "#060B14", BG2 = "#0F1D32", BG3 = "#0B1825", GOLD = "#c9a84c", GOLD2 = "#e8d48b", MID = "#8a94b0", DIM = "#6a7a9a", DARK = "#4a5570";
 
 const COMPARISON_DATA = [
-  { feature: "Predicciones básicas", free: "✅", premium: "✅" },
-  { feature: "Fantasy standard", free: "✅", premium: "✅" },
-  { feature: "Trivia diaria", free: "✅", premium: "✅" },
-  { feature: "IA Coach básica", free: "✅", premium: "✅" },
-  { feature: "Ligas privadas", free: "✅", premium: "✅" },
-  { feature: "Predicciones avanzadas (8 tipos)", free: "3/día", premium: "Ilimitadas", highlight: true },
-  { feature: "IA Coach pro", free: "❌", premium: "✅", highlight: true },
-  { feature: "Estadísticas avanzadas", free: "Limitadas", premium: "Completas", highlight: true },
+  { feature: "Predicciones básicas", free: "✅", premium: "✅", highlight: false },
+  { feature: "Fantasy", free: "Básico", premium: "Funciones exclusivas Premium", highlight: true },
+  { feature: "Trivia", free: "Modo Clásico", premium: "Todos los modos de juego", highlight: true },
+  { feature: "IA Coach", free: "Básico", premium: "Pro completo", highlight: true },
+  { feature: "Ligas privadas", free: "Unirse", premium: "Crear ilimitadas", highlight: true },
+  { feature: "Predicciones avanzadas (8 tipos)", free: "❌", premium: "✅ Ilimitadas", highlight: true },
+  { feature: "Estadísticas avanzadas", free: "Básicas", premium: "Pro + xG/xA", highlight: true },
   { feature: "Sin anuncios", free: "❌", premium: "✅", highlight: true },
-  { feature: "Badge Premium", free: "❌", premium: "✅", highlight: true },
-  { feature: "Soporte prioritario", free: "❌", premium: "✅", highlight: true },
-  { feature: "Acceso anticipado", free: "❌", premium: "✅", highlight: true },
-  { feature: "Exportar datos", free: "❌", premium: "✅", highlight: true },
-  { feature: "Ligas premium exclusivas", free: "❌", premium: "✅", highlight: true },
+  { feature: "Badge Premium", free: "❌", premium: "✅ Dorado", highlight: true },
+  { feature: "Soporte", free: "Email", premium: "Prioritario 24h", highlight: true },
+  { feature: "Acceso anticipado", free: "❌", premium: "✅ Betas", highlight: true },
+  { feature: "Exportar datos", free: "❌", premium: "✅ CSV/Excel", highlight: true },
+  { feature: "Ligas premium exclusivas", free: "❌", premium: "✅ Torneos", highlight: true },
 ];
 
-const PRICING_PLANS = [
-  { name: "Mensual", price: "$4.99", period: "/mes", save: null, popular: false },
-  { name: "Mundial Completo", price: "$19.99", period: " (5 meses)", save: "Ahorra 20%", popular: true },
-  { name: "Anual", price: "$39.99", period: "/año", save: "Mejor valor", popular: false },
-];
+const PRICING_PLAN = {
+  name: "Mundial Completo 2026",
+  price: "10€",
+  period: " todo el mundial",
+  description: "Acceso completo a todas las funciones Premium durante todo el Mundial 2026",
+};
 
 const PREMIUM_FEATURES = [
   {
     icon: "🤖",
     title: "IA Coach Pro",
-    desc: "Análisis completo de TODOS los partidos con Machine Learning avanzado. Alertas de última hora (lesiones, rotaciones) y reportes personalizados semanales.",
+    desc: "Tu asistente personal de inteligencia artificial analiza TODOS los partidos del Mundial usando Machine Learning avanzado. Recibe alertas en tiempo real sobre lesiones, rotaciones de jugadores, cambios tácticos y noticias de última hora. Obtén reportes personalizados semanales con recomendaciones específicas para tu equipo Fantasy y predicciones basadas en datos históricos y forma actual.",
   },
   {
     icon: "📊",
     title: "Estadísticas Avanzadas",
-    desc: "Acceso completo a xG, xA, heatmaps de posición, mapas de tiros, redes de pases y tendencias de forma. Datos de nivel profesional.",
+    desc: "Accede a métricas de nivel profesional: xG (goles esperados), xA (asistencias esperadas), heatmaps de posición, mapas de tiros detallados, redes de pases completas, análisis de presión, distancia recorrida, sprints, y tendencias de forma de cada jugador. Compara estadísticas históricas entre selecciones y jugadores con filtros avanzados.",
   },
   {
     icon: "🎯",
     title: "Predicciones Ilimitadas",
-    desc: "Sin límites diarios. Todos los 8 tipos de predicciones disponibles siempre. Multiplicadores exclusivos solo para usuarios Premium.",
+    desc: "Olvídate de los límites diarios. Realiza todas las predicciones que quieras con acceso ilimitado a los 8 tipos disponibles: resultado exacto, marcador, goles totales, ambos marcan, primer gol, tarjetas, corners y jugadores destacados. Disfruta de multiplicadores exclusivos solo para usuarios Premium que aumentan tus recompensas.",
   },
   {
     icon: "👑",
     title: "Badge y Perfil Premium",
-    desc: "Badge dorado 'Premium' visible, marco de avatar exclusivo animado, animaciones especiales al ganar y prioridad en leaderboards públicos.",
+    desc: "Destaca con tu badge dorado exclusivo visible en toda la plataforma. Obtén un marco de avatar animado único que muestra tu estatus Premium, animaciones especiales cuando ganas predicciones o subes en el ranking, y prioridad absoluta en todas las tablas de clasificación públicas. Tu perfil incluye estadísticas avanzadas y logros desbloqueables.",
   },
-];
-
-const GUARANTEES = [
-  { icon: "✅", title: "7 días de prueba GRATIS", desc: "Prueba todas las funciones Premium sin compromiso" },
-  { icon: "🔄", title: "Cancela cuando quieras", desc: "Sin contratos, sin letra pequeña, sin complicaciones" },
-  { icon: "🛡️", title: "Reembolso 30 días", desc: "Si no te gusta, te devolvemos tu dinero. Garantizado." },
+  {
+    icon: "🏆",
+    title: "Ligas Premium Exclusivas",
+    desc: "Accede a ligas privadas exclusivas solo para usuarios Premium con premios especiales, competiciones paralelas únicas durante el Mundial, y la posibilidad de crear ligas ilimitadas con configuraciones avanzadas. Participa en torneos semanales con recompensas exclusivas y compite contra los mejores jugadores.",
+  },
+  {
+    icon: "📈",
+    title: "Exportar Datos",
+    desc: "Descarga todos tus datos, estadísticas y predicciones en formato CSV o Excel para analizarlos fuera de la plataforma. Crea tus propios modelos de análisis, compara tu rendimiento y lleva un seguimiento detallado de tu progreso durante todo el Mundial con reportes completos exportables.",
+  },
+  {
+    icon: "🚀",
+    title: "Acceso Anticipado",
+    desc: "Sé el primero en probar todas las nuevas funciones que lanzamos. Accede a betas exclusivas, funciones experimentales y herramientas en desarrollo antes que nadie. Tu feedback como usuario Premium será prioritario para el desarrollo de nuevas características.",
+  },
+  {
+    icon: "🎧",
+    title: "Soporte Prioritario",
+    desc: "Obtén atención inmediata con nuestro equipo de soporte dedicado. Respuestas garantizadas en menos de 24 horas, chat en vivo disponible, y un canal directo para sugerencias y reporte de problemas. Como usuario Premium, tu experiencia es nuestra máxima prioridad.",
+  },
 ];
 
 export default function PremiumPage() {
@@ -106,7 +120,7 @@ export default function PremiumPage() {
                   fontSize: 14,
                 }}
               >
-                <span style={{ color: row.highlight ? "#fff" : DIM, fontWeight: row.highlight ? 600 : 400 }}>
+                <span style={{ color: "#fff", fontWeight: row.highlight ? 600 : 400 }}>
                   {row.feature}
                 </span>
                 <span style={{ textAlign: "center", color: row.free === "✅" ? GOLD : row.free === "❌" ? DARK : DIM }}>
@@ -133,80 +147,65 @@ export default function PremiumPage() {
             </p>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 24, justifyContent: "center" }}>
-            {PRICING_PLANS.map((plan, i) => (
-              <div
-                key={i}
+          <div style={{ maxWidth: 420, margin: "0 auto" }}>
+            <div
+              style={{
+                padding: 48,
+                borderRadius: 24,
+                background: BG2,
+                border: `2px solid ${GOLD}`,
+                position: "relative",
+                textAlign: "center",
+              }}
+            >
+              <div style={{
+                position: "absolute",
+                top: -15,
+                left: "50%",
+                transform: "translateX(-50%)",
+                padding: "8px 24px",
+                borderRadius: 20,
+                background: GOLD,
+                color: BG,
+                fontSize: 13,
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: 1,
+              }}>
+                PRECIO ÚNICO
+              </div>
+
+              <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 20, color: GOLD }}>
+                {PRICING_PLAN.name}
+              </h3>
+              
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 16 }}>
+                <span style={{ fontSize: 56, fontWeight: 800 }}>{PRICING_PLAN.price}</span>
+                <span style={{ fontSize: 16, color: MID }}>{PRICING_PLAN.period}</span>
+              </div>
+
+              <p style={{ color: MID, fontSize: 15, marginBottom: 32, lineHeight: 1.6 }}>
+                {PRICING_PLAN.description}
+              </p>
+
+              <Link
+                href="/registro"
                 style={{
-                  padding: 36,
-                  borderRadius: 24,
-                  background: plan.popular ? BG2 : BG,
-                  border: `2px solid ${plan.popular ? GOLD : "rgba(255,255,255,0.1)"}`,
-                  position: "relative",
-                  transform: plan.popular ? "scale(1.02)" : "none",
+                  display: "block",
+                  width: "100%",
+                  padding: "16px 0",
+                  borderRadius: 12,
+                  background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
+                  color: BG,
+                  fontWeight: 800,
+                  fontSize: 16,
+                  textAlign: "center",
+                  textDecoration: "none",
                 }}
               >
-                {plan.popular && (
-                  <div style={{
-                    position: "absolute",
-                    top: -12,
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    padding: "6px 16px",
-                    borderRadius: 20,
-                    background: GOLD,
-                    color: BG,
-                    fontSize: 12,
-                    fontWeight: 700,
-                  }}>
-                    MÁS POPULAR
-                  </div>
-                )}
-
-                <div style={{ textAlign: "center", marginBottom: 24 }}>
-                  <h3 style={{ fontSize: 18, fontWeight: 700, marginBottom: 12, color: plan.popular ? GOLD : "#fff" }}>
-                    {plan.name}
-                  </h3>
-                  <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 4 }}>
-                    <span style={{ fontSize: 42, fontWeight: 800 }}>{plan.price}</span>
-                    <span style={{ fontSize: 14, color: DIM }}>{plan.period}</span>
-                  </div>
-                  {plan.save && (
-                    <div style={{
-                      marginTop: 8,
-                      padding: "4px 12px",
-                      borderRadius: 12,
-                      background: plan.save === "Mejor valor" ? "rgba(201,168,76,0.2)" : "rgba(255,255,255,0.1)",
-                      color: plan.save === "Mejor valor" ? GOLD : "#fff",
-                      fontSize: 12,
-                      fontWeight: 700,
-                      display: "inline-block",
-                    }}>
-                      {plan.save}
-                    </div>
-                  )}
-                </div>
-
-                <Link
-                  href="/registro"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "14px 0",
-                    borderRadius: 12,
-                    background: plan.popular ? `linear-gradient(135deg,${GOLD},${GOLD2})` : "transparent",
-                    border: `2px solid ${plan.popular ? GOLD : "rgba(255,255,255,0.1)"}`,
-                    color: plan.popular ? BG : "#fff",
-                    fontWeight: 700,
-                    fontSize: 15,
-                    textAlign: "center",
-                    textDecoration: "none",
-                  }}
-                >
-                  Elegir plan
-                </Link>
-              </div>
-            ))}
+                Obtener Premium →
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -244,86 +243,6 @@ export default function PremiumPage() {
         </div>
       </section>
 
-      {/* Guarantee */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              🛡️ <span style={{ color: GOLD }}>Garantía</span>
-            </h2>
-            <p style={{ color: MID, marginTop: 12 }}>Sin compromiso. Sin letra pequeña.</p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 24 }}>
-            {GUARANTEES.map((item, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 24,
-                  borderRadius: 16,
-                  background: BG2,
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{ fontSize: 36, marginBottom: 12 }}>{item.icon}</div>
-                <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{item.title}</h3>
-                <p style={{ fontSize: 14, color: DIM, lineHeight: 1.5 }}>{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Launch Offer */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center" }}>
-          <div style={{
-            padding: "40px 32px",
-            borderRadius: 24,
-            background: `linear-gradient(135deg, ${BG2}, ${BG3})`,
-            border: `2px solid ${GOLD}`,
-            position: "relative",
-          }}>
-            <div style={{
-              position: "absolute",
-              top: -15,
-              left: "50%",
-              transform: "translateX(-50%)",
-              padding: "8px 20px",
-              borderRadius: 20,
-              background: GOLD,
-              color: BG,
-              fontSize: 13,
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: 1,
-            }}>
-              Oferta Limitada
-            </div>
-
-            <h2 style={{ fontSize: "clamp(22px,4vw,32px)", fontWeight: 800, marginBottom: 16 }}>
-              🔥 Oferta de lanzamiento
-            </h2>
-            <p style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 900, color: GOLD, marginBottom: 8 }}>
-              50% de descuento
-            </p>
-            <p style={{ fontSize: 16, color: MID, marginBottom: 24 }}>
-              Para los primeros 1,000 usuarios Premium
-            </p>
-            <div style={{
-              padding: "12px 24px",
-              borderRadius: 12,
-              background: "rgba(201,168,76,0.15)",
-              display: "inline-block",
-              marginBottom: 8,
-            }}>
-              <span style={{ color: GOLD, fontWeight: 700 }}>Quedan: [XXX] cupos</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* CTA */}
       <section style={{ padding: "80px 20px", textAlign: "center", background: BG3 }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
@@ -355,37 +274,7 @@ export default function PremiumPage() {
         </div>
       </section>
 
-      {/* FAQ */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              Preguntas <span style={{ color: GOLD }}>frecuentes</span>
-            </h2>
-          </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {[
-              { q: "¿Puedo cancelar en cualquier momento?", a: "Sí, puedes cancelar tu suscripción Premium cuando quieras. Seguirás teniendo acceso hasta el final del período pagado." },
-              { q: "¿Qué pasa si bajo de Premium a Gratis?", a: "Conservarás tus datos, pero algunas funciones se limitarán según el plan gratuito." },
-              { q: "¿La prueba gratis requiere tarjeta?", a: "No, los 7 días de prueba son completamente gratuitos y no requieren método de pago." },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 24,
-                  borderRadius: 16,
-                  background: BG2,
-                  border: "1px solid rgba(255,255,255,0.05)",
-                }}
-              >
-                <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{faq.q}</h3>
-                <p style={{ fontSize: 14, color: DIM, lineHeight: 1.6 }}>{faq.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

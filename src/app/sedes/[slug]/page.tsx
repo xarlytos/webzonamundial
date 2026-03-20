@@ -1,10 +1,38 @@
 // src/app/sedes/[slug]/page.tsx
-// ZonaMundial.app — Página dinámica de sede/ciudad
+// ZonaMundial.app — Página dinámica de sede/ciudad (Diseño mejorado)
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getSedeBySlug, getAllSedeSlugs } from '@/data/sedes';
 import Link from 'next/link';
+
+const BG = "#060B14";
+const BG2 = "#0F1D32";
+const BG3 = "#0B1825";
+const GOLD = "#c9a84c";
+const GOLD2 = "#e8d48b";
+const MID = "#8a94b0";
+const DIM = "#6a7a9a";
+
+// Mapeo de imágenes de estadios - Imágenes locales del proyecto
+const STADIUM_IMAGES: Record<string, string> = {
+  'nueva-york': '/img/zonamundial-images/stadiums/metlife-stadium.jpg',
+  'los-angeles': '/img/zonamundial-images/stadiums/sofi-stadium-los-angeles.jpg',
+  'miami': '/img/zonamundial-images/stadiums/hard-rock-stadium-miami.jpg',
+  'dallas': '/img/zonamundial-images/stadiums/att-stadium-dallas.jpg',
+  'san-francisco': '/img/zonamundial-images/stadiums/levis-stadium-san-francisco.jpg',
+  'seattle': '/img/zonamundial-images/stadiums/lumen-field-seattle.jpg',
+  'atlanta': '/img/zonamundial-images/stadiums/mercedes-benz-stadium-atlanta.jpg',
+  'houston': '/img/zonamundial-images/stadiums/nrg-stadium-houston.jpg',
+  'filadelfia': '/img/zonamundial-images/stadiums/lincoln-financial-field-filadelfia.jpg',
+  'boston': '/img/zonamundial-images/stadiums/gillette-stadium-boston.jpg',
+  'kansas-city': '/img/zonamundial-images/stadiums/arrowhead-stadium-kansas-city.jpg',
+  'ciudad-de-mexico': '/img/zonamundial-images/stadiums/estadio-azteca-cdmx.jpg',
+  'guadalajara': '/img/zonamundial-images/stadiums/estadio-akron-guadalajara.jpg',
+  'monterrey': '/img/zonamundial-images/stadiums/estadio-bbva-monterrey.jpg',
+  'toronto': '/img/zonamundial-images/stadiums/bmo-field-toronto.jpg',
+  'vancouver': '/img/zonamundial-images/stadiums/bc-place-vancouver.jpg',
+};
 
 export async function generateStaticParams() {
   return getAllSedeSlugs().map(slug => ({ slug }));
@@ -22,23 +50,44 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: sede.seoDescription,
       url: `https://zonamundial.app/sedes/${sede.slug}`,
       siteName: 'ZonaMundial',
-      images: [{ url: `https://zonamundial.app/api/og/sede?city=${sede.slug}`, width: 1200, height: 630, alt: `${sede.nombre} — Torneo 2026` }],
-    },
-    alternates: {
-      canonical: `https://zonamundial.app/sedes/${sede.slug}`,
-      languages: { 'es': `https://zonamundial.app/sedes/${sede.slug}`, 'es-MX': `https://zonamundial.app/sedes/${sede.slug}`, 'es-AR': `https://zonamundial.app/sedes/${sede.slug}` },
     },
     robots: { index: true, follow: true, 'max-image-preview': 'large' },
   };
+}
+
+// Componente de stat
+function StatCard({ value, label, icon }: { value: string; label: string; icon: string }) {
+  return (
+    <div className="p-4 bg-[#0B1825] rounded-2xl border border-white/5 hover:border-[#c9a84c]/30 transition-all group">
+      <span className="text-2xl mb-2 block">{icon}</span>
+      <p className="text-2xl font-black text-[#c9a84c] group-hover:scale-105 transition-transform">{value}</p>
+      <p className="text-xs text-[#6a7a9a] mt-1">{label}</p>
+    </div>
+  );
+}
+
+// Componente de info card
+function InfoCard({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
+  return (
+    <div className="bg-[#0B1825] rounded-2xl p-6 border border-white/5 hover:border-[#c9a84c]/20 transition-all">
+      <div className="flex items-center gap-3 mb-4">
+        <span className="text-2xl">{icon}</span>
+        <h3 className="text-lg font-bold text-white">{title}</h3>
+      </div>
+      {children}
+    </div>
+  );
 }
 
 export default function SedePage({ params }: { params: { slug: string } }) {
   const sede = getSedeBySlug(params.slug);
   if (!sede) notFound();
   const g = sede.guiaViaje;
+  const imageUrl = STADIUM_IMAGES[sede.slug];
+  const isFinalSede = sede.fasesQueAlberga.includes('FINAL');
 
   return (
-    <>
+    <div style={{ background: BG, minHeight: '100vh' }}>
       {/* Schema.org */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         '@context': 'https://schema.org', '@type': 'Place',
@@ -56,206 +105,307 @@ export default function SedePage({ params }: { params: { slug: string } }) {
         ],
       })}} />
 
-      {/* BREADCRUMBS */}
-      <nav className="text-sm text-gray-400 mb-6">
-        <ol className="flex gap-2">
-          <li><Link href="/" className="hover:text-gold">Inicio</Link></li>
-          <li>/</li>
-          <li><Link href="/sedes" className="hover:text-gold">Sedes</Link></li>
-          <li>/</li>
-          <li className="text-gold">{sede.nombre}</li>
-        </ol>
-      </nav>
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {/* Breadcrumbs */}
+        <nav className="flex items-center gap-2 text-sm text-[#6a7a9a] mb-6">
+          <Link href="/" className="hover:text-[#c9a84c] transition-colors">Inicio</Link>
+          <span>/</span>
+          <Link href="/sedes" className="hover:text-[#c9a84c] transition-colors">Sedes</Link>
+          <span>/</span>
+          <span className="text-[#c9a84c]">{sede.nombre}</span>
+        </nav>
 
-      {/* HERO */}
-      <header className="mb-10">
-        <div className="flex items-start gap-4 mb-4">
-          <span className="text-6xl">{sede.paisEmoji}</span>
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white">{sede.nombre}</h1>
-            <p className="text-xl text-gold mt-1">{sede.estadio} · {sede.capacidad.toLocaleString()} localidades · {sede.pais}</p>
-            {sede.techoCerrado && (
-              <span className="inline-block mt-2 px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-sm font-semibold">🏟️ Techo retráctil</span>
-            )}
-          </div>
-        </div>
-
-        {/* Stats rápidas */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-6">
-          <div className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg">
-            <p className="text-2xl font-bold text-gold">{sede.totalPartidos}</p>
-            <p className="text-gray-400 text-sm">Partidos</p>
-          </div>
-          <div className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg">
-            <p className="text-2xl font-bold text-white">{sede.capacidad.toLocaleString()}</p>
-            <p className="text-gray-400 text-sm">Capacidad</p>
-          </div>
-          <div className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg">
-            <p className="text-2xl font-bold text-white">{sede.utcOffset}</p>
-            <p className="text-gray-400 text-sm">Zona horaria</p>
-          </div>
-          <div className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg">
-            <p className="text-2xl font-bold text-white">{sede.altitudMetros}m</p>
-            <p className="text-gray-400 text-sm">Altitud</p>
-          </div>
-          <div className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg">
-            <p className="text-2xl font-bold text-white">{sede.clima.tempMedia}</p>
-            <p className="text-gray-400 text-sm">Temp. media verano</p>
-          </div>
-        </div>
-      </header>
-
-      {/* SPONSOR SLOT */}
-      <div className="w-full h-[90px] bg-[#0B1825] border border-[#1a2a3f] rounded-lg flex items-center justify-center mb-8" data-sponsor-slot="sede-banner" data-city={sede.slug}>
-        <span className="text-gray-600 text-sm">Espacio patrocinador</span>
-      </div>
-
-      {/* CONTENIDO EDITORIAL */}
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-4">{sede.nombre} en el Torneo 2026</h2>
-        <p className="text-gray-300 leading-relaxed text-lg">{sede.historia}</p>
-        <div className="mt-4 p-4 bg-gold/10 border-l-4 border-gold rounded-r-lg">
-          <p className="text-gold font-semibold">💡 {sede.datosClave}</p>
-        </div>
-      </section>
-
-      {/* PARTIDOS EN ESTA SEDE */}
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-4">Partidos en {sede.nombre}</h2>
-        <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-4">
-          <div className="flex flex-wrap gap-2 mb-4">
-            {sede.fasesQueAlberga.map(fase => (
-              <span key={fase} className={`px-3 py-1 rounded-full text-sm font-medium ${
-                fase.includes('FINAL') || fase.includes('SEMI') ? 'bg-gold/20 text-gold' : 'bg-[#0F1D32] text-gray-300'
-              }`}>{fase}</span>
-            ))}
-          </div>
-          <p className="text-gray-400 mb-3">Grupos asignados: {sede.gruposAsignados.map(g => `Grupo ${g}`).join(', ')}</p>
-          <div className="space-y-2">
-            {sede.partidosDestacados.map(p => (
-              <div key={p} className="flex items-center gap-2 p-2 bg-[#0F1D32] rounded">
-                <span className="text-gold">⚽</span>
-                <span className="text-gray-300">{p}</span>
+        {/* Hero Section con imagen */}
+        <section className="relative mb-12 rounded-3xl overflow-hidden">
+          {/* Imagen de fondo */}
+          <div className="relative h-[400px] md:h-[500px]">
+            {imageUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={imageUrl}
+                alt={sede.estadio}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-[#0F1D32] to-[#1a2a3f] flex items-center justify-center">
+                <span className="text-8xl">🏟️</span>
               </div>
-            ))}
+            )}
+            {/* Overlay gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/60 to-transparent" />
+            
+            {/* Contenido del hero */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+              <div className="flex flex-wrap items-center gap-3 mb-4">
+                <img 
+                  src={`https://flagcdn.com/w80/${sede.paisCodigo.toLowerCase()}.png`}
+                  alt={sede.pais}
+                  className="w-10 h-7 object-cover rounded shadow-lg"
+                />
+                {isFinalSede && (
+                  <span className="px-4 py-1.5 bg-[#c9a84c] text-[#060B14] text-sm font-black rounded-full">
+                    🏆 FINAL DEL MUNDIAL
+                  </span>
+                )}
+                {sede.techoCerrado && (
+                  <span className="px-3 py-1.5 bg-blue-500/20 text-blue-400 text-sm font-bold rounded-full border border-blue-500/30">
+                    🏠 TECHO
+                  </span>
+                )}
+              </div>
+              
+              <h1 className="text-4xl md:text-6xl font-black text-white mb-2">
+                {sede.nombre}
+              </h1>
+              <p className="text-xl md:text-2xl text-[#c9a84c] font-semibold">
+                {sede.estadio}
+              </p>
+            </div>
           </div>
+        </section>
+
+        {/* Stats Grid */}
+        <section className="mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            <StatCard 
+              value={sede.capacidad.toLocaleString()} 
+              label="Capacidad" 
+              icon="👥" 
+            />
+            <StatCard 
+              value={sede.totalPartidos.toString()} 
+              label="Partidos" 
+              icon="⚽" 
+            />
+            <StatCard 
+              value={sede.clima.tempMedia} 
+              label="Temperatura" 
+              icon="🌡️" 
+            />
+            <StatCard 
+              value={`${sede.altitudMetros}m`} 
+              label="Altitud" 
+              icon="⛰️" 
+            />
+            <StatCard 
+              value={sede.zonaHoraria} 
+              label="Zona horaria" 
+              icon="🕐" 
+            />
+            <StatCard 
+              value={sede.transporte.codigoIATA} 
+              label="Aeropuerto" 
+              icon="✈️" 
+            />
+          </div>
+        </section>
+
+        {/* Sponsor */}
+        <div className="w-full h-[90px] bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center mb-12" data-sponsor-slot="sede-banner">
+          <span className="text-[#4a5570] text-sm">Espacio patrocinador</span>
         </div>
-      </section>
 
-      {/* GUÍA DE VIAJE */}
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-4">🧳 Guía de Viaje — {sede.nombre}</h2>
-        
-        <div className="grid md:grid-cols-2 gap-4">
-          {/* Cómo llegar */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">✈️ Cómo llegar</h3>
-            <div className="space-y-2 text-gray-300 text-sm">
-              <p><span className="text-white font-medium">Aeropuerto:</span> {sede.transporte.aeropuerto} ({sede.transporte.codigoIATA})</p>
-              <p><span className="text-white font-medium">Al estadio:</span> {sede.transporte.distanciaEstadio}</p>
-              <p><span className="text-white font-medium">Transporte público:</span> {sede.transporte.metroTren}</p>
-            </div>
-          </div>
+        {/* Contenido principal */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+          {/* Columna principal */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Historia */}
+            <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+                  <span className="text-2xl">📖</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white">Historia del estadio</h2>
+              </div>
+              <p className="text-[#8a94b0] leading-relaxed text-lg mb-6">
+                {sede.historia}
+              </p>
+              <div className="p-4 bg-[#c9a84c]/10 border-l-4 border-[#c9a84c] rounded-r-xl">
+                <p className="text-[#c9a84c] font-semibold flex items-center gap-2">
+                  <span>💡</span> {sede.datosClave}
+                </p>
+              </div>
+            </section>
 
-          {/* Visa y dinero */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">🛂 Visa y Dinero</h3>
-            <div className="space-y-2 text-gray-300 text-sm">
-              <p><span className="text-white font-medium">Visa:</span> {g.visa}</p>
-              <p><span className="text-white font-medium">Idioma:</span> {g.idioma}</p>
-              <p><span className="text-white font-medium">Moneda:</span> {g.moneda}</p>
-            </div>
-          </div>
-
-          {/* Alojamiento */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">🏨 Alojamiento</h3>
-            <div className="space-y-2 text-gray-300 text-sm">
-              <p><span className="text-white font-medium">Precio:</span> {g.costoAlojamiento}</p>
-              <p><span className="text-white font-medium">Zonas recomendadas:</span></p>
-              <div className="flex flex-wrap gap-1 mt-1">
-                {g.zonasRecomendadas.map(z => (
-                  <span key={z} className="px-2 py-0.5 bg-[#0F1D32] rounded text-xs">{z}</span>
+            {/* Partidos */}
+            <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+                  <span className="text-2xl">⚽</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white">Partidos en esta sede</h2>
+              </div>
+              
+              {/* Fases */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                {sede.fasesQueAlberga.map(fase => (
+                  <span 
+                    key={fase} 
+                    className={`px-4 py-2 rounded-xl text-sm font-bold ${
+                      fase.includes('FINAL') || fase.includes('SEMI') 
+                        ? 'bg-[#c9a84c]/20 text-[#c9a84c] border border-[#c9a84c]/30' 
+                        : 'bg-[#060B14] text-[#8a94b0] border border-white/5'
+                    }`}
+                  >
+                    {fase}
+                  </span>
                 ))}
               </div>
+
+              {/* Grupos */}
+              <div className="mb-6">
+                <p className="text-sm text-[#6a7a9a] mb-3">Grupos asignados:</p>
+                <div className="flex flex-wrap gap-2">
+                  {sede.gruposAsignados.map(g => (
+                    <Link
+                      key={g}
+                      href={`/grupos/grupo-${g.toLowerCase()}`}
+                      className="px-4 py-2 bg-[#060B14] rounded-xl text-white font-bold hover:bg-[#c9a84c]/20 hover:text-[#c9a84c] transition-all border border-white/5"
+                    >
+                      Grupo {g}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Partidos destacados */}
+              {sede.partidosDestacados.length > 0 && (
+                <div>
+                  <p className="text-sm text-[#6a7a9a] mb-3">Partidos destacados:</p>
+                  <div className="space-y-2">
+                    {sede.partidosDestacados.map((p, i) => (
+                      <div key={i} className="flex items-center gap-3 p-3 bg-[#060B14] rounded-xl border border-white/5">
+                        <span className="text-[#c9a84c]">⭐</span>
+                        <span className="text-white">{p}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </section>
+
+            {/* Datos técnicos */}
+            <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+                  <span className="text-2xl">🏟️</span>
+                </div>
+                <h2 className="text-2xl font-bold text-white">Datos técnicos</h2>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {[
+                  ['Estadio', sede.estadio],
+                  ['Ciudad', sede.ciudad],
+                  ['País', `${sede.paisEmoji} ${sede.pais}`],
+                  ['Capacidad', `${sede.capacidad.toLocaleString()} espectadores`],
+                  ['Altitud', `${sede.altitudMetros}m sobre el nivel del mar`],
+                  ['Techo', sede.techoCerrado ? 'Retráctil / Cerrado' : 'Abierto'],
+                  ['Zona horaria', `${sede.zonaHoraria} (${sede.utcOffset})`],
+                  ['Total partidos', `${sede.totalPartidos} partidos`],
+                ].map(([label, value]) => (
+                  <div key={label} className="flex justify-between p-4 bg-[#060B14] rounded-xl">
+                    <span className="text-[#6a7a9a]">{label}</span>
+                    <span className="text-white font-semibold">{value}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Guía de viaje */}
+            <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 border border-white/5">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="text-2xl">🧳</span>
+                <h3 className="text-xl font-bold text-white">Guía de viaje</h3>
+              </div>
+
+              <div className="space-y-4">
+                <InfoCard title="Cómo llegar" icon="✈️">
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Aeropuerto:</strong> {sede.transporte.aeropuerto}</p>
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Código:</strong> {sede.transporte.codigoIATA}</p>
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Al estadio:</strong> {sede.transporte.distanciaEstadio}</p>
+                  <p className="text-[#8a94b0] text-sm"><strong className="text-white">Transporte:</strong> {sede.transporte.metroTren}</p>
+                </InfoCard>
+
+                <InfoCard title="Visa y Dinero" icon="🛂">
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Visa:</strong> {g.visa}</p>
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Idioma:</strong> {g.idioma}</p>
+                  <p className="text-[#8a94b0] text-sm"><strong className="text-white">Moneda:</strong> {g.moneda}</p>
+                </InfoCard>
+
+                <InfoCard title="Alojamiento" icon="🏨">
+                  <p className="text-[#8a94b0] text-sm mb-3">{g.costoAlojamiento}</p>
+                  <p className="text-white text-sm font-semibold mb-2">Zonas recomendadas:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {g.zonasRecomendadas.map(z => (
+                      <span key={z} className="px-3 py-1 bg-[#060B14] rounded-lg text-xs text-[#8a94b0]">{z}</span>
+                    ))}
+                  </div>
+                </InfoCard>
+
+                <InfoCard title="Clima" icon="🌡️">
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Junio:</strong> {sede.clima.junio}</p>
+                  <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">Julio:</strong> {sede.clima.julio}</p>
+                  <p className="text-[#8a94b0] text-sm"><strong className="text-white">Lluvia:</strong> {sede.clima.lluvia}</p>
+                </InfoCard>
+
+                <InfoCard title="Gastronomía" icon="🍽️">
+                  <p className="text-[#8a94b0] text-sm">{g.gastronomia}</p>
+                </InfoCard>
+
+                <InfoCard title="Seguridad" icon="🔒">
+                  <p className="text-[#8a94b0] text-sm mb-2">{g.seguridadNota}</p>
+                  {g.fanZone && (
+                    <p className="text-[#8a94b0] text-sm"><strong className="text-white">Fan Zone:</strong> {g.fanZone}</p>
+                  )}
+                </InfoCard>
+              </div>
+            </div>
+
+            {/* CTA */}
+            <div className="bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 rounded-2xl p-6 border border-[#c9a84c]/20">
+              <h3 className="font-bold text-white mb-2">¿Vas a {sede.nombre}?</h3>
+              <p className="text-sm text-[#8a94b0] mb-4">Predice los resultados de los partidos aquí.</p>
+              <Link 
+                href="/registro" 
+                className="block w-full py-3 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl text-center hover:shadow-lg transition-all"
+              >
+                Regístrate Gratis
+              </Link>
             </div>
           </div>
+        </div>
 
-          {/* Clima */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">🌡️ Clima</h3>
-            <div className="space-y-2 text-gray-300 text-sm">
-              <p><span className="text-white font-medium">Junio:</span> {sede.clima.junio}</p>
-              <p><span className="text-white font-medium">Julio:</span> {sede.clima.julio}</p>
-              <p><span className="text-white font-medium">Lluvia:</span> {sede.clima.lluvia}</p>
-            </div>
+        {/* Enlaces relacionados */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Explora más</h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { href: '/sedes', icon: '🏟️', label: 'Todas las sedes' },
+              { href: '/calendario', icon: '📅', label: 'Calendario' },
+              { href: '/selecciones', icon: '⚽', label: 'Selecciones' },
+              { href: '/grupos', icon: '📊', label: 'Grupos' },
+            ].map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="flex items-center gap-3 p-4 bg-[#0B1825] rounded-xl border border-white/5 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] transition-all group"
+              >
+                <span className="text-xl group-hover:scale-110 transition-transform">{link.icon}</span>
+                <span className="font-medium">{link.label}</span>
+              </Link>
+            ))}
           </div>
+        </section>
 
-          {/* Gastronomía */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">🍽️ Gastronomía</h3>
-            <p className="text-gray-300 text-sm">{g.gastronomia}</p>
-          </div>
-
-          {/* Seguridad */}
-          <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg p-5">
-            <h3 className="text-lg font-bold text-gold mb-3">🔒 Seguridad</h3>
-            <p className="text-gray-300 text-sm">{g.seguridadNota}</p>
-            {g.fanZone && <p className="text-gray-300 text-sm mt-2"><span className="text-white font-medium">Fan Zone:</span> {g.fanZone}</p>}
-          </div>
+        {/* Sponsor footer */}
+        <div className="w-full h-[90px] bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center" data-sponsor-slot="sede-footer">
+          <span className="text-[#4a5570] text-sm">Espacio patrocinador</span>
         </div>
-      </section>
-
-      {/* DATOS TÉCNICOS ESTADIO */}
-      <section className="mb-10">
-        <h2 className="text-2xl font-bold text-white mb-4">🏟️ Datos del Estadio</h2>
-        <div className="bg-[#0B1825] border border-[#1a2a3f] rounded-lg overflow-hidden">
-          {[
-            ['Nombre oficial (torneo)', sede.estadio],
-            ['Ciudad', sede.ciudad],
-            ['País', `${sede.paisEmoji} ${sede.pais}`],
-            ['Capacidad', `${sede.capacidad.toLocaleString()} espectadores`],
-            ['Altitud', `${sede.altitudMetros} metros sobre el nivel del mar`],
-            ['Techo', sede.techoCerrado ? 'Retráctil / cerrado (clima controlado)' : 'Abierto'],
-            ['Zona horaria', `${sede.zonaHoraria} (${sede.utcOffset})`],
-            ['Región del torneo', sede.region],
-            ['Total partidos', `${sede.totalPartidos} partidos`],
-          ].map(([label, value], i) => (
-            <div key={label} className={`flex justify-between p-3 ${i % 2 === 0 ? 'bg-[#0F1D32]/50' : ''}`}>
-              <span className="text-gray-400">{label}</span>
-              <span className="text-white font-medium">{value}</span>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="mb-10 p-6 bg-gradient-to-r from-gold/10 to-transparent border border-gold/30 rounded-lg">
-        <h2 className="text-xl font-bold text-white mb-2">¿Vas a seguir los partidos desde {sede.nombre}?</h2>
-        <p className="text-gray-400 mb-4">Regístrate en ZonaMundial y predice los resultados de los partidos que se juegan aquí.</p>
-        <div className="flex gap-3">
-          <Link href="/registro" className="px-6 py-3 bg-gold text-[#060B14] font-bold rounded-lg hover:bg-gold/90 transition-colors">Regístrate Gratis</Link>
-          <Link href="/calendario" className="px-6 py-3 border border-gold/50 text-gold font-bold rounded-lg hover:bg-gold/10 transition-colors">Ver Calendario</Link>
-        </div>
-      </section>
-
-      {/* INTERNAL LINKS */}
-      <section className="mb-10">
-        <h2 className="text-xl font-bold text-white mb-4">Explora más</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-          <Link href="/sedes" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">🏟️ Las 16 sedes</Link>
-          <Link href="/calendario" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">📅 Calendario completo</Link>
-          <Link href="/selecciones" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">📋 48 selecciones</Link>
-          <Link href="/guia/boletos" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">🎫 Guía de boletos</Link>
-          <Link href="/guia/moverse-entre-sedes" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">🚆 Moverse entre sedes</Link>
-          <Link href="/datos/formato-2026" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-gold hover:text-gold transition-all text-sm">📐 Formato 48 equipos</Link>
-        </div>
-      </section>
-
-      {/* SPONSOR FOOTER */}
-      <div className="w-full h-[90px] bg-[#0B1825] border border-[#1a2a3f] rounded-lg flex items-center justify-center" data-sponsor-slot="sede-footer" data-city={sede.slug}>
-        <span className="text-gray-600 text-sm">Espacio patrocinador</span>
       </div>
-    </>
+    </div>
   );
 }

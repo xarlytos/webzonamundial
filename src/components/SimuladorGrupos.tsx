@@ -3,7 +3,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 
 interface Match {
   id: string;
@@ -24,32 +23,93 @@ interface TeamStanding {
   ga: number;
   gd: number;
   points: number;
+  flagCode: string;
 }
 
-const GROUPS: Record<string, string[]> = {
-  'A': ['México', 'Corea del Sur', 'Sudáfrica', 'UEFA D'],
-  'B': ['Canadá', 'Suiza', 'Catar', 'UEFA A'],
-  'C': ['Brasil', 'Marruecos', 'Escocia', 'Haití'],
-  'D': ['EE.UU.', 'Paraguay', 'Australia', 'AFC-CONMEBOL'],
-  'E': ['Alemania', 'Costa de Marfil', 'Ecuador', 'Curazao'],
-  'F': ['Países Bajos', 'Japón', 'Túnez', 'UEFA F'],
-  'G': ['Bélgica', 'Egipto', 'Irán', 'Nueva Zelanda'],
-  'H': ['España', 'Uruguay', 'Arabia Saudita', 'Cabo Verde'],
-  'I': ['Francia', 'Senegal', 'Noruega', 'AFC-CONCACAF'],
-  'J': ['Argentina', 'Argelia', 'Austria', 'Jordania'],
-  'K': ['Portugal', 'Colombia', 'Uzbekistán', 'AFC-UEFA'],
-  'L': ['Inglaterra', 'Croacia', 'Ghana', 'Panamá'],
+const GROUPS: Record<string, Array<{name: string; flagCode: string}>> = {
+  'A': [
+    { name: 'México', flagCode: 'mx' },
+    { name: 'Corea del Sur', flagCode: 'kr' },
+    { name: 'Sudáfrica', flagCode: 'za' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'B': [
+    { name: 'Canadá', flagCode: 'ca' },
+    { name: 'Suiza', flagCode: 'ch' },
+    { name: 'Qatar', flagCode: 'qa' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'C': [
+    { name: 'Brasil', flagCode: 'br' },
+    { name: 'Marruecos', flagCode: 'ma' },
+    { name: 'Escocia', flagCode: 'gb-sct' },
+    { name: 'Haití', flagCode: 'ht' }
+  ],
+  'D': [
+    { name: 'EE.UU.', flagCode: 'us' },
+    { name: 'Paraguay', flagCode: 'py' },
+    { name: 'Australia', flagCode: 'au' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'E': [
+    { name: 'Alemania', flagCode: 'de' },
+    { name: 'Costa de Marfil', flagCode: 'ci' },
+    { name: 'Ecuador', flagCode: 'ec' },
+    { name: 'Curazao', flagCode: 'cw' }
+  ],
+  'F': [
+    { name: 'Países Bajos', flagCode: 'nl' },
+    { name: 'Japón', flagCode: 'jp' },
+    { name: 'Túnez', flagCode: 'tn' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'G': [
+    { name: 'Bélgica', flagCode: 'be' },
+    { name: 'Egipto', flagCode: 'eg' },
+    { name: 'Irán', flagCode: 'ir' },
+    { name: 'Nueva Zelanda', flagCode: 'nz' }
+  ],
+  'H': [
+    { name: 'España', flagCode: 'es' },
+    { name: 'Uruguay', flagCode: 'uy' },
+    { name: 'Arabia Saudita', flagCode: 'sa' },
+    { name: 'Cabo Verde', flagCode: 'cv' }
+  ],
+  'I': [
+    { name: 'Francia', flagCode: 'fr' },
+    { name: 'Senegal', flagCode: 'sn' },
+    { name: 'Noruega', flagCode: 'no' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'J': [
+    { name: 'Argentina', flagCode: 'ar' },
+    { name: 'Argelia', flagCode: 'dz' },
+    { name: 'Austria', flagCode: 'at' },
+    { name: 'Jordania', flagCode: 'jo' }
+  ],
+  'K': [
+    { name: 'Portugal', flagCode: 'pt' },
+    { name: 'Colombia', flagCode: 'co' },
+    { name: 'Uzbekistán', flagCode: 'uz' },
+    { name: 'Por definir', flagCode: 'xx' }
+  ],
+  'L': [
+    { name: 'Inglaterra', flagCode: 'gb-eng' },
+    { name: 'Croacia', flagCode: 'hr' },
+    { name: 'Ghana', flagCode: 'gh' },
+    { name: 'Panamá', flagCode: 'pa' }
+  ],
 };
 
-function generateMatches(teams: string[]): Match[] {
+function generateMatches(teams: Array<{name: string; flagCode: string}>): Match[] {
   const matches: Match[] = [];
   let id = 1;
   for (let i = 0; i < teams.length; i++) {
     for (let j = i + 1; j < teams.length; j++) {
       matches.push({
         id: `m${id++}`,
-        home: teams[i],
-        away: teams[j],
+        home: teams[i].name,
+        away: teams[j].name,
         homeScore: null,
         awayScore: null,
         played: false,
@@ -59,12 +119,13 @@ function generateMatches(teams: string[]): Match[] {
   return matches;
 }
 
-function calculateStandings(teams: string[], matches: Match[]): TeamStanding[] {
+function calculateStandings(teams: Array<{name: string; flagCode: string}>, matches: Match[]): TeamStanding[] {
   const standings: Record<string, TeamStanding> = {};
   
   teams.forEach(team => {
-    standings[team] = {
-      name: team,
+    standings[team.name] = {
+      name: team.name,
+      flagCode: team.flagCode,
       played: 0,
       won: 0,
       drawn: 0,
@@ -113,6 +174,12 @@ function calculateStandings(teams: string[], matches: Match[]): TeamStanding[] {
     if (b.gd !== a.gd) return b.gd - a.gd;
     return b.gf - a.gf;
   });
+}
+
+function getFlagCode(teamName: string, group: string): string {
+  const teams = GROUPS[group] || [];
+  const team = teams.find(t => t.name === teamName);
+  return team?.flagCode || 'xx';
 }
 
 export default function SimuladorGrupos({ initialGroup }: { initialGroup: string }) {
@@ -177,8 +244,13 @@ export default function SimuladorGrupos({ initialGroup }: { initialGroup: string
               >
                 <span className="text-xs text-gray-500 w-6">J{Math.floor(idx / 2) + 1}</span>
                 
-                <div className="flex-1 text-right">
+                <div className="flex-1 flex items-center justify-end gap-2">
                   <span className="text-sm text-white font-medium">{match.home}</span>
+                  <img 
+                    src={`https://flagcdn.com/w20/${getFlagCode(match.home, initialGroup)}.png`}
+                    alt={match.home}
+                    className="w-5 h-3.5 object-cover rounded"
+                  />
                 </div>
                 
                 <div className="flex items-center gap-2">
@@ -203,7 +275,12 @@ export default function SimuladorGrupos({ initialGroup }: { initialGroup: string
                   />
                 </div>
                 
-                <div className="flex-1">
+                <div className="flex-1 flex items-center gap-2">
+                  <img 
+                    src={`https://flagcdn.com/w20/${getFlagCode(match.away, initialGroup)}.png`}
+                    alt={match.away}
+                    className="w-5 h-3.5 object-cover rounded"
+                  />
                   <span className="text-sm text-white font-medium">{match.away}</span>
                 </div>
               </div>
@@ -253,7 +330,14 @@ export default function SimuladorGrupos({ initialGroup }: { initialGroup: string
                       </span>
                     </td>
                     <td className="py-3 px-2">
-                      <span className="text-white font-medium">{team.name}</span>
+                      <div className="flex items-center gap-2">
+                        <img 
+                          src={`https://flagcdn.com/w20/${team.flagCode}.png`}
+                          alt={team.name}
+                          className="w-5 h-3.5 object-cover rounded"
+                        />
+                        <span className="text-white font-medium">{team.name}</span>
+                      </div>
                     </td>
                     <td className="text-center py-3 px-2 text-gray-400">{team.played}</td>
                     <td className="text-center py-3 px-2 text-gray-400">{team.won}</td>
