@@ -862,9 +862,9 @@ export default function CalendarioPage(){
             <span style={{color:GOLD,fontSize:14,fontWeight:600}}>Calendario</span>
           </div>
 
-          <div style={{display:"flex",flexDirection:"column",gap:40,alignItems:"flex-start"}}>
+          <div style={{display:"flex",flexDirection:"column",gap:32,alignItems:"center",textAlign:"center"}}>
             {/* Título y descripción */}
-            <div style={{flex:1}}>
+            <div style={{maxWidth:700}}>
               <span style={{
                 fontSize:12,
                 fontWeight:800,
@@ -874,7 +874,8 @@ export default function CalendarioPage(){
                 background:"rgba(201,168,76,0.1)",
                 padding:"6px 14px",
                 borderRadius:8,
-                border:"1px solid rgba(201,168,76,0.2)"
+                border:"1px solid rgba(201,168,76,0.2)",
+                display:"inline-block"
               }}>
                 Mundial 2026
               </span>
@@ -892,12 +893,12 @@ export default function CalendarioPage(){
                 Calendario
               </h1>
               
-              <p style={{color:MID,fontSize:18,maxWidth:500,lineHeight:1.6,marginBottom:24}}>
+              <p style={{color:MID,fontSize:18,maxWidth:600,lineHeight:1.6,marginBottom:24,marginLeft:"auto",marginRight:"auto"}}>
                 Todos los partidos del Mundial 2026. Desde la inauguración hasta la gran final en Nueva York.
               </p>
 
               {/* Stats */}
-              <div style={{display:"flex",gap:16,flexWrap:"wrap"}}>
+              <div style={{display:"flex",gap:16,flexWrap:"wrap",justifyContent:"center"}}>
                 <div style={{
                   padding:"16px 24px",
                   background:BG2,
@@ -925,43 +926,6 @@ export default function CalendarioPage(){
                   <p style={{fontSize:28,fontWeight:900,color:"#fff"}}>39</p>
                   <p style={{fontSize:13,color:DIM}}>Días</p>
                 </div>
-              </div>
-            </div>
-
-            {/* Cuenta regresiva */}
-            <div style={{
-              padding:32,
-              background:"linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05))",
-              borderRadius:24,
-              border:"2px solid rgba(201,168,76,0.2)",
-              boxShadow:"0 0 40px rgba(201,168,76,0.1)",
-              minWidth:280
-            }}>
-              <p style={{fontSize:13,color:GOLD,fontWeight:700,marginBottom:16,textTransform:"uppercase",letterSpacing:2}}>Faltan</p>
-              <div style={{display:"flex",gap:12,justifyContent:"center"}}>
-                {[
-                  {v:countdown.d,l:"Días"},
-                  {v:countdown.h,l:"Horas"},
-                  {v:countdown.m,l:"Min"},
-                  {v:countdown.s,l:"Seg"}
-                ].map((item,i)=> (
-                  <div key={i} style={{textAlign:"center"}}>
-                    <div style={{
-                      width:60,
-                      height:60,
-                      background:BG,
-                      borderRadius:12,
-                      display:"flex",
-                      alignItems:"center",
-                      justifyContent:"center",
-                      marginBottom:8,
-                      border:"1px solid rgba(201,168,76,0.2)"
-                    }}>
-                      <span style={{fontSize:24,fontWeight:900,color:"#fff"}}>{String(item.v).padStart(2,'0')}</span>
-                    </div>
-                    <span style={{fontSize:11,color:DIM}}>{item.l}</span>
-                  </div>
-                ))}
               </div>
             </div>
           </div>
