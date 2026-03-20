@@ -5,6 +5,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { FeatureIcon } from "@/components/FeatureIcon";
 
 const IMGS = {
   c_elopi23: "/img/zonamundial-images/creators/elopi23.jpg",
@@ -183,7 +184,9 @@ export default function HomePage(){
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {MODULES.map((m,i)=>[
               <div key={i} className="p-5 rounded-xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all group">
-                <span className="text-3xl mb-3 block">{m.icon}</span>
+                <div className="mb-3">
+                  <FeatureIcon title={m.title} size={40} />
+                </div>
                 <h3 className="text-base font-bold text-white mb-1">{m.title}</h3>
                 <p className="text-sm text-gray-400">{m.desc}</p>
               </div>
