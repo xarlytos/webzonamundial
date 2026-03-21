@@ -173,7 +173,7 @@ export default function HomePage(){
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C9A84C]/20 to-[#C9A84C]/5 flex items-center justify-center border border-[#C9A84C]/20">
-              <span className="text-2xl">🎮</span>
+              <FeatureIcon title="Todo lo que necesitas" size={32} />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white">Todo lo que necesitas</h2>
@@ -185,7 +185,7 @@ export default function HomePage(){
             {MODULES.map((m,i)=>[
               <div key={i} className="p-5 rounded-xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all group">
                 <div className="mb-3">
-                  <FeatureIcon title={m.title} size={40} />
+                  <FeatureIcon title={m.title} size={56} />
                 </div>
                 <h3 className="text-base font-bold text-white mb-1">{m.title}</h3>
                 <p className="text-sm text-gray-400">{m.desc}</p>
@@ -227,7 +227,7 @@ export default function HomePage(){
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
                   <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <span className="text-2xl">🎯</span>
+                    <FeatureIcon title="Predicciones" size={28} />
                     <span className="text-xs font-bold text-white bg-[#C9A84C]/80 px-2 py-1 rounded-full">PREDICCIONES</span>
                   </div>
                 </div>
@@ -252,7 +252,7 @@ export default function HomePage(){
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
                   <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <span className="text-2xl">🏆</span>
+                    <FeatureIcon title="Fantasy" size={28} />
                     <span className="text-xs font-bold text-white bg-blue-500/80 px-2 py-1 rounded-full">FANTASY</span>
                   </div>
                 </div>
@@ -277,7 +277,7 @@ export default function HomePage(){
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
                   <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <span className="text-2xl">⚡</span>
+                    <FeatureIcon title="Trivia Diaria" size={28} />
                     <span className="text-xs font-bold text-white bg-purple-500/80 px-2 py-1 rounded-full">TRIVIA</span>
                   </div>
                 </div>
@@ -294,13 +294,15 @@ export default function HomePage(){
           {/* More features row */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              {icon: "📺", title: "Streaming", desc: "Con creadores en vivo", color: "#ef4444", href: "/app/streaming"},
-              {icon: "🤖", title: "IA Coach", desc: "Análisis inteligente", color: "#22c55e", href: "/app/ia-coach"},
-              {icon: "💬", title: "Chat", desc: "En tiempo real", color: "#3b82f6", href: "/app/chat"},
-              {icon: "📊", title: "Rankings", desc: "Global y privados", color: "#f59e0b", href: "/app/rankings"},
+              {iconTitle: "Zona Streaming", title: "Streaming", desc: "Con creadores en vivo", color: "#ef4444", href: "/app/streaming"},
+              {iconTitle: "IA Coach", title: "IA Coach", desc: "Análisis inteligente", color: "#22c55e", href: "/app/ia-coach"},
+              {iconTitle: "Chat en Vivo", title: "Chat", desc: "En tiempo real", color: "#3b82f6", href: "/app/chat"},
+              {iconTitle: "Rankings", title: "Rankings", desc: "Global y privados", color: "#f59e0b", href: "/app/rankings"},
             ].map((feature) => (
               <Link key={feature.title} href={feature.href} className="group p-4 rounded-xl border border-white/5 bg-[#0B1825]/50 hover:bg-[#0B1825] transition-all text-center">
-                <span className="text-3xl mb-2 block group-hover:scale-110 transition-transform">{feature.icon}</span>
+                <div className="mb-2 flex justify-center">
+                  <FeatureIcon title={feature.iconTitle} size={36} className="group-hover:scale-110 transition-transform" />
+                </div>
                 <h4 className="text-sm font-bold text-white mb-1">{feature.title}</h4>
                 <p className="text-xs text-gray-500">{feature.desc}</p>
               </Link>
@@ -315,7 +317,7 @@ export default function HomePage(){
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 flex items-center justify-center border border-purple-500/20">
-                <span className="text-2xl">🎥</span>
+                <FeatureIcon title="Creadores" size={32} />
               </div>
               <div>
                 <h2 className="text-2xl font-bold text-white">Con tus creadores favoritos</h2>
@@ -366,7 +368,7 @@ export default function HomePage(){
             <Link href="/grupos" className="group p-6 rounded-2xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 flex items-center justify-center border border-blue-500/20 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">📊</span>
+                  <FeatureIcon title="Los 12 Grupos" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -381,7 +383,7 @@ export default function HomePage(){
             <Link href="/selecciones" className="group p-6 rounded-2xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-600/5 flex items-center justify-center border border-green-500/20 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">⚽</span>
+                  <FeatureIcon title="48 Selecciones" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -396,7 +398,7 @@ export default function HomePage(){
             <Link href="/creadores" className="group p-6 rounded-2xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 flex items-center justify-center border border-purple-500/20 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">🎥</span>
+                  <FeatureIcon title="Creadores" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -411,7 +413,7 @@ export default function HomePage(){
             <Link href="/historia" className="group p-6 rounded-2xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 flex items-center justify-center border border-amber-500/20 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">📜</span>
+                  <FeatureIcon title="Historia" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -426,7 +428,7 @@ export default function HomePage(){
             <Link href="/formato" className="group p-6 rounded-2xl border border-white/5 bg-[#0F1D32] hover:border-[#C9A84C]/30 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-600/5 flex items-center justify-center border border-red-500/20 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">📐</span>
+                  <FeatureIcon title="Formato 2026" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -441,7 +443,7 @@ export default function HomePage(){
             <Link href="/registro" className="group p-6 rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#C9A84C]/10 to-transparent hover:border-[#C9A84C]/40 transition-all duration-300">
               <div className="flex items-start justify-between mb-4">
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C9A84C]/30 to-[#C9A84C]/10 flex items-center justify-center border border-[#C9A84C]/30 group-hover:scale-110 transition-transform">
-                  <span className="text-3xl">🎯</span>
+                  <FeatureIcon title="Únete Ahora" size={40} />
                 </div>
                 <span className="text-[#C9A84C] opacity-0 group-hover:opacity-100 transition-opacity">→</span>
               </div>
@@ -461,7 +463,9 @@ export default function HomePage(){
           <div className="p-8 sm:p-12 rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#C9A84C]/10 to-[#0F1D32] text-center relative overflow-hidden">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-[#C9A84C]/20 blur-[80px] rounded-full"/>
             <div className="relative z-10">
-              <div className="text-5xl mb-4">🏆</div>
+              <div className="flex justify-center mb-4">
+                <FeatureIcon title="Fantasy" size={64} />
+              </div>
               <h2 className="text-3xl font-black text-white mb-3">¿Quién ganará el Mundial 2026?</h2>
               <p className="text-gray-400 mb-6 max-w-lg mx-auto">
                 Únete a la comunidad de ZonaMundial y demuestra quién sabe más de fútbol.

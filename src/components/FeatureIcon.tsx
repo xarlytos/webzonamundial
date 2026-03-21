@@ -27,7 +27,7 @@ const ICON_MAP: Record<string, string> = {
   
   // Features del registro (tienen nombres ligeramente diferentes)
   'Chat': 'chat en vivo.png',
-  'Logros': 'ligas privadas.png', // Usar el mismo que ligas privadas
+  'Logros': 'ligas privadas.png',
   'Streaming': 'streaming.png',
   'Trivia': 'trivia.png',
   
@@ -45,14 +45,18 @@ const ICON_MAP: Record<string, string> = {
   'Predicciones Ilimitadas': 'predicciones.png',
   'Badge y Perfil Premium': 'fantasy.png',
   'Ligas Premium Exclusivas': 'ligas privadas.png',
-  'Exportar Datos': 'ranking.png',
-  'Acceso Anticipado': 'modo carrera.png',
   'Soporte Prioritario': 'chat en vivo.png',
+  
+  // Features para headers de sección (usando imágenes temáticas)
+  'Todo lo que necesitas': 'fantasy.png',
+  'Explora la Plataforma': 'predicciones.png',
+  'Con tus creadores favoritos': 'creadores.png',
+  'Descubre ZonaMundial': 'match center.png',
 };
 
 const BASE_PATH = '/img/zonamundial-images/imagenes/logos para sustuir emojis/';
 
-export function FeatureIcon({ title, size = 40, className = '' }: FeatureIconProps) {
+export function FeatureIcon({ title, size = 56, className = '' }: FeatureIconProps) {
   const imageFile = ICON_MAP[title];
   
   if (!imageFile) {

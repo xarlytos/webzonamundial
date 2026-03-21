@@ -4,6 +4,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import FormularioRegistro from '@/components/FormularioRegistro';
+import { FeatureIcon } from '@/components/FeatureIcon';
 import { getTotalSeguidores, getCreadoresActivos } from '@/data/creadores';
 
 export const metadata: Metadata = {
@@ -19,15 +20,15 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
-  { icon: '⚽', title: 'Predicciones', desc: '8 tipos por partido', color: '#22c55e' },
-  { icon: '🏆', title: 'Fantasy', desc: 'Ligas privadas', color: '#f59e0b' },
-  { icon: '🤖', title: 'IA Coach', desc: 'Análisis inteligente', color: '#8b5cf6' },
-  { icon: '📺', title: 'Streaming', desc: 'Con creadores', color: '#ec4899' },
-  { icon: '📊', title: 'Rankings', desc: 'En tiempo real', color: '#3b82f6' },
-  { icon: '🎯', title: 'Trivia', desc: 'Pon a prueba tus conocimientos', color: '#f97316' },
-  { icon: '🎮', title: 'Modo Carrera', desc: 'Dirige tu selección', color: '#06b6d4' },
-  { icon: '💬', title: 'Chat', desc: 'Conversa con la comunidad', color: '#14b8a6' },
-  { icon: '🏅', title: 'Logros', desc: 'Desbloquea recompensas', color: '#eab308' },
+  { iconTitle: 'Predicciones', title: 'Predicciones', desc: '8 tipos por partido', color: '#22c55e' },
+  { iconTitle: 'Fantasy', title: 'Fantasy', desc: 'Ligas privadas', color: '#f59e0b' },
+  { iconTitle: 'IA Coach', title: 'IA Coach', desc: 'Análisis inteligente', color: '#8b5cf6' },
+  { iconTitle: 'Streaming', title: 'Streaming', desc: 'Con creadores', color: '#ec4899' },
+  { iconTitle: 'Rankings', title: 'Rankings', desc: 'En tiempo real', color: '#3b82f6' },
+  { iconTitle: 'Trivia', title: 'Trivia', desc: 'Pon a prueba tus conocimientos', color: '#f97316' },
+  { iconTitle: 'Modo Carrera', title: 'Modo Carrera', desc: 'Dirige tu selección', color: '#06b6d4' },
+  { iconTitle: 'Chat', title: 'Chat', desc: 'Conversa con la comunidad', color: '#14b8a6' },
+  { iconTitle: 'Logros', title: 'Logros', desc: 'Desbloquea recompensas', color: '#eab308' },
 ];
 
 export default function RegistroPage() {
@@ -105,16 +106,16 @@ export default function RegistroPage() {
               <div className="p-6 sm:p-8 rounded-3xl border border-[#1E293B]/50"
                 style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.5), rgba(15,23,42,0.2))', backdropFilter: 'blur(12px)' }}>
                 <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                  <span className="text-2xl">✨</span> Todo lo que incluye
+                  <FeatureIcon title="Predicciones" size={32} /> Todo lo que incluye
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {FEATURES.map((f, i) => (
                     <div key={i} 
                       className="p-4 rounded-2xl border border-[#1E293B]/30 hover:border-[#C9A84C]/30 transition-all duration-300 group cursor-default"
                       style={{ background: 'rgba(11,24,37,0.5)' }}>
-                      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-3 transition-transform group-hover:scale-110"
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
                         style={{ background: `${f.color}15`, border: `1px solid ${f.color}30` }}>
-                        {f.icon}
+                        <FeatureIcon title={f.iconTitle} size={36} />
                       </div>
                       <div className="font-bold text-white text-sm mb-1">{f.title}</div>
                       <div className="text-xs text-gray-500">{f.desc}</div>
@@ -135,7 +136,7 @@ export default function RegistroPage() {
               <div className="p-6 sm:p-8 rounded-3xl border border-[#1E293B]/50"
                 style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.5), rgba(15,23,42,0.2))', backdropFilter: 'blur(12px)' }}>
                 <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                  <span className="text-2xl">🌟</span> Creadores destacados
+                  <FeatureIcon title="Creadores" size={32} /> Creadores destacados
                 </h2>
                 <div className="space-y-3">
                   {creadores.slice(0, 4).map((c, i) => (
