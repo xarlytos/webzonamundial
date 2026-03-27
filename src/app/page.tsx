@@ -51,6 +51,17 @@ const MODULES=[
   {icon:"/img/zonamundial-images/imagenes/logos para sustuir emojis/stories.png",title:"Stories",desc:"Contenido editorial diario: datos, análisis y curiosidades", color: "#8b5cf6"},
 ];
 
+const SPONSORS = [
+  { name: "Patrocinador 1", img: "/img/sponsors/sponsor-1.png" },
+  { name: "Patrocinador 2", img: "/img/sponsors/sponsor-2.png" },
+  { name: "Patrocinador 3", img: "/img/sponsors/sponsor-3.png" },
+  { name: "Patrocinador 4", img: "/img/sponsors/sponsor-4.png" },
+  { name: "Patrocinador 5", img: "/img/sponsors/sponsor-5.png" },
+  { name: "Patrocinador 6", img: "/img/sponsors/sponsor-6.png" },
+  { name: "Patrocinador 7", img: "/img/sponsors/sponsor-7.png" },
+  { name: "Patrocinador 8", img: "/img/sponsors/sponsor-8.png" },
+];
+
 const GROUPS=[
   {l:"A",t:[{n:"México",f:"mx"},{n:"Corea del Sur",f:"kr"},{n:"Sudáfrica",f:"za"},{n:"Por definir",f:null}]},
   {l:"B",t:[{n:"Canadá",f:"ca"},{n:"Por definir",f:null},{n:"Qatar",f:"qa"},{n:"Suiza",f:"ch"}]},
@@ -351,33 +362,10 @@ export default function HomePage(){
         </div>
       </section>
 
-      {/* ═══════ FEATURES ═══════ */}
-      <section ref={featuresRef} className="py-24 px-4 relative" style={{background:BG}}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#C9A84C]/5 blur-[150px] rounded-full pointer-events-none"/>
-        
-        <div className="max-w-7xl mx-auto relative">
-          <div className="flex items-center gap-5 mb-12">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#C9A84C]/20 to-[#C9A84C]/5 flex items-center justify-center border border-[#C9A84C]/20 float-animation">
-              <FeatureIcon title="Todo lo que necesitas" size={36} />
-            </div>
-            <div>
-              <h2 className="text-3xl font-bold text-white">Todo lo que necesitas</h2>
-              <p className="text-sm text-gray-500 mt-1">12 módulos para vivir el Mundial al máximo</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-            {MODULES.map((m, i) => (
-              <FeatureCard key={i} module={m} index={i} />
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ═══════ DESCUBRE LA APP ═══════ */}
       <section className="py-24 px-4 relative overflow-hidden" style={{background:BG2}}>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#C9A84C]/5 blur-[180px] rounded-full pointer-events-none"/>
-        
+
         <div ref={cardsRef} className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
             <span className="inline-block px-5 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] text-xs font-bold tracking-wider uppercase mb-6">
@@ -391,82 +379,35 @@ export default function HomePage(){
             </p>
           </div>
 
-          {/* App Screenshots / Features Preview */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-14">
-            {/* Card 1 - Predicciones */}
-            <Link href="/app/predicciones" className="app-card group block">
-              <div className="relative p-7 rounded-3xl border border-white/10 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] hover:border-[#C9A84C]/40 transition-all duration-500 h-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#C9A84C]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
-                <div className="aspect-video rounded-2xl mb-5 overflow-hidden relative border border-[#C9A84C]/20 group-hover:border-[#C9A84C]/40 transition-colors">
-                  <img 
-                    src="/img/zonamundial-images/imagenes/apuesta para portada.jpeg" 
-                    alt="Predicciones"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <FeatureIcon title="Predicciones" size={32} />
-                    <span className="text-xs font-bold text-white bg-[#C9A84C] px-3 py-1.5 rounded-full">PREDICCIONES</span>
-                  </div>
+          {/* Why we are the perfect app */}
+          <div className="relative mb-14 rounded-3xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] overflow-hidden p-10 sm:p-14">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#C9A84C]/5 via-transparent to-blue-900/10 pointer-events-none"/>
+            <div className="relative z-10 max-w-4xl mx-auto text-center">
+              <p className="text-[#C9A84C] text-sm font-bold tracking-widest uppercase mb-6">Por qué somos diferentes</p>
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-8">
+                La app perfecta para los <span className="text-[#C9A84C]">amantes del fútbol</span> y el Mundial 2026
+              </h3>
+              <p className="text-gray-300 text-lg sm:text-xl leading-relaxed mb-10">
+                En ZonaMundial reunimos todo lo que un verdadero fanático del fútbol necesita en un solo lugar. Hemos construido la plataforma más completa del mundo para que no te pierdas ni un solo detalle del torneo más grande del planeta. Predice resultados, arma tu equipo fantasy, compite en trivias históricas, sigue en vivo cada partido con nuestros creadores, y deja que nuestra IA analice el torneo por ti. No somos una app más: somos <span className="text-white font-bold">la experiencia definitiva del Mundial 2026</span>, diseñada por y para quienes viven el fútbol con pasión.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-left">
+                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[#C9A84C] text-2xl font-black mb-2">48</p>
+                  <p className="text-white font-semibold mb-1">Selecciones</p>
+                  <p className="text-gray-400 text-sm">Datos, plantillas y estadísticas de todos los equipos clasificados al Mundial.</p>
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-[#C9A84C] transition-colors">Predicciones</h3>
-                <p className="text-sm text-gray-400 mb-5 leading-relaxed">Predice resultados exactos, goleadores, tarjetas y más. Compite con amigos.</p>
-                <div className="flex items-center gap-2 text-[#C9A84C] group-hover:gap-4 transition-all">
-                  <span className="text-sm font-semibold">Probar ahora</span>
-                  <span>→</span>
+                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[#C9A84C] text-2xl font-black mb-2">100%</p>
+                  <p className="text-white font-semibold mb-1">Fútbol puro</p>
+                  <p className="text-gray-400 text-sm">Sin ruido, sin distracciones. Solo el Mundial y todo lo que lo rodea.</p>
                 </div>
-              </div>
-            </Link>
-
-            {/* Card 2 - Fantasy */}
-            <Link href="/app/fantasy" className="app-card group block">
-              <div className="relative p-7 rounded-3xl border border-white/10 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] hover:border-blue-500/40 transition-all duration-500 h-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
-                <div className="aspect-video rounded-2xl mb-5 overflow-hidden relative border border-blue-500/20 group-hover:border-blue-500/40 transition-colors">
-                  <img 
-                    src="/img/zonamundial-images/imagenes/alineacion fantasy.jpeg" 
-                    alt="Fantasy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <FeatureIcon title="Fantasy" size={32} />
-                    <span className="text-xs font-bold text-white bg-blue-500 px-3 py-1.5 rounded-full">FANTASY</span>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-blue-400 transition-colors">Fantasy</h3>
-                <p className="text-sm text-gray-400 mb-5 leading-relaxed">Arma tu equipo con presupuesto limitado. Escoge jugadores de las 48 selecciones.</p>
-                <div className="flex items-center gap-2 text-blue-400 group-hover:gap-4 transition-all">
-                  <span className="text-sm font-semibold">Crear equipo</span>
-                  <span>→</span>
+                <div className="p-6 rounded-2xl bg-white/5 border border-white/10">
+                  <p className="text-[#C9A84C] text-2xl font-black mb-2">Todo en 1</p>
+                  <p className="text-white font-semibold mb-1">Una sola plataforma</p>
+                  <p className="text-gray-400 text-sm">Fantasy, predicciones, trivia, streaming, IA y mucho más, siempre a mano.</p>
                 </div>
               </div>
-            </Link>
-
-            {/* Card 3 - Trivia */}
-            <Link href="/app/trivia" className="app-card group block">
-              <div className="relative p-7 rounded-3xl border border-white/10 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] hover:border-purple-500/40 transition-all duration-500 h-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"/>
-                <div className="aspect-video rounded-2xl mb-5 overflow-hidden relative border border-purple-500/20 group-hover:border-purple-500/40 transition-colors">
-                  <img 
-                    src="/img/zonamundial-images/imagenes/pregunta trivia para portada.jpeg" 
-                    alt="Trivia"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0B1825] via-transparent to-transparent opacity-80"/>
-                  <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                    <FeatureIcon title="Trivia Diaria" size={32} />
-                    <span className="text-xs font-bold text-white bg-purple-500 px-3 py-1.5 rounded-full">TRIVIA</span>
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">Trivia Diaria</h3>
-                <p className="text-sm text-gray-400 mb-5 leading-relaxed">Preguntas diarias sobre historia del Mundial. Gana puntos extra y sube en el ranking.</p>
-                <div className="flex items-center gap-2 text-purple-400 group-hover:gap-4 transition-all">
-                  <span className="text-sm font-semibold">Jugar trivia</span>
-                  <span>→</span>
-                </div>
-              </div>
-            </Link>
+            </div>
           </div>
 
           {/* More features row */}
@@ -491,22 +432,164 @@ export default function HomePage(){
         </div>
       </section>
 
+      {/* ═══════ FEATURES CAROUSEL ═══════ */}
+      <section ref={featuresRef} className="py-24 relative overflow-hidden" style={{background:BG}}>
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#C9A84C]/5 blur-[150px] rounded-full pointer-events-none"/>
+
+        {/* Header + texto */}
+        <div className="max-w-5xl mx-auto px-4 text-center mb-16 relative">
+          <span className="inline-block px-5 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] text-xs font-bold tracking-wider uppercase mb-6">
+            12 módulos
+          </span>
+          <h2 className="text-4xl sm:text-5xl font-black text-white mb-6">
+            Todo lo que necesitas
+          </h2>
+          <p className="text-gray-300 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto">
+            Hemos creado una plataforma que va mucho más allá de ver partidos. Cada módulo está diseñado para que tu experiencia del Mundial 2026 sea única, competitiva y adictiva. Desde predicciones en tiempo real hasta tu propio equipo fantasy, pasando por trivias históricas y un coach de inteligencia artificial. <span className="text-[#C9A84C] font-semibold">Todo en un solo lugar, todo para ti.</span>
+          </p>
+        </div>
+
+        {/* Carrusel fila 1 — izquierda */}
+        <div className="relative mb-4 overflow-hidden">
+          <div className="absolute left-0 top-0 w-40 h-full bg-gradient-to-r from-[#060B14] to-transparent z-10 pointer-events-none"/>
+          <div className="absolute right-0 top-0 w-40 h-full bg-gradient-to-l from-[#060B14] to-transparent z-10 pointer-events-none"/>
+          <div className="flex gap-4" style={{ width:"max-content", animation:"carousel-left 45s linear infinite" }}>
+            {[...MODULES, ...MODULES].map((m, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-64 group cursor-pointer"
+              >
+                <div
+                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400"
+                  style={{
+                    background: `linear-gradient(135deg, ${m.color}0D 0%, #0B1825 60%)`,
+                    border: `1px solid ${m.color}22`,
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.border = `1px solid ${m.color}66`)}
+                  onMouseLeave={e => (e.currentTarget.style.border = `1px solid ${m.color}22`)}
+                >
+                  {/* glow de fondo */}
+                  <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none" style={{ background: m.color }}/>
+                  {/* icono grande */}
+                  <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+                    style={{ background: `${m.color}1A`, boxShadow: `0 0 0 1px ${m.color}30` }}
+                  >
+                    <img src={m.icon} alt={m.title} className="w-10 h-10 object-contain drop-shadow-lg" />
+                  </div>
+                  <h3 className="text-white font-bold text-[15px] mb-2 leading-tight" style={{ transition:"color .2s" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = m.color)}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#fff")}
+                  >{m.title}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{m.desc}</p>
+                  {/* línea inferior coloreada */}
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl opacity-50" style={{ background: `linear-gradient(90deg, ${m.color}, transparent)` }}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Carrusel fila 2 — derecha */}
+        <div className="relative overflow-hidden">
+          <div className="absolute left-0 top-0 w-40 h-full bg-gradient-to-r from-[#060B14] to-transparent z-10 pointer-events-none"/>
+          <div className="absolute right-0 top-0 w-40 h-full bg-gradient-to-l from-[#060B14] to-transparent z-10 pointer-events-none"/>
+          <div className="flex gap-4" style={{ width:"max-content", animation:"carousel-right 52s linear infinite" }}>
+            {[...MODULES.slice(4), ...MODULES, ...MODULES.slice(0, 4)].map((m, i) => (
+              <div
+                key={i}
+                className="flex-shrink-0 w-64 group cursor-pointer"
+              >
+                <div
+                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400"
+                  style={{
+                    background: `linear-gradient(135deg, ${m.color}0D 0%, #0B1825 60%)`,
+                    border: `1px solid ${m.color}22`,
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.border = `1px solid ${m.color}66`)}
+                  onMouseLeave={e => (e.currentTarget.style.border = `1px solid ${m.color}22`)}
+                >
+                  <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none" style={{ background: m.color }}/>
+                  <div
+                    className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+                    style={{ background: `${m.color}1A`, boxShadow: `0 0 0 1px ${m.color}30` }}
+                  >
+                    <img src={m.icon} alt={m.title} className="w-10 h-10 object-contain drop-shadow-lg" />
+                  </div>
+                  <h3 className="text-white font-bold text-[15px] mb-2 leading-tight" style={{ transition:"color .2s" }}
+                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.color = m.color)}
+                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.color = "#fff")}
+                  >{m.title}</h3>
+                  <p className="text-gray-500 text-xs leading-relaxed">{m.desc}</p>
+                  <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl opacity-50" style={{ background: `linear-gradient(90deg, ${m.color}, transparent)` }}/>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style>{`
+          @keyframes carousel-left {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @keyframes carousel-right {
+            0%   { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+          }
+        `}</style>
+      </section>
+
+      {/* ═══════ AD SPACE 1 — carrusel patrocinadores ═══════ */}
+      <div className="w-full border-y border-white/5 py-5 overflow-hidden relative" style={{background:"#07101C"}}>
+        <div className="absolute left-0 top-0 w-28 h-full bg-gradient-to-r from-[#07101C] to-transparent z-10 pointer-events-none"/>
+        <div className="absolute right-0 top-0 w-28 h-full bg-gradient-to-l from-[#07101C] to-transparent z-10 pointer-events-none"/>
+        <p className="text-center text-[#C9A84C]/35 text-[10px] font-bold tracking-widest uppercase mb-4 select-none">Patrocinadores Oficiales</p>
+        <div
+          className="flex items-center gap-10"
+          style={{ width: "max-content", animation: "sponsors-left 28s linear infinite" }}
+        >
+          {[...SPONSORS, ...SPONSORS].map((s, i) => (
+            <div key={i} className="flex-shrink-0 w-36 h-16 rounded-xl border border-white/8 bg-[#0B1825] flex items-center justify-center px-4 hover:border-[#C9A84C]/40 transition-all duration-300 cursor-pointer group">
+              <img
+                src={s.img}
+                alt={s.name}
+                className="max-h-9 max-w-full object-contain opacity-50 group-hover:opacity-100 transition-opacity duration-300 grayscale group-hover:grayscale-0"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement;
+                  t.style.display = "none";
+                  const p = t.nextElementSibling as HTMLElement | null;
+                  if (p) p.style.display = "block";
+                }}
+              />
+              <span className="text-white/30 text-xs font-bold hidden text-center leading-tight">{s.name}</span>
+            </div>
+          ))}
+        </div>
+        <style>{`@keyframes sponsors-left { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }`}</style>
+      </div>
+
       {/* ═══════ CREADORES ═══════ */}
       <section ref={creatorsRef} className="py-24 px-4 relative" style={{background:BG3}}>
         <div className="absolute top-1/2 left-0 w-[400px] h-[400px] bg-purple-500/5 blur-[150px] rounded-full pointer-events-none"/>
         
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between mb-10">
-            <div className="flex items-center gap-5">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 flex items-center justify-center border border-purple-500/20">
-                <FeatureIcon title="Creadores" size={36} />
-              </div>
-              <div>
-                <h2 className="text-3xl font-bold text-white">Con tus creadores favoritos</h2>
-                <p className="text-sm text-gray-500 mt-1">8 creadores de contenido futbolístico</p>
-              </div>
-            </div>
-            <Link href="/creadores" className="text-[#C9A84C] text-sm font-semibold hover:underline hover:text-[#E8D48B] transition-colors">Ver todos →</Link>
+          <div className="text-center mb-12">
+            <span className="inline-block px-5 py-2 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-bold tracking-wider uppercase mb-6">
+              8 creadores de contenido
+            </span>
+            <h2 className="text-4xl sm:text-5xl font-black text-white mb-6">
+              Con tus creadores favoritos
+            </h2>
+            <p className="text-gray-300 text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto mb-4">
+              El Mundial se vive mejor en compañía. Por eso hemos unido a los creadores de contenido futbolístico más grandes del mundo para que vivas cada partido a su lado. Directos, reacciones, análisis y debates en tiempo real con las personas que mejor entienden este deporte.
+            </p>
+            <p className="text-gray-400 text-base max-w-2xl mx-auto mb-8">
+              Más de <span className="text-white font-semibold">12 millones de seguidores</span> combinados nos avalan. Únete a la comunidad y elige tu creador favorito para vivir el Mundial 2026 como nunca antes.
+            </p>
+            <Link href="/creadores" className="inline-flex items-center gap-2 text-purple-300 text-sm font-semibold hover:text-purple-200 transition-colors border border-purple-500/30 hover:border-purple-400/50 px-5 py-2.5 rounded-full bg-purple-500/10 hover:bg-purple-500/20">
+              Ver todos los creadores →
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
@@ -531,6 +614,35 @@ export default function HomePage(){
           </div>
         </div>
       </section>
+
+      {/* ═══════ AD SPACE 2 — carrusel patrocinadores ═══════ */}
+      <div className="w-full border-y border-white/5 py-5 overflow-hidden relative" style={{background:"#07101C"}}>
+        <div className="absolute left-0 top-0 w-28 h-full bg-gradient-to-r from-[#07101C] to-transparent z-10 pointer-events-none"/>
+        <div className="absolute right-0 top-0 w-28 h-full bg-gradient-to-l from-[#07101C] to-transparent z-10 pointer-events-none"/>
+        <p className="text-center text-[#C9A84C]/35 text-[10px] font-bold tracking-widest uppercase mb-4 select-none">Patrocinadores Oficiales</p>
+        <div
+          className="flex items-center gap-10"
+          style={{ width: "max-content", animation: "sponsors-right 34s linear infinite" }}
+        >
+          {[...SPONSORS.slice(4), ...SPONSORS, ...SPONSORS.slice(0, 4)].map((s, i) => (
+            <div key={i} className="flex-shrink-0 w-36 h-16 rounded-xl border border-white/8 bg-[#0B1825] flex items-center justify-center px-4 hover:border-[#C9A84C]/40 transition-all duration-300 cursor-pointer group">
+              <img
+                src={s.img}
+                alt={s.name}
+                className="max-h-9 max-w-full object-contain opacity-50 group-hover:opacity-100 transition-opacity duration-300 grayscale group-hover:grayscale-0"
+                onError={(e) => {
+                  const t = e.currentTarget as HTMLImageElement;
+                  t.style.display = "none";
+                  const p = t.nextElementSibling as HTMLElement | null;
+                  if (p) p.style.display = "block";
+                }}
+              />
+              <span className="text-white/30 text-xs font-bold hidden text-center leading-tight">{s.name}</span>
+            </div>
+          ))}
+        </div>
+        <style>{`@keyframes sponsors-right { 0%{transform:translateX(-50%)} 100%{transform:translateX(0)} }`}</style>
+      </div>
 
       {/* ═══════ EXPLORA LA PLATAFORMA ═══════ */}
       <section className="py-24 px-4 relative" style={{background:BG}}>

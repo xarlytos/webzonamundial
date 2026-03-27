@@ -24,6 +24,8 @@ const NAV = [
     {label:"Streaming",href:"/app/streaming"},
   ]},
   { label:"Noticias", href:"/noticias" },
+  { label:"Blog", href:"/blog" },
+  { label:"Tutoriales", href:"/tutoriales" },
   { label:"Creadores", href:"/creadores" },
   { label:"Premium", href:"/premium" },
 ];
@@ -46,6 +48,8 @@ const FOOTER_LINKS = {
   ],
   "Comunidad": [
     {label:"Noticias",href:"/noticias"},
+    {label:"Blog",href:"/blog"},
+    {label:"Tutoriales",href:"/tutoriales"},
     {label:"Creadores",href:"/creadores"},
     {label:"Ligas Privadas",href:"/app/ligas"},
     {label:"Rankings",href:"/app/rankings"},
@@ -245,7 +249,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
 
             {/* Hamburger mobile */}
             <button className="hamburger-btn" onClick={()=>setMobileOpen(!mobileOpen)}
-              style={{background:"none",border:"none",cursor:"pointer",padding:8,display:"flex",alignItems:"center",justifyContent:"center"}}>
+              style={{background:"none",border:"none",cursor:"pointer",padding:8,alignItems:"center",justifyContent:"center"}}>
               <HamburgerIcon open={mobileOpen}/>
             </button>
           </div>
@@ -309,7 +313,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
       {/* ═══ FOOTER ═══ */}
       <footer style={{borderTop:"1px solid rgba(255,255,255,0.04)",background:BG3,padding:"48px 20px",position:"relative"}}>
         <div style={{maxWidth:1200,margin:"0 auto"}}>
-          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:32,marginBottom:32}}>
+          <div className="footer-grid" style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))",gap:32,marginBottom:32}}>
             <div>
               <Link href="/" style={{fontWeight:900,fontSize:22,marginBottom:12,textDecoration:"none",display:"inline-block"}}>
                 <span style={{color:"#fff"}}>ZONA</span><span style={{color:GOLD}}>MUNDIAL</span>
@@ -352,6 +356,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
           .desktop-nav { display: none !important; }
           .cta-desktop { display: none !important; }
           .hamburger-btn { display: flex !important; }
+          .footer-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 24px !important; }
         }
       `}</style>
     </div>
