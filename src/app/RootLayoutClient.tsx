@@ -373,7 +373,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
           position:"fixed",top:"50%",left:16,transform:"translateY(-50%)",zIndex:50,
           display:"none",
         }}>
-        <img src="/img/imagenessilviu/rotulemos120x600.png" alt="Rotulemos - Publicidad" style={{width:160,height:700,objectFit:"contain",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
+        <img src="/img/imagenessilviu/rotulemos120x600.png" alt="Rotulemos - Publicidad" style={{width:160,height:"auto",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
       </a>
       <a href="#" target="_blank" rel="noopener noreferrer"
         className="lateral-ad lateral-ad-right"
@@ -381,7 +381,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
           position:"fixed",top:"50%",right:16,transform:"translateY(-50%)",zIndex:50,
           display:"none",
         }}>
-        <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_49_43 p.m..png" alt="Publicidad" style={{width:160,height:700,objectFit:"contain",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
+        <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_49_43 p.m..png" alt="Publicidad" style={{width:160,height:"auto",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
       </a>
 
       {/* ═══ PAGE CONTENT ═══ */}
