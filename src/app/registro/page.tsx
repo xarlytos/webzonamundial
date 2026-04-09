@@ -8,9 +8,8 @@ import FormularioRegistro from '@/components/FormularioRegistro';
 import { FeatureIcon } from '@/components/FeatureIcon';
 import { getTotalSeguidores, getCreadoresActivos } from '@/data/creadores';
 import { useLanguage } from '@/i18n/LanguageContext';
-import PromoPopup from '@/components/PromoPopup';
 
-const FEATURE_COLORS = ['#22c55e', '#f59e0b', '#8b5cf6', '#ec4899', '#3b82f6', '#f97316', '#06b6d4', '#14b8a6', '#eab308'];
+const IMG = "/img/zonamundial-images/imagenes/logos para sustuir emojis";
 
 export default function RegistroPage() {
   const { t } = useLanguage();
@@ -18,12 +17,10 @@ export default function RegistroPage() {
   const totalSeg = getTotalSeguidores();
   const numCreadores = getCreadoresActivos().length;
   const creadores = getCreadoresActivos();
-  const FEATURES = rT.features.map((f, i) => ({ ...f, color: FEATURE_COLORS[i] }));
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      <PromoPopup />
-      {/* Background Effects */}
+      {/* Background */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-0 left-1/4 w-[600px] h-[600px] rounded-full opacity-20"
           style={{ background: 'radial-gradient(circle, rgba(201,168,76,0.3) 0%, transparent 70%)', filter: 'blur(60px)' }} />
@@ -31,10 +28,10 @@ export default function RegistroPage() {
           style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.2) 0%, transparent 70%)', filter: 'blur(80px)' }} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-0 pb-8 sm:pb-12">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-0 pb-8 sm:pb-12">
 
         {/* Breadcrumb */}
-        <nav className="text-xs text-gray-500 mb-8">
+        <nav className="text-xs text-gray-500 mb-6">
           <ol className="flex gap-2 items-center">
             <li><Link href="/" className="hover:text-[#C9A84C] transition-colors">{t.nav.inicio}</Link></li>
             <li className="text-gray-600">/</li>
@@ -42,137 +39,59 @@ export default function RegistroPage() {
           </ol>
         </nav>
 
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#C9A84C]/30 text-xs font-bold text-[#C9A84C] tracking-wider uppercase mb-6 cursor-pointer"
-            style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.02))' }}>
+        {/* Hero compact */}
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#C9A84C]/30 text-xs font-bold text-[#C9A84C] tracking-wider uppercase mb-5"
+            style={{ background: 'rgba(201,168,76,0.05)' }}>
             <span className="w-2 h-2 rounded-full bg-[#C9A84C] animate-pulse" />
             {rT.badge}
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white mb-4 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-3 leading-tight">
             {rT.title1}{' '}
             <span className="bg-gradient-to-r from-[#C9A84C] via-[#FDE68A] to-[#C9A84C] bg-clip-text text-transparent">
               {rT.title2}
             </span>
           </h1>
 
-          <p className="text-gray-400 text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-gray-400 text-base max-w-xl mx-auto leading-relaxed">
             {rT.subtitle.replace('{n}', numCreadores.toString()).replace('{s}', totalSeg)}
           </p>
-
-          {/* Stats */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mb-12">
-            {[
-              { value: totalSeg, label: rT.stats.seguidores, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/creadores.png' },
-              { value: numCreadores.toString(), label: rT.stats.creadores, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png' },
-              { value: '104', label: rT.stats.partidos, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png' },
-              { value: '8', label: rT.stats.modos, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/fantasy.png' },
-            ].map((stat, i) => (
-              <div key={i} className="flex items-center gap-3 px-5 py-3 rounded-2xl border border-[#1E293B]/50 cursor-default"
-                style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.6), rgba(15,23,42,0.3))' }}>
-                <img src={stat.icon} alt="" className="w-10 h-10 object-contain" />
-                <div className="text-left">
-                  <div className="text-xl sm:text-2xl font-black text-[#C9A84C]">{stat.value}</div>
-                  <div className="text-[10px] text-gray-500 uppercase tracking-wider">{stat.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+        {/* Main layout: Form (left) + Benefits (right) */}
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-start">
 
-          {/* LEFT: Features & Creadores - En móvil aparece segundo (order-2) */}
-          <div className="space-y-8 order-2 lg:order-1">
-            {/* Features Grid */}
-            <div className="p-6 sm:p-8 rounded-3xl border border-[#1E293B]/50"
-              style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.5), rgba(15,23,42,0.2))', backdropFilter: 'blur(12px)' }}>
-              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <FeatureIcon title="Predicciones" size={32} /> {rT.includes}
-              </h2>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                {FEATURES.map((f, i) => (
-                  <div key={i} 
-                    className="p-4 rounded-2xl border border-[#1E293B]/30 hover:border-[#C9A84C]/30 transition-all duration-300 group cursor-default"
-                    style={{ background: 'rgba(11,24,37,0.5)' }}>
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
-                      style={{ background: `${f.color}15`, border: `1px solid ${f.color}30` }}>
-                      <FeatureIcon title={f.iconTitle} size={36} />
-                    </div>
-                    <div className="font-bold text-white text-sm mb-1">{f.title}</div>
-                    <div className="text-xs text-gray-500">{f.desc}</div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* And more... */}
-              <div className="mt-6 p-4 rounded-2xl border border-[#C9A84C]/20 text-center"
-                style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02))' }}>
-                <p className="text-sm text-[#C9A84C] font-medium flex items-center justify-center gap-2">
-                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/stories.png" alt="" className="w-5 h-5 object-contain" />
-                  {rT.surprises}
-                </p>
-              </div>
-            </div>
-
-            {/* Creadores Destacados */}
-            <div className="p-6 sm:p-8 rounded-3xl border border-[#1E293B]/50"
-              style={{ background: 'linear-gradient(135deg, rgba(15,23,42,0.5), rgba(15,23,42,0.2))', backdropFilter: 'blur(12px)' }}>
-              <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <FeatureIcon title="Creadores" size={32} /> {rT.featuredCreators}
-              </h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {creadores.slice(0, 4).map((c) => (
-                  <Link key={c.slug} href={`/registro/${c.slug}`}
-                    className="flex flex-col items-center p-5 rounded-2xl border border-[#1E293B]/30 hover:border-[#C9A84C]/30 transition-all duration-300 group hover:scale-[1.02]"
-                    style={{ background: 'rgba(11,24,37,0.4)' }}>
-                    <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 border-2 mb-3 shadow-lg"
-                      style={{ borderColor: `${c.colorPrimario}60`, boxShadow: `0 4px 20px ${c.colorPrimario}20` }}>
-                      <img src={c.imagen} alt={c.nombre} className="w-full h-full object-cover" />
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-white text-base mb-1 group-hover:text-[#C9A84C] transition-colors">{c.nombre}</div>
-                      <div className="text-sm text-gray-400 font-medium">{c.seguidores} seguidores</div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-              <Link href="/creadores"
-                className="block text-center mt-6 text-sm font-medium text-[#C9A84C] hover:text-[#E8D48B] transition-colors">
-                {rT.verCreadores}
-              </Link>
-            </div>
-          </div>
-
-          {/* RIGHT: Form - En móvil aparece primero (order-1) */}
-          <div className="order-1 lg:order-2 lg:sticky lg:top-24">
-            <div className="p-8 sm:p-10 rounded-3xl border border-[#C9A84C]/20"
-              style={{ 
-                background: 'linear-gradient(135deg, rgba(15,23,42,0.8), rgba(11,24,37,0.6))', 
+          {/* LEFT: Form (3/5) */}
+          <div className="lg:col-span-3 order-1">
+            <div className="p-7 sm:p-9 rounded-3xl border border-[#C9A84C]/20"
+              style={{
+                background: 'linear-gradient(135deg, rgba(15,23,42,0.8), rgba(11,24,37,0.6))',
                 backdropFilter: 'blur(20px)',
-                boxShadow: '0 25px 50px -12px rgba(201,168,76,0.15), 0 0 0 1px rgba(201,168,76,0.1)'
+                boxShadow: '0 25px 50px -12px rgba(201,168,76,0.1)'
               }}>
-              
+
               {/* Form Header */}
-              <div className="text-center mb-8">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center overflow-hidden"
+              <div className="flex items-center gap-4 mb-7">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden"
                   style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.2), rgba(201,168,76,0.05))', border: '1px solid rgba(201,168,76,0.3)' }}>
-                  <img 
-                    src="/img/zonamundial-images/imagenes/IMG-20260302-WA0016-removebg-preview.png" 
-                    alt="ZonaMundial" 
-                    className="w-12 h-12 object-contain"
+                  <img
+                    src="/img/zonamundial-images/imagenes/IMG-20260302-WA0016-removebg-preview.png"
+                    alt="ZonaMundial"
+                    className="w-10 h-10 object-contain"
                   />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">{rT.formTitle}</h2>
-                <p className="text-sm text-gray-400">{rT.formSub}</p>
+                <div>
+                  <h2 className="text-xl font-bold text-white">{rT.formTitle}</h2>
+                  <p className="text-sm text-gray-400">{rT.formSub}</p>
+                </div>
               </div>
 
               <FormularioRegistro />
 
               {/* Trust badges */}
-              <div className="mt-6 pt-6 border-t border-[#1E293B]/50">
-                <div className="flex items-center justify-center gap-6 text-xs text-gray-500">
+              <div className="mt-6 pt-5 border-t border-[#1E293B]/50">
+                <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-gray-500">
                   <span className="flex items-center gap-1.5">
                     <svg className="w-4 h-4 text-[#C9A84C]" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -194,11 +113,84 @@ export default function RegistroPage() {
                 </div>
               </div>
             </div>
+          </div>
+
+          {/* RIGHT: Benefits sidebar (2/5) */}
+          <div className="lg:col-span-2 order-2 space-y-6">
+
+            {/* What's included - compact */}
+            <div className="p-6 rounded-2xl border border-[#1E293B]/50"
+              style={{ background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(12px)' }}>
+              <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <img src={`${IMG}/predicciones.png`} alt="" className="w-6 h-6 object-contain" />
+                {rT.includes}
+              </h3>
+              <div className="space-y-3">
+                {rT.features.slice(0, 6).map((f: { iconTitle: string; title: string; desc: string }, i: number) => (
+                  <div key={i} className="flex items-center gap-3">
+                    <FeatureIcon title={f.iconTitle} size={28} />
+                    <div>
+                      <p className="text-sm font-semibold text-white">{f.title}</p>
+                      <p className="text-xs text-gray-500">{f.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-[#C9A84C] mt-4 flex items-center gap-1.5">
+                <img src={`${IMG}/stories.png`} alt="" className="w-4 h-4 object-contain" />
+                {rT.surprises}
+              </p>
+            </div>
+
+            {/* Top Creators compact */}
+            <div className="p-6 rounded-2xl border border-[#1E293B]/50"
+              style={{ background: 'rgba(15,23,42,0.4)', backdropFilter: 'blur(12px)' }}>
+              <h3 className="text-base font-bold text-white mb-4 flex items-center gap-2">
+                <img src={`${IMG}/creadores.png`} alt="" className="w-6 h-6 object-contain" />
+                {rT.featuredCreators}
+              </h3>
+              <div className="space-y-3">
+                {creadores.slice(0, 4).map((c) => (
+                  <Link key={c.slug} href={`/registro/${c.slug}`}
+                    className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/5 transition-all group">
+                    <div className="w-10 h-10 rounded-xl overflow-hidden flex-shrink-0 border"
+                      style={{ borderColor: `${c.colorPrimario}40` }}>
+                      <img src={c.imagen} alt={c.nombre} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-bold text-white text-sm group-hover:text-[#C9A84C] transition-colors truncate">{c.nombre}</p>
+                      <p className="text-xs text-gray-500">{c.seguidores} · {c.plataformaPrincipal}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              <Link href="/creadores"
+                className="block text-center mt-4 text-xs font-medium text-[#C9A84C] hover:text-[#E8D48B] transition-colors">
+                {rT.verCreadores}
+              </Link>
+            </div>
+
+            {/* Stats mini */}
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                { value: '104', label: rT.stats.partidos, icon: `${IMG}/match center.png` },
+                { value: '8', label: rT.stats.modos, icon: `${IMG}/fantasy.png` },
+              ].map((stat, i) => (
+                <div key={i} className="flex items-center gap-3 p-4 rounded-xl border border-[#1E293B]/50"
+                  style={{ background: 'rgba(15,23,42,0.4)' }}>
+                  <img src={stat.icon} alt="" className="w-8 h-8 object-contain" />
+                  <div>
+                    <p className="text-xl font-black text-[#C9A84C]">{stat.value}</p>
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider">{stat.label}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
 
             {/* Mobile Sponsor */}
-            <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="lg:hidden mt-6 rounded-2xl border border-[#1E293B] flex items-center justify-center py-3"
-              data-sponsor-slot="registro-mobile">
-              <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+            <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Registro&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Registro.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="block rounded-2xl border border-dashed border-[#C9A84C]/30 bg-[#0B1825] py-4 text-center hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+              <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+              <p className="text-gray-500 text-sm group-hover:text-gray-400">info@sprintmarkt.com</p>
             </a>
           </div>
         </div>

@@ -1,6 +1,12 @@
 // src/data/creadores.ts
 // Datos de los creadores de ZonaMundial
 
+export interface RedSocial {
+  plataforma: 'youtube' | 'twitch' | 'tiktok' | 'instagram' | 'twitter' | 'threads';
+  url: string;
+  usuario: string;
+}
+
 export interface Creador {
   slug: string;
   nombre: string;
@@ -16,6 +22,7 @@ export interface Creador {
   pais: string;
   imagen: string;
   handle: string;
+  redes: RedSocial[];
 }
 
 // Importar imágenes desde el archivo de imágenes
@@ -37,6 +44,11 @@ export const CREADORES: Creador[] = [
     pais: 'España',
     imagen: CREADORES_IMGS.josecobo,
     handle: '@josecobo',
+    redes: [
+      { plataforma: 'youtube', url: 'https://youtube.com/@josecobo', usuario: '@josecobo' },
+      { plataforma: 'instagram', url: 'https://instagram.com/josecobo', usuario: '@josecobo' },
+      { plataforma: 'twitter', url: 'https://x.com/josecobo', usuario: '@josecobo' },
+    ],
   },
   {
     slug: 'svgiago',
@@ -53,6 +65,11 @@ export const CREADORES: Creador[] = [
     pais: 'España',
     imagen: CREADORES_IMGS.svgiago,
     handle: '@svgiago',
+    redes: [
+      { plataforma: 'twitch', url: 'https://twitch.tv/svgiago', usuario: 'svgiago' },
+      { plataforma: 'youtube', url: 'https://youtube.com/@svgiago', usuario: '@svgiago' },
+      { plataforma: 'twitter', url: 'https://x.com/svgiago', usuario: '@svgiago' },
+    ],
   },
   {
     slug: 'pimpeano',
@@ -69,6 +86,11 @@ export const CREADORES: Creador[] = [
     pais: 'Argentina',
     imagen: CREADORES_IMGS.pimpeano,
     handle: '@pimpeano',
+    redes: [
+      { plataforma: 'tiktok', url: 'https://tiktok.com/@pimpeano', usuario: '@pimpeano' },
+      { plataforma: 'instagram', url: 'https://instagram.com/pimpeano', usuario: '@pimpeano' },
+      { plataforma: 'youtube', url: 'https://youtube.com/@pimpeano', usuario: '@pimpeano' },
+    ],
   },
   {
     slug: 'nachocp',
@@ -85,6 +107,11 @@ export const CREADORES: Creador[] = [
     pais: 'Argentina / España',
     imagen: CREADORES_IMGS.nachocp,
     handle: '@nachocp',
+    redes: [
+      { plataforma: 'youtube', url: 'https://youtube.com/@nachocp', usuario: '@nachocp' },
+      { plataforma: 'twitter', url: 'https://x.com/nachocp', usuario: '@nachocp' },
+      { plataforma: 'instagram', url: 'https://instagram.com/nachocp', usuario: '@nachocp' },
+    ],
   },
   {
     slug: 'nereita',
@@ -101,6 +128,11 @@ export const CREADORES: Creador[] = [
     pais: 'España',
     imagen: CREADORES_IMGS.nereita,
     handle: '@nereita',
+    redes: [
+      { plataforma: 'instagram', url: 'https://instagram.com/nereita', usuario: '@nereita' },
+      { plataforma: 'tiktok', url: 'https://tiktok.com/@nereita', usuario: '@nereita' },
+      { plataforma: 'youtube', url: 'https://youtube.com/@nereita', usuario: '@nereita' },
+    ],
   },
   {
     slug: 'elopi23',
@@ -117,6 +149,11 @@ export const CREADORES: Creador[] = [
     pais: 'España',
     imagen: CREADORES_IMGS.elopi23,
     handle: '@elopi23',
+    redes: [
+      { plataforma: 'youtube', url: 'https://youtube.com/@elopi23', usuario: '@elopi23' },
+      { plataforma: 'twitter', url: 'https://x.com/elopi23', usuario: '@elopi23' },
+      { plataforma: 'instagram', url: 'https://instagram.com/elopi23', usuario: '@elopi23' },
+    ],
   },
   {
     slug: 'salvador',
@@ -133,6 +170,11 @@ export const CREADORES: Creador[] = [
     pais: 'México',
     imagen: CREADORES_IMGS.salvador,
     handle: '@salvador',
+    redes: [
+      { plataforma: 'twitch', url: 'https://twitch.tv/salvador', usuario: 'salvador' },
+      { plataforma: 'youtube', url: 'https://youtube.com/@salvador', usuario: '@salvador' },
+      { plataforma: 'tiktok', url: 'https://tiktok.com/@salvador', usuario: '@salvador' },
+    ],
   },
   {
     slug: 'franbar',
@@ -149,6 +191,11 @@ export const CREADORES: Creador[] = [
     pais: 'Argentina',
     imagen: CREADORES_IMGS.franbar,
     handle: '@franbar',
+    redes: [
+      { plataforma: 'twitter', url: 'https://x.com/franbar', usuario: '@franbar' },
+      { plataforma: 'instagram', url: 'https://instagram.com/franbar', usuario: '@franbar' },
+      { plataforma: 'threads', url: 'https://threads.net/@franbar', usuario: '@franbar' },
+    ],
   },
 ];
 

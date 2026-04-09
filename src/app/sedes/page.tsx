@@ -105,7 +105,7 @@ function EstadioCard({ sede, index, labels }: { sede: typeof SEDES[0]; index: nu
           />
         ) : (
           <div className="w-full h-full bg-gradient-to-br from-[#0F1D32] to-[#1a2a3f] flex items-center justify-center">
-            <span className="text-5xl">🏟️</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-12 h-12 object-contain inline-block" />
           </div>
         )}
         {/* Overlay gradient */}
@@ -197,7 +197,7 @@ function EstadioCard({ sede, index, labels }: { sede: typeof SEDES[0]; index: nu
         {sede.partidosDestacados.length > 0 && (
           <div className="pt-3 border-t border-white/5">
             <p className="text-xs text-[#8a94b0] flex items-center gap-1">
-              <span>⭐</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" className="w-4 h-4 object-contain inline-block" />
               <span className="truncate">{sede.partidosDestacados[0]}</span>
             </p>
           </div>
@@ -328,14 +328,14 @@ function EstadioDestacado({ sede, badge, badgeColor, index, labels }: { sede: ty
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-2xl">⚽</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-8 h-8 object-contain inline-block" />
             <div>
               <p className="text-xs text-[#6a7a9a]">{labels.partidos}</p>
               <p className="text-lg font-bold text-white">{sede.totalPartidos}</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-2xl">🌡️</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/streaming.png" alt="" className="w-8 h-8 object-contain inline-block" />
             <div>
               <p className="text-xs text-[#6a7a9a]">{labels.clima}</p>
               <p className="text-lg font-bold text-white">{sede.clima.tempMedia}</p>
@@ -704,8 +704,8 @@ export default function SedesIndex() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative overflow-hidden" style={{ padding: '20px 20px 60px' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_60%)]" />
-        <div className="absolute top-10 left-10 text-8xl opacity-[0.03] rotate-[-15deg] hero-emoji-1">🏟️</div>
-        <div className="absolute bottom-10 right-10 text-7xl opacity-[0.03] rotate-[15deg] hero-emoji-2">⚽</div>
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="absolute top-10 left-10 w-28 h-28 opacity-[0.06] rotate-[-15deg] pointer-events-none hero-emoji-1" />
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="absolute bottom-10 right-10 w-28 h-28 opacity-[0.06] rotate-[15deg] pointer-events-none hero-emoji-2" />
 
         <div className="max-w-6xl mx-auto relative">
           {/* Breadcrumb */}
@@ -753,9 +753,10 @@ export default function SedesIndex() {
       </section>
 
       {/* Sponsor */}
-      <div className="max-w-6xl mx-auto px-4 mb-12">
-        <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="sedes-hero">
-          <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-12 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Sedes&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Sedes.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
 
@@ -764,7 +765,7 @@ export default function SedesIndex() {
         <section ref={sedesDestacadasRef} className="max-w-6xl mx-auto px-4 mb-16">
           <div className="destacados-title flex items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-              <span className="text-2xl">⭐</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" className="w-8 h-8 object-contain inline-block" />
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-bold text-white">{sT.destacadas}</h2>
@@ -776,7 +777,7 @@ export default function SedesIndex() {
             {finalSede && (
               <EstadioDestacado
                 sede={finalSede}
-                badge="🏆 LA FINAL"
+                badge="LA FINAL"
                 badgeColor="#c9a84c"
                 index={0}
                 labels={destLabels}
@@ -785,7 +786,7 @@ export default function SedesIndex() {
             {inauguralSede && (
               <EstadioDestacado
                 sede={inauguralSede}
-                badge="🚀 INAUGURACIÓN"
+                badge="INAUGURACIÓN"
                 badgeColor="#22c55e"
                 index={1}
                 labels={destLabels}
@@ -794,7 +795,7 @@ export default function SedesIndex() {
             {semifinalSede && (
               <EstadioDestacado
                 sede={semifinalSede}
-                badge="⚽ SEMIFINAL"
+                badge="SEMIFINAL"
                 badgeColor="#3b82f6"
                 index={2}
                 labels={destLabels}
@@ -860,7 +861,7 @@ export default function SedesIndex() {
         <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 md:p-8 border border-white/5">
           <div className="guias-title flex items-center gap-4 mb-6">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-              <span className="text-2xl">🌎</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-8 h-8 object-contain inline-block" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white">{sT.infoViaje}</h2>
@@ -870,7 +871,7 @@ export default function SedesIndex() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="guia-card p-4 bg-[#060B14] rounded-xl border border-white/5 hover:border-[#c9a84c]/30 transition-all duration-300 hover:-translate-y-1">
-              <span className="text-3xl mb-3 block">🛂</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" alt="" className="w-10 h-10 object-contain mb-3 mx-auto" />
               <h3 className="font-bold text-white mb-2">{sT.visas}</h3>
               <ul className="text-sm text-[#8a94b0] space-y-1">
                 <li>• USA: ESTA o Visa B2</li>
@@ -879,7 +880,7 @@ export default function SedesIndex() {
               </ul>
             </div>
             <div className="guia-card p-4 bg-[#060B14] rounded-xl border border-white/5 hover:border-[#c9a84c]/30 transition-all duration-300 hover:-translate-y-1">
-              <span className="text-3xl mb-3 block">💱</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ligas privadas.png" alt="" className="w-10 h-10 object-contain mb-3 mx-auto" />
               <h3 className="font-bold text-white mb-2">{sT.currency}</h3>
               <ul className="text-sm text-[#8a94b0] space-y-1">
                 <li>• USA: Dólar USD</li>
@@ -888,7 +889,7 @@ export default function SedesIndex() {
               </ul>
             </div>
             <div className="guia-card p-4 bg-[#060B14] rounded-xl border border-white/5 hover:border-[#c9a84c]/30 transition-all duration-300 hover:-translate-y-1">
-              <span className="text-3xl mb-3 block">🌤️</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/streaming.png" alt="" className="w-10 h-10 object-contain mb-3 block" />
               <h3 className="font-bold text-white mb-2">{sT.weather}</h3>
               <ul className="text-sm text-[#8a94b0] space-y-1">
                 <li>• Junio: 15-35°C variable</li>
@@ -907,7 +908,7 @@ export default function SedesIndex() {
           <div className="cta-glow-2 absolute bottom-0 left-0 w-48 h-48 bg-[#c9a84c]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
           
           <div className="relative">
-            <span className="cta-emoji text-5xl mb-4 block">🎯</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="cta-emoji w-12 h-12 object-contain mb-4 block mx-auto" />
             <h2 className="cta-title text-3xl md:text-4xl font-black text-white mb-4">
               {sT.ctaTitle}
             </h2>
@@ -933,9 +934,10 @@ export default function SedesIndex() {
       </section>
 
       {/* Sponsor footer */}
-      <div className="max-w-6xl mx-auto px-4 mb-8">
-        <a href="#" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="sedes-footer">
-          <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_53_21 p.m..png" alt="Publicidad" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-8 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Sedes%20(footer)&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Sedes%20(footer).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
     </div>

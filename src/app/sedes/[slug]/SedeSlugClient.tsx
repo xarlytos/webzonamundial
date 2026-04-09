@@ -4,6 +4,7 @@
 import Link from 'next/link';
 import { useLanguage } from '@/i18n/LanguageContext';
 import type { Sede } from '@/data/sedes';
+import PartidosSede from '@/components/PartidosSede';
 
 const BG = "#060B14";
 const BG2 = "#0F1D32";
@@ -35,7 +36,14 @@ const STADIUM_IMAGES: Record<string, string> = {
 function StatCard({ value, label, icon }: { value: string; label: string; icon: string }) {
   return (
     <div className="p-4 bg-[#0B1825] rounded-2xl border border-white/5 hover:border-[#c9a84c]/30 transition-all group">
-      <span className="text-2xl mb-2 block">{icon}</span>
+      <span className="text-2xl mb-2 block">
+        {icon.startsWith('/') ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={icon} alt="" className="w-8 h-8 object-contain" />
+        ) : (
+          icon
+        )}
+      </span>
       <p className="text-2xl font-black text-[#c9a84c] group-hover:scale-105 transition-transform">{value}</p>
       <p className="text-xs text-[#6a7a9a] mt-1">{label}</p>
     </div>
@@ -46,7 +54,14 @@ function InfoCard({ title, icon, children }: { title: string; icon: string; chil
   return (
     <div className="bg-[#0B1825] rounded-2xl p-6 border border-white/5 hover:border-[#c9a84c]/20 transition-all">
       <div className="flex items-center gap-3 mb-4">
-        <span className="text-2xl">{icon}</span>
+        <span className="text-2xl">
+          {icon.startsWith('/') ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={icon} alt="" className="w-8 h-8 object-contain" />
+          ) : (
+            icon
+          )}
+        </span>
         <h3 className="text-lg font-bold text-white">{title}</h3>
       </div>
       {children}
@@ -104,7 +119,8 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
               />
             ) : (
               <div className="w-full h-full bg-gradient-to-br from-[#0F1D32] to-[#1a2a3f] flex items-center justify-center">
-                <span className="text-8xl">🏟️</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-20 h-20 object-contain" />
               </div>
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/60 to-transparent" />
@@ -118,12 +134,12 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
                 />
                 {isFinalSede && (
                   <span className="px-4 py-1.5 bg-[#c9a84c] text-[#060B14] text-sm font-black rounded-full">
-                    🏆 FINAL DEL MUNDIAL
+                    FINAL DEL MUNDIAL
                   </span>
                 )}
                 {sede.techoCerrado && (
                   <span className="px-3 py-1.5 bg-blue-500/20 text-blue-400 text-sm font-bold rounded-full border border-blue-500/30">
-                    🏠 TECHO
+                    TECHO RETRACTABLE
                   </span>
                 )}
               </div>
@@ -141,19 +157,25 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
         {/* Stats Grid */}
         <section className="mb-12">
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            <StatCard value={sede.capacidad.toLocaleString()} label={sT.capacidad} icon="👥" />
-            <StatCard value={sede.totalPartidos.toString()} label={sT.partidos} icon="⚽" />
-            <StatCard value={sede.clima.tempMedia} label={sT.temperatura} icon="🌡️" />
-            <StatCard value={`${sede.altitudMetros}m`} label={sT.altitud} icon="⛰️" />
-            <StatCard value={sede.zonaHoraria} label={sT.zonaHoraria} icon="🕐" />
-            <StatCard value={sede.transporte.codigoIATA} label={sT.aeropuerto} icon="✈️" />
+            <StatCard value={sede.capacidad.toLocaleString()} label={sT.capacidad} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" />
+            <StatCard value={sede.totalPartidos.toString()} label={sT.partidos} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" />
+            <StatCard value={sede.clima.tempMedia} label={sT.temperatura} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/streaming.png" />
+            <StatCard value={`${sede.altitudMetros}m`} label={sT.altitud} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/modo carrera.png" />
+            <StatCard value={sede.zonaHoraria} label={sT.zonaHoraria} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" />
+            <StatCard value={sede.transporte.codigoIATA} label={sT.aeropuerto} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/stories.png" />
           </div>
         </section>
 
         {/* Sponsor */}
-        <a href="#" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center mb-12 py-3" data-sponsor-slot="sede-banner">
-          <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_53_21 p.m..png" alt="Publicidad" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Sede&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Sede.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl flex flex-col items-center justify-center mb-12 py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
+
+        {/* Partidos en esta sede */}
+        <section className="mb-12">
+          <PartidosSede estadio={sede.estadio} />
+        </section>
 
         {/* Main content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
@@ -163,7 +185,8 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
             <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-                  <span className="text-2xl">📖</span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-8 h-8 object-contain" />
                 </div>
                 <h2 className="text-2xl font-bold text-white">{sT.historiaTitle}</h2>
               </div>
@@ -172,7 +195,7 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
               </p>
               <div className="p-4 bg-[#c9a84c]/10 border-l-4 border-[#c9a84c] rounded-r-xl">
                 <p className="text-[#c9a84c] font-semibold flex items-center gap-2">
-                  <span>💡</span> {sede.datosClave}
+                  <svg className="w-5 h-5 inline-block flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg> {sede.datosClave}
                 </p>
               </div>
             </section>
@@ -181,7 +204,8 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
             <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-                  <span className="text-2xl">⚽</span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-8 h-8 object-contain" />
                 </div>
                 <h2 className="text-2xl font-bold text-white">{sT.partidosTitle}</h2>
               </div>
@@ -225,7 +249,8 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
                   <div className="space-y-2">
                     {sede.partidosDestacados.map((p, i) => (
                       <div key={i} className="flex items-center gap-3 p-3 bg-[#060B14] rounded-xl border border-white/5">
-                        <span className="text-[#c9a84c]">⭐</span>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" className="w-4 h-4 object-contain inline-block" />
                         <span className="text-white">{p}</span>
                       </div>
                     ))}
@@ -238,7 +263,8 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
             <section className="bg-[#0B1825] rounded-2xl p-6 md:p-8 border border-white/5">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-                  <span className="text-2xl">🏟️</span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-8 h-8 object-contain" />
                 </div>
                 <h2 className="text-2xl font-bold text-white">{sT.datosTecnicos}</h2>
               </div>
@@ -268,25 +294,26 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
             {/* Travel guide */}
             <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 border border-white/5">
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-2xl">🧳</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/stories.png" alt="" className="w-8 h-8 object-contain" />
                 <h3 className="text-xl font-bold text-white">{sT.guiaViaje}</h3>
               </div>
 
               <div className="space-y-4">
-                <InfoCard title={sT.comoLlegar} icon="✈️">
+                <InfoCard title={sT.comoLlegar} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/stories.png">
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelAeropuerto}</strong> {sede.transporte.aeropuerto}</p>
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelCodigo}</strong> {sede.transporte.codigoIATA}</p>
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelAlEstadio}</strong> {sede.transporte.distanciaEstadio}</p>
                   <p className="text-[#8a94b0] text-sm"><strong className="text-white">{sT.labelTransporte}</strong> {sede.transporte.metroTren}</p>
                 </InfoCard>
 
-                <InfoCard title={sT.visaYDinero} icon="🛂">
+                <InfoCard title={sT.visaYDinero} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png">
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelVisa}</strong> {g.visa}</p>
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelIdioma}</strong> {g.idioma}</p>
                   <p className="text-[#8a94b0] text-sm"><strong className="text-white">{sT.labelMoneda}</strong> {g.moneda}</p>
                 </InfoCard>
 
-                <InfoCard title={sT.alojamiento} icon="🏨">
+                <InfoCard title={sT.alojamiento} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/ligas privadas.png">
                   <p className="text-[#8a94b0] text-sm mb-3">{g.costoAlojamiento}</p>
                   <p className="text-white text-sm font-semibold mb-2">{sT.zonasRecomendadas}</p>
                   <div className="flex flex-wrap gap-2">
@@ -296,17 +323,17 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
                   </div>
                 </InfoCard>
 
-                <InfoCard title={sT.clima} icon="🌡️">
+                <InfoCard title={sT.clima} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/streaming.png">
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelJunio}</strong> {sede.clima.junio}</p>
                   <p className="text-[#8a94b0] text-sm mb-2"><strong className="text-white">{sT.labelJulio}</strong> {sede.clima.julio}</p>
                   <p className="text-[#8a94b0] text-sm"><strong className="text-white">{sT.labelLluvia}</strong> {sede.clima.lluvia}</p>
                 </InfoCard>
 
-                <InfoCard title={sT.gastronomia} icon="🍽️">
+                <InfoCard title={sT.gastronomia} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/creadores.png">
                   <p className="text-[#8a94b0] text-sm">{g.gastronomia}</p>
                 </InfoCard>
 
-                <InfoCard title={sT.seguridad} icon="🔒">
+                <InfoCard title={sT.seguridad} icon="/img/zonamundial-images/imagenes/logos para sustuir emojis/ia coach.png">
                   <p className="text-[#8a94b0] text-sm mb-2">{g.seguridadNota}</p>
                   {g.fanZone && (
                     <p className="text-[#8a94b0] text-sm"><strong className="text-white">{sT.fanZone}</strong> {g.fanZone}</p>
@@ -334,17 +361,18 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
           <h2 className="text-2xl font-bold text-white mb-6">{sT.explorarMas}</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { href: '/sedes', icon: '🏟️', label: sT.todasLasSedes },
-              { href: '/calendario', icon: '📅', label: nav.calendario },
-              { href: '/selecciones', icon: '⚽', label: nav.selecciones },
-              { href: '/grupos', icon: '📊', label: nav.grupos },
+              { href: '/sedes', icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png', label: sT.todasLasSedes },
+              { href: '/calendario', icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png', label: nav.calendario },
+              { href: '/selecciones', icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png', label: nav.selecciones },
+              { href: '/grupos', icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png', label: nav.grupos },
             ].map(link => (
               <Link
                 key={link.href}
                 href={link.href}
                 className="flex items-center gap-3 p-4 bg-[#0B1825] rounded-xl border border-white/5 hover:border-[#c9a84c]/30 hover:text-[#c9a84c] transition-all group"
               >
-                <span className="text-xl group-hover:scale-110 transition-transform">{link.icon}</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={link.icon} alt="" className="w-6 h-6 object-contain group-hover:scale-110 transition-transform" />
                 <span className="font-medium">{link.label}</span>
               </Link>
             ))}
@@ -352,8 +380,9 @@ export default function SedeSlugClient({ sede }: { sede: Sede }) {
         </section>
 
         {/* Sponsor footer */}
-        <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="sede-footer">
-          <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Sede%20(footer)&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Sede%20(footer).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl flex flex-col items-center justify-center py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
     </div>

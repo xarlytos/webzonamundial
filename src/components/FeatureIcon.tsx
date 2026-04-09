@@ -46,6 +46,8 @@ const ICON_MAP: Record<string, string> = {
   'Badge y Perfil Premium': 'fantasy.png',
   'Ligas Premium Exclusivas': 'ligas privadas.png',
   'Soporte Prioritario': 'chat en vivo.png',
+  'Exportar Datos': 'ranking.png',
+  'Acceso Anticipado': 'micro-predicciones.png',
   
   // Features para headers de sección (usando imágenes temáticas)
   'Todo lo que necesitas': 'fantasy.png',

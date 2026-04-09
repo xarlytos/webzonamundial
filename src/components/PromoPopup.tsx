@@ -10,6 +10,9 @@ export default function PromoPopup() {
   const isEs = t.nav.inicio === "Inicio";
 
   useEffect(() => {
+    if (typeof window !== "undefined" && localStorage.getItem("promo_dismissed")) {
+      return;
+    }
     const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
@@ -17,6 +20,9 @@ export default function PromoPopup() {
   const handleClose = () => {
     setClosing(true);
     setTimeout(() => setVisible(false), 300);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("promo_dismissed", "true");
+    }
   };
 
   if (!visible) return null;

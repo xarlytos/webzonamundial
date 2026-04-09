@@ -74,8 +74,9 @@ export default function CampeonesClient() {
               <img src={`https://flagcdn.com/w80/${d.flag}.png`}
                 className="w-10 h-7 sm:w-12 sm:h-8 rounded object-cover mx-auto border border-[#1E293B]"
                 alt={name} />
-              <div className="text-xl sm:text-2xl font-black text-[#C9A84C] mt-2">
-                {'🏆'.repeat(d.count)}
+              <div className="text-xl sm:text-2xl font-black text-[#C9A84C] mt-2 flex items-center justify-center gap-1">
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-5 h-5 sm:w-6 sm:h-6 object-contain" />
+                <span>&times;{d.count}</span>
               </div>
               <div className="text-sm font-bold text-white mt-1">{name}</div>
               <div className="text-[10px] text-gray-500 mt-0.5">{d.years}</div>
@@ -145,13 +146,13 @@ export default function CampeonesClient() {
                 </span>
               </div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="text-base">🏆</span>
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-5 h-5 object-contain" />
                 <img src={`https://flagcdn.com/w20/${c.champFlag}.png`} className="w-5 h-3.5 rounded-[1px] object-cover" alt="" />
                 <span className="text-sm font-bold text-white">{c.champion}</span>
                 <span className="text-xs text-gray-500">{c.final}</span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-base">🥈</span>
+                <span className="text-base font-bold" style={{ color: '#A0AEC0' }}>2&#186;</span>
                 <img src={`https://flagcdn.com/w20/${c.ruFlag}.png`} className="w-5 h-3.5 rounded-[1px] object-cover" alt="" />
                 <span className="text-xs text-gray-400">{c.runnerUp}</span>
               </div>
@@ -164,7 +165,7 @@ export default function CampeonesClient() {
       {/* NEXT EDITION CTA */}
       <div className="text-center p-5 sm:p-7 rounded-2xl border border-[#C9A84C22] mb-6"
         style={{ background: 'linear-gradient(135deg, rgba(201,168,76,0.06), rgba(15,23,42,0.3))' }}>
-        <div className="text-3xl mb-2">🏆</div>
+        <div className="mb-2 flex justify-center"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-8 h-8 object-contain" /></div>
         <h2 className="text-lg sm:text-xl font-bold text-white mb-2">{cT.cta1Title}</h2>
         <p className="text-sm text-gray-400 mb-4">{cT.cta1Desc}</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -180,9 +181,9 @@ export default function CampeonesClient() {
 
       {/* Links */}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-        <Link href="/historia" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline">🏟️ {nav.historia}</Link>
-        <Link href="/grupos" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline">📊 {nav.grupos}</Link>
-        <Link href="/selecciones" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline">⚽ {nav.selecciones}</Link>
+        <Link href="/historia" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline flex items-center gap-1.5"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-4 h-4 object-contain" /> {nav.historia}</Link>
+        <Link href="/grupos" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline flex items-center gap-1.5"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png" alt="" className="w-4 h-4 object-contain" /> {nav.grupos}</Link>
+        <Link href="/selecciones" className="p-3 bg-[#0B1825] border border-[#1a2a3f] rounded-lg text-gray-300 hover:border-[#C9A84C] hover:text-[#C9A84C] transition-all text-xs no-underline flex items-center gap-1.5"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-4 h-4 object-contain" /> {nav.selecciones}</Link>
       </div>
     </>
   );

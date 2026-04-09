@@ -60,9 +60,9 @@ export default function PrediccionesPage() {
   ];
 
   const appFeatures = [
-    { icon: "⚽", title: pT.feat1Title, desc: pT.feat1Desc },
-    { icon: "📊", title: pT.feat2Title, desc: pT.feat2Desc },
-    { icon: "💎", title: pT.feat3Title, desc: pT.feat3Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png", title: pT.feat1Title, desc: pT.feat1Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png", title: pT.feat2Title, desc: pT.feat2Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png", title: pT.feat3Title, desc: pT.feat3Desc },
   ];
 
   useEffect(() => {
@@ -157,8 +157,8 @@ export default function PrediccionesPage() {
       {/* HERO SECTION */}
       <section style={{padding:"20px 20px 60px",textAlign:"center",position:"relative",overflow:"hidden"}}>
         <div style={{position:"absolute",inset:0,background:"radial-gradient(ellipse at center,rgba(201,168,76,0.08) 0%,transparent 60%)"}}/>
-        <div data-hero-decor style={{position:"absolute",top:"10%",left:"5%",fontSize:120,opacity:0.03,transform:"rotate(-15deg)"}}>🎯</div>
-        <div data-hero-decor style={{position:"absolute",bottom:"10%",right:"5%",fontSize:100,opacity:0.03,transform:"rotate(15deg)"}}>🏆</div>
+        <img data-hero-decor src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{position:"absolute",top:"10%",left:"5%",width:120,height:120,opacity:0.06,transform:"rotate(-15deg)",pointerEvents:"none"}} />
+        <img data-hero-decor src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" style={{position:"absolute",bottom:"10%",right:"5%",width:100,height:100,opacity:0.06,transform:"rotate(15deg)",pointerEvents:"none"}} />
 
         <div style={{maxWidth:800,margin:"0 auto",position:"relative"}}>
           <span data-hero-badge style={{color:GOLD,fontSize:12,fontWeight:700,letterSpacing:3,textTransform:"uppercase",display:"inline-block"}}>{pT.badge}</span>
@@ -223,7 +223,7 @@ export default function PrediccionesPage() {
               <div data-app-features style={{display:"flex",flexDirection:"column",gap:16}}>
                 {appFeatures.map((feat, i) => (
                   <div key={i} data-app-feature data-hover-card style={{display:"flex",alignItems:"center",gap:16,padding:16,borderRadius:12,background:BG2,border:"1px solid rgba(255,255,255,0.05)",cursor:"pointer"}}>
-                    <div style={{width:44,height:44,borderRadius:10,background:`${GOLD}20`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:20,flexShrink:0}}>{feat.icon}</div>
+                    <div style={{width:44,height:44,borderRadius:10,background:`${GOLD}20`,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><img src={feat.icon} alt="" style={{width:28,height:28,objectFit:"contain"}} /></div>
                     <div>
                       <div style={{fontWeight:700,fontSize:15}}>{feat.title}</div>
                       <div style={{fontSize:13,color:DIM}}>{feat.desc}</div>

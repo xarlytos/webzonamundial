@@ -398,7 +398,7 @@ export default function FantasyPage() {
                   <img src={`https://flagcdn.com/w40/${item.code}.png`} alt={item.pais} style={{width:32,height:20,borderRadius:3,flexShrink:0}} />
                   <div style={{flex:1,minWidth:0}}>
                     <div style={{fontWeight:700,fontSize:13,color:item.doble?GOLD:'#fff',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
-                      {item.pais} {item.doble?'⭐':''}
+                      {item.pais} {item.doble && <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" style={{width:16,height:16,objectFit:"contain",display:"inline-block",verticalAlign:"middle"}} />}
                     </div>
                     <div style={{fontSize:11,color:DIM,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>
                       {item.jug}

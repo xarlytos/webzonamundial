@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import SimuladorGrupos from '@/components/SimuladorGrupos';
 import FlagImage from '@/components/FlagImage';
+import TablaClasificacion from '@/components/TablaClasificacion';
+import CalendarioGrupo from '@/components/CalendarioGrupo';
 import { useLanguage } from '@/i18n/LanguageContext';
 import type { Seleccion } from '@/data/selecciones';
 
@@ -106,14 +108,19 @@ export default function GrupoSlugClient({ letter, selecciones }: Props) {
           <div className="lg:col-span-2 space-y-6">
             {/* Sponsor Banner */}
             <a
-              href="https://rotulemos.com" target="_blank" rel="noopener noreferrer"
-              className="w-full rounded-3xl flex items-center justify-center border border-white/5 py-3"
+              href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Grupo&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Grupo.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias."
+              className="w-full rounded-3xl flex flex-col items-center justify-center border border-dashed border-[#C9A84C]/30 py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group"
               style={{ background: '#0B0F1A' }}
-              data-sponsor-slot="grupo-hero"
-              data-group={letter}
             >
-              <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+              <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+              <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
             </a>
+
+            {/* Tabla de Clasificación */}
+            <TablaClasificacion selecciones={selecciones} groupColor={groupColor} />
+
+            {/* Calendario de Partidos */}
+            <CalendarioGrupo grupo={letter} groupColor={groupColor} />
 
             {/* Simulador Card */}
             <div className="rounded-3xl border border-white/5 overflow-hidden" style={{ background: '#0B0F1A' }}>
@@ -123,7 +130,7 @@ export default function GrupoSlugClient({ letter, selecciones }: Props) {
               >
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${groupColor}20` }}>
-                    <span style={{ color: groupColor }}>🎮</span>
+                    <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="w-6 h-6 object-contain" />
                   </div>
                   <div>
                     <h2 className="text-lg font-bold text-white">{gsT.simuladorGrupo} {letter}</h2>
@@ -146,7 +153,7 @@ export default function GrupoSlugClient({ letter, selecciones }: Props) {
             <div className="rounded-3xl p-6 border border-white/5" style={{ background: '#0B0F1A' }}>
               <div className="flex items-center gap-3 mb-5">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: `${groupColor}15` }}>
-                  <span style={{ color: groupColor }}>⚽</span>
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-6 h-6 object-contain" />
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white">{gT.stats.equipos}</h3>
@@ -173,8 +180,8 @@ export default function GrupoSlugClient({ letter, selecciones }: Props) {
                       <p className="text-xs text-gray-500">{team.confederacion}</p>
                     </div>
                     <div className="flex items-center gap-1.5">
-                      {team.mejorResultado?.includes('Campeón') && <span className="text-xs" title={team.mejorResultado}>🏆</span>}
-                      {team.esAnfitrion && <span className="text-xs">🏟️</span>}
+                      {team.mejorResultado?.includes('Campeón') && <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15"><path d="M5 3h14l-1.5 6H20l-8 12v-8H7l2-10z"/></svg>}
+                      {team.esAnfitrion && <svg width="12" height="12" viewBox="0 0 24 24" fill="#4ade80"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 3.5L18 12h-1.5v6h-9v-6H6L12 5.5z"/></svg>}
                     </div>
                   </Link>
                 ))}
@@ -184,7 +191,7 @@ export default function GrupoSlugClient({ letter, selecciones }: Props) {
             {/* CTA Card */}
             <div className="rounded-3xl p-6 border" style={{ background: `${groupColor}10`, borderColor: `${groupColor}30` }}>
               <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4" style={{ background: `${groupColor}20` }}>
-                <span className="text-2xl">🏆</span>
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="w-8 h-8 object-contain" />
               </div>
               <h3 className="font-bold text-white text-lg mb-2">{gsT.quienGanara}</h3>
               <p className="text-sm text-gray-400 mb-5">{gsT.quienGanaraDesc}</p>

@@ -80,10 +80,10 @@ export default function ModoCarreraPage() {
   ];
 
   const partidoFeatures = [
-    { icon: "⏱️", text: mcT.partidoFeat1 },
-    { icon: "🎲", text: mcT.partidoFeat2 },
-    { icon: "📝", text: mcT.partidoFeat3 },
-    { icon: "⚽", text: mcT.partidoFeat4 },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png", text: mcT.partidoFeat1 },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/micro-predicciones.png", text: mcT.partidoFeat2 },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", text: mcT.partidoFeat3 },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png", text: mcT.partidoFeat4 },
   ];
 
   useEffect(() => {
@@ -296,7 +296,7 @@ export default function ModoCarreraPage() {
           <div data-tactica-grid style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 32 }}>
             {/* Formaciones */}
             <div data-tactica-card data-hover-card style={{ padding: 28, borderRadius: 20, background: BG2, border: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
-              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD }}>📋 {mcT.formacionesSectionTitle}</h3>
+              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD, display: "flex", alignItems: "center", gap: 8 }}><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/modo carrera.png" alt="" style={{ width: 24, height: 24, objectFit: "contain" }} /> {mcT.formacionesSectionTitle}</h3>
               <div data-formaciones-grid style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12 }}>
                 {formations.map((f, i) => (
                   <div key={i} data-formacion-item data-hover-card style={{ padding: 16, borderRadius: 12, background: BG3, textAlign: "center", cursor: "pointer" }}>
@@ -309,7 +309,7 @@ export default function ModoCarreraPage() {
 
             {/* Tácticas */}
             <div data-tactica-card data-hover-card style={{ padding: 28, borderRadius: 20, background: BG2, border: "1px solid rgba(255,255,255,0.05)", cursor: "pointer" }}>
-              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD }}>🎮 {mcT.tacticasSectionTitle}</h3>
+              <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 20, color: GOLD, display: "flex", alignItems: "center", gap: 8 }}><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/modo carrera.png" alt="" style={{ width: 24, height: 24, objectFit: "contain" }} /> {mcT.tacticasSectionTitle}</h3>
               <div data-tacticas-list style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {tactics.map((tac, i) => (
                   <div key={i} data-tactica-item data-hover-card style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: 14, borderRadius: 10, background: BG3, cursor: "pointer" }}>
@@ -330,7 +330,7 @@ export default function ModoCarreraPage() {
             <div data-torneo-content>
               <div style={{ marginBottom: 32 }}>
                 <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800, marginBottom: 24 }}>
-                  🏟️ {mcT.torneoTitle}
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} /> {mcT.torneoTitle}
                 </h2>
               </div>
 
@@ -377,7 +377,7 @@ export default function ModoCarreraPage() {
             <div data-partidos-content>
               <span style={{ color: GOLD, fontSize: 12, fontWeight: 700, letterSpacing: 2, textTransform: "uppercase" }}>{mcT.step4Label}</span>
               <h2 style={{ fontSize: "clamp(28px,4vw,40px)", fontWeight: 800, marginTop: 16, marginBottom: 24 }}>
-                ⚽ {mcT.partidosTitle} <span style={{ color: GOLD }}>{mcT.partidosTitleHighlight}</span>
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} /> {mcT.partidosTitle} <span style={{ color: GOLD }}>{mcT.partidosTitleHighlight}</span>
               </h2>
               <p style={{ color: MID, fontSize: 17, lineHeight: 1.7, marginBottom: 32 }}>
                 {mcT.partidosDesc}
@@ -385,7 +385,7 @@ export default function ModoCarreraPage() {
               <div data-partido-features style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {partidoFeatures.map((item, i) => (
                   <div key={i} data-partido-feature style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
-                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    <img src={item.icon} alt="" style={{ width: 20, height: 20, objectFit: "contain", flexShrink: 0 }} />
                     {item.text}
                   </div>
                 ))}
@@ -403,7 +403,7 @@ export default function ModoCarreraPage() {
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div data-logros-header style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
-              🏅 {mcT.logrosSectionTitle}
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" style={{ width: 32, height: 32, objectFit: "contain", display: "inline-block", verticalAlign: "middle" }} /> {mcT.logrosSectionTitle}
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>{mcT.logrosDesc}</p>
           </div>

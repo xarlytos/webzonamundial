@@ -403,18 +403,18 @@ const CREATORS=[
 ];
 
 const MODULES_BASE = [
-  { key: "matchCenter",  icon: ICON_V3.matchCenter,  color: "#c9a84c" },
-  { key: "predicciones", icon: ICON_V3.predicciones, color: "#ef4444" },
-  { key: "fantasy",      icon: ICON_V3.fantasy,      color: "#3b82f6" },
-  { key: "iaCoach",      icon: ICON_V3.iaCoach,      color: "#22c55e" },
-  { key: "streaming",    icon: ICON_V3.streaming,    color: "#f97316" },
-  { key: "trivia",       icon: ICON_V3.trivia,       color: "#a855f7" },
-  { key: "carrera",      icon: ICON_V3.carrera,      color: "#ec4899" },
-  { key: "ligas",        icon: ICON_V3.ligas,        color: "#14b8a6" },
-  { key: "rankings",     icon: ICON_V3.rankings,     color: "#f59e0b" },
-  { key: "chat",         icon: ICON_V3.chat,         color: "#6366f1" },
-  { key: "microPred",    icon: ICON_V3.microPred,    color: "#dc2626" },
-  { key: "stories",      icon: ICON_V3.stories,      color: "#8b5cf6" },
+  { key: "matchCenter",  icon: ICON_V3.matchCenter,  color: "#c9a84c", href: "/la-app" },
+  { key: "predicciones", icon: ICON_V3.predicciones, color: "#ef4444", href: "/app/predicciones" },
+  { key: "fantasy",      icon: ICON_V3.fantasy,      color: "#3b82f6", href: "/app/fantasy" },
+  { key: "iaCoach",      icon: ICON_V3.iaCoach,      color: "#22c55e", href: "/app/ia-coach" },
+  { key: "streaming",    icon: ICON_V3.streaming,    color: "#f97316", href: "/app/streaming" },
+  { key: "trivia",       icon: ICON_V3.trivia,       color: "#a855f7", href: "/app/trivia" },
+  { key: "carrera",      icon: ICON_V3.carrera,      color: "#ec4899", href: "/app/modo-carrera" },
+  { key: "ligas",        icon: ICON_V3.ligas,        color: "#14b8a6", href: "/app/ligas" },
+  { key: "rankings",     icon: ICON_V3.rankings,     color: "#f59e0b", href: "/la-app" },
+  { key: "chat",         icon: ICON_V3.chat,         color: "#6366f1", href: "/la-app" },
+  { key: "microPred",    icon: ICON_V3.microPred,    color: "#dc2626", href: "/la-app" },
+  { key: "stories",      icon: ICON_V3.stories,      color: "#8b5cf6", href: "/la-app" },
 ] as const;
 
 const SPONSORS = [
@@ -776,28 +776,62 @@ export default function HomePage(){
         </div>
       </section>
 
-      {/* ═══════ DESCUBRE LA APP ═══════ */}
+      {/* ═══════ ¿POR QUÉ SOMOS DIFERENTES? ═══════ */}
       <section className="py-24 px-4 relative overflow-hidden" style={{background:BG2}}>
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[450px] bg-[#C9A84C]/5 blur-[180px] rounded-full pointer-events-none"/>
-
-        <div ref={cardsRef} className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <span className="inline-block px-5 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] text-xs font-bold tracking-wider uppercase mb-6">
-              {h.platform.badge}
-            </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-white mb-5">
-              {h.platform.title}
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto text-lg leading-relaxed">
-              {h.platform.subtitle}
-            </p>
-          </div>
-
-          {/* Why we are the perfect app */}
-          <div className="relative mb-14 rounded-3xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] overflow-hidden p-10 sm:p-14">
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="relative rounded-3xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#0B1825] to-[#0F1D32] overflow-hidden p-10 sm:p-14">
             <div className="absolute inset-0 bg-gradient-to-br from-[#C9A84C]/5 via-transparent to-blue-900/10 pointer-events-none"/>
+
+            {/* Watermark ilustración sutil — lado derecho */}
+            <svg className="absolute -right-10 top-1/2 -translate-y-1/2 w-[500px] h-[500px] opacity-[0.04] pointer-events-none" viewBox="0 0 500 500" fill="none">
+              {/* Balón grande */}
+              <circle cx="250" cy="250" r="180" stroke="#c9a84c" strokeWidth="2"/>
+              <circle cx="250" cy="250" r="120" stroke="#c9a84c" strokeWidth="1.5"/>
+              <circle cx="250" cy="250" r="60" stroke="#c9a84c" strokeWidth="1"/>
+              {/* Pentágonos del balón */}
+              <polygon points="250,90 280,140 265,195 235,195 220,140" stroke="#c9a84c" strokeWidth="1.5" fill="#c9a84c" fillOpacity="0.1"/>
+              <polygon points="370,200 350,260 300,280 280,230 310,180" stroke="#c9a84c" strokeWidth="1.5" fill="#c9a84c" fillOpacity="0.1"/>
+              <polygon points="130,200 150,260 200,280 220,230 190,180" stroke="#c9a84c" strokeWidth="1.5" fill="#c9a84c" fillOpacity="0.1"/>
+              <polygon points="310,370 280,330 295,270 335,260 355,310" stroke="#c9a84c" strokeWidth="1.5" fill="#c9a84c" fillOpacity="0.1"/>
+              <polygon points="190,370 220,330 205,270 165,260 145,310" stroke="#c9a84c" strokeWidth="1.5" fill="#c9a84c" fillOpacity="0.1"/>
+              {/* Líneas radiales */}
+              <line x1="250" y1="70" x2="250" y2="190" stroke="#c9a84c" strokeWidth="0.8"/>
+              <line x1="420" y1="250" x2="310" y2="250" stroke="#c9a84c" strokeWidth="0.8"/>
+              <line x1="80" y1="250" x2="190" y2="250" stroke="#c9a84c" strokeWidth="0.8"/>
+              <line x1="340" y1="400" x2="290" y2="310" stroke="#c9a84c" strokeWidth="0.8"/>
+              <line x1="160" y1="400" x2="210" y2="310" stroke="#c9a84c" strokeWidth="0.8"/>
+              {/* Estrellas decorativas */}
+              <circle cx="100" cy="100" r="3" fill="#c9a84c"/>
+              <circle cx="400" cy="120" r="2" fill="#c9a84c"/>
+              <circle cx="420" cy="400" r="3" fill="#c9a84c"/>
+              <circle cx="80" cy="380" r="2" fill="#c9a84c"/>
+              {/* Trofeo sutil arriba-derecha */}
+              <path d="M380,60 L380,90 Q380,110 370,110 L390,110 Q380,110 380,90" stroke="#c9a84c" strokeWidth="1.2" fill="none"/>
+              <path d="M365,60 L395,60" stroke="#c9a84c" strokeWidth="1.2"/>
+              <path d="M370,110 L390,110 L385,120 L375,120 Z" stroke="#c9a84c" strokeWidth="1" fill="#c9a84c" fillOpacity="0.15"/>
+            </svg>
+
+            {/* Watermark ilustración sutil — lado izquierdo */}
+            <svg className="absolute -left-10 top-1/2 -translate-y-1/2 w-[400px] h-[400px] opacity-[0.03] pointer-events-none" viewBox="0 0 400 400" fill="none">
+              {/* Campo de fútbol */}
+              <rect x="50" y="80" width="300" height="240" rx="8" stroke="#c9a84c" strokeWidth="1.5"/>
+              <line x1="200" y1="80" x2="200" y2="320" stroke="#c9a84c" strokeWidth="1.2"/>
+              <circle cx="200" cy="200" r="50" stroke="#c9a84c" strokeWidth="1.2"/>
+              <circle cx="200" cy="200" r="3" fill="#c9a84c"/>
+              {/* Área izquierda */}
+              <rect x="50" y="140" width="60" height="120" stroke="#c9a84c" strokeWidth="1"/>
+              <rect x="50" y="170" width="25" height="60" stroke="#c9a84c" strokeWidth="0.8"/>
+              {/* Área derecha */}
+              <rect x="290" y="140" width="60" height="120" stroke="#c9a84c" strokeWidth="1"/>
+              <rect x="325" y="170" width="25" height="60" stroke="#c9a84c" strokeWidth="0.8"/>
+              {/* Arcos */}
+              <path d="M110,170 Q130,200 110,230" stroke="#c9a84c" strokeWidth="0.8" fill="none"/>
+              <path d="M290,170 Q270,200 290,230" stroke="#c9a84c" strokeWidth="0.8" fill="none"/>
+            </svg>
+
             <div className="relative z-10 max-w-4xl mx-auto text-center">
-              <p className="text-[#C9A84C] text-sm font-bold tracking-widest uppercase mb-6">{h.platform.whyBadge}</p>
+              <p className="text-[#C9A84C] text-sm font-bold tracking-widest uppercase mb-6">{"¿"}{h.platform.whyBadge}{"?"}</p>
               <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight mb-8">
                 {h.platform.whyTitle1} <span className="text-[#C9A84C]">{h.platform.whyTitleBold}</span> {h.platform.whyTitle2}
               </h3>
@@ -824,25 +858,6 @@ export default function HomePage(){
             </div>
           </div>
 
-          {/* More features row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-            {[
-              {icon: ICON_V3.streaming, title: t.nav.streaming,     desc: h.platform.streamingDesc, color: "#ef4444", href: "/app/streaming"},
-              {icon: ICON_V3.iaCoach,   title: t.nav.iaCoach,       desc: h.platform.iaCoachDesc,   color: "#22c55e", href: "/app/ia-coach"},
-              {icon: ICON_V3.chat,      title: "Chat",               desc: h.platform.chatDesc,      color: "#3b82f6", href: "/app/chat"},
-              {icon: ICON_V3.rankings,  title: "Rankings",            desc: h.platform.rankingsDesc,  color: "#f59e0b", href: "/app/rankings"},
-            ].map((feature) => (
-              <Link key={feature.title} href={feature.href} className="group p-5 rounded-2xl border border-white/5 bg-[#0B1825]/50 hover:bg-[#0B1825] transition-all text-center hover:border-white/10">
-                <div className="mb-3 flex justify-center">
-                  <div className="p-3 rounded-xl bg-white/5 group-hover:scale-110 transition-transform duration-300 w-12 h-12 flex items-center justify-center">
-                    {feature.icon}
-                  </div>
-                </div>
-                <h4 className="text-base font-bold text-white mb-1">{feature.title}</h4>
-                <p className="text-xs text-gray-500">{feature.desc}</p>
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -851,7 +866,7 @@ export default function HomePage(){
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#C9A84C]/5 blur-[150px] rounded-full pointer-events-none"/>
 
         {/* Header + texto */}
-        <div className="max-w-5xl mx-auto px-4 text-center mb-16 relative">
+        <div ref={cardsRef} className="max-w-5xl mx-auto px-4 text-center mb-16 relative">
           <span className="inline-block px-5 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 text-[#C9A84C] text-xs font-bold tracking-wider uppercase mb-6">
             {h.features.badge}
           </span>
@@ -882,22 +897,22 @@ export default function HomePage(){
         >
           <div className="flex gap-4" style={{ width:"max-content", animation:"carousel-left 75s linear infinite", animationPlayState: isPaused || isDragging ? "paused" : "running" }}>
             {[...MODULES, ...MODULES].map((m, i) => (
-              <div
+              <Link
                 key={i}
+                href={m.href}
                 className="flex-shrink-0 w-64 group select-none"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => !isDragging && setIsPaused(false)}
+                draggable={false}
               >
                 <div
-                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400"
+                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400 hover:border-opacity-60"
                   style={{
                     background: `linear-gradient(135deg, ${m.color}0D 0%, #0B1825 60%)`,
                     border: `1px solid ${m.color}22`,
                   }}
                 >
-                  {/* glow de fondo */}
                   <div className="absolute -top-6 -left-6 w-24 h-24 rounded-full blur-2xl opacity-20 pointer-events-none" style={{ background: m.color }}/>
-                  {/* icono grande */}
                   <div
                     className="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
                     style={{ background: `${m.color}1A`, boxShadow: `0 0 0 1px ${m.color}30` }}
@@ -908,10 +923,9 @@ export default function HomePage(){
                   </div>
                   <h3 className="text-white font-bold text-[15px] mb-2 leading-tight group-hover:text-opacity-80 transition-colors">{m.title}</h3>
                   <p className="text-gray-500 text-xs leading-relaxed">{m.desc}</p>
-                  {/* línea inferior coloreada */}
                   <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl opacity-50" style={{ background: `linear-gradient(90deg, ${m.color}, transparent)` }}/>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -935,14 +949,16 @@ export default function HomePage(){
         >
           <div className="flex gap-4" style={{ width:"max-content", animation:"carousel-right 85s linear infinite", animationPlayState: isPaused || isDragging ? "paused" : "running" }}>
             {[...MODULES.slice(4), ...MODULES, ...MODULES.slice(0, 4)].map((m, i) => (
-              <div
+              <Link
                 key={i}
+                href={m.href}
                 className="flex-shrink-0 w-64 group select-none"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => !isDragging && setIsPaused(false)}
+                draggable={false}
               >
                 <div
-                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400"
+                  className="relative h-full p-5 rounded-2xl overflow-hidden transition-all duration-400 hover:border-opacity-60"
                   style={{
                     background: `linear-gradient(135deg, ${m.color}0D 0%, #0B1825 60%)`,
                     border: `1px solid ${m.color}22`,
@@ -961,7 +977,7 @@ export default function HomePage(){
                   <p className="text-gray-500 text-xs leading-relaxed">{m.desc}</p>
                   <div className="absolute bottom-0 left-0 right-0 h-[2px] rounded-b-2xl opacity-50" style={{ background: `linear-gradient(90deg, ${m.color}, transparent)` }}/>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -985,12 +1001,15 @@ export default function HomePage(){
         `}</style>
       </section>
 
-      {/* ═══════ AD SPACE 1 — Espacio de Patrocinador ═══════ */}
-      <div className="w-full border-y border-white/5 py-8 sm:py-12 relative" style={{background:"#07101C"}}>
-        <p className="text-center text-[#C9A84C]/50 text-[11px] font-bold tracking-widest uppercase mb-6 select-none">{h.sponsors.official}</p>
-        <div className="max-w-4xl mx-auto px-4 flex items-center justify-center">
-          <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="block">
-            <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos - Patrocinador Oficial" className="rounded-xl hover:scale-105 transition-transform duration-300" style={{maxWidth:"100%",height:"auto"}} />
+      {/* ═══════ AD SPACE 1 — Espacio Disponible ═══════ */}
+      <div className="w-full border-y border-white/5 py-8 sm:py-10 relative" style={{background:"#07101C"}}>
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <a
+            href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20Espacio%20Banner%201&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20vuestra%20web%20(Banner%20Home%201).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias."
+            className="inline-block px-8 py-4 rounded-2xl border border-dashed border-[#C9A84C]/30 bg-[#C9A84C]/5 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/50 transition-all duration-300 group"
+          >
+            <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+            <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
           </a>
         </div>
       </div>
@@ -1041,12 +1060,15 @@ export default function HomePage(){
         </div>
       </section>
 
-      {/* ═══════ AD SPACE 2 — Espacio de Patrocinador Premium ═══════ */}
-      <div className="w-full border-y border-white/5 py-8 sm:py-12 relative" style={{background:"#07101C"}}>
-        <p className="text-center text-[#C9A84C]/50 text-[11px] font-bold tracking-widest uppercase mb-6 select-none">{h.sponsors.premium}</p>
-        <div className="max-w-4xl mx-auto px-4 flex items-center justify-center">
-          <a href="#" target="_blank" rel="noopener noreferrer" className="block">
-            <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_53_21 p.m..png" alt="Publicidad" className="rounded-xl hover:scale-105 transition-transform duration-300" style={{maxWidth:"100%",height:"auto"}} />
+      {/* ═══════ AD SPACE 2 — Espacio Disponible ═══════ */}
+      <div className="w-full border-y border-white/5 py-8 sm:py-10 relative" style={{background:"#07101C"}}>
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <a
+            href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20Espacio%20Banner%202&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20vuestra%20web%20(Banner%20Home%202).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias."
+            className="inline-block px-8 py-4 rounded-2xl border border-dashed border-[#C9A84C]/30 bg-[#C9A84C]/5 hover:bg-[#C9A84C]/10 hover:border-[#C9A84C]/50 transition-all duration-300 group"
+          >
+            <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+            <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
           </a>
         </div>
       </div>
@@ -1092,29 +1114,95 @@ export default function HomePage(){
         </div>
       </section>
 
+      {/* ═══════ APP BANNER — Próximamente ═══════ */}
+      <section className="py-20 px-4 relative overflow-hidden" style={{background:BG2}}>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#C9A84C]/5 via-transparent to-[#C9A84C]/5 pointer-events-none"/>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[#C9A84C]/5 blur-[150px] rounded-full pointer-events-none"/>
+
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/10 mb-6">
+            <span className="w-2 h-2 rounded-full bg-[#C9A84C] animate-pulse"/>
+            <span className="text-[#C9A84C] text-xs font-bold tracking-widest uppercase">{h.appBanner.coming}</span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white mb-4">
+            {h.appBanner.title}
+          </h2>
+          <p className="text-gray-400 text-lg mb-10 max-w-xl mx-auto">
+            {h.appBanner.subtitle}
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {/* App Store button */}
+            <button
+              disabled
+              className="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 opacity-50 cursor-not-allowed select-none"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 21.99 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09997 21.99C7.78997 22.03 6.79997 20.68 5.95997 19.47C4.24997 17 2.93997 12.45 4.69997 9.39C5.56997 7.87 7.12997 6.91 8.81997 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.09 16.67C20.06 16.74 19.67 18.11 18.71 19.5ZM13 3.5C13.73 2.67 14.94 2.04 15.94 2C16.07 3.17 15.6 4.35 14.9 5.19C14.21 6.04 13.07 6.7 11.95 6.61C11.8 5.46 12.36 4.26 13 3.5Z"/>
+              </svg>
+              <div className="text-left">
+                <div className="text-[10px] text-gray-400 leading-none">App Store</div>
+                <div className="text-sm font-bold text-white leading-tight">iOS</div>
+              </div>
+            </button>
+
+            {/* Google Play button */}
+            <button
+              disabled
+              className="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl bg-white/5 border border-white/10 opacity-50 cursor-not-allowed select-none"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M3.60897 1.81641L13.793 12L3.60897 22.1836C3.22597 21.8146 3.00097 21.2956 3.00097 20.7176V3.28241C3.00097 2.70441 3.22597 2.18541 3.60897 1.81641ZM14.793 13L17.713 15.92L5.41697 22.834C5.09197 23.017 4.73497 23.102 4.38097 23.087L14.793 13ZM14.793 11L4.38097 0.912413C4.73497 0.897413 5.09197 0.983413 5.41697 1.16641L17.713 8.08041L14.793 11ZM18.713 8.83041L21.123 10.186C22.293 10.842 22.293 13.158 21.123 13.814L18.713 15.17L15.5 12L18.713 8.83041Z"/>
+              </svg>
+              <div className="text-left">
+                <div className="text-[10px] text-gray-400 leading-none">Google Play</div>
+                <div className="text-sm font-bold text-white leading-tight">Android</div>
+              </div>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════ CTA FINAL ═══════ */}
-      <section className="py-24 px-4 relative" style={{background:BG3}}>
-        <div className="max-w-4xl mx-auto" ref={ctaRef}>
-          <div className="relative p-10 sm:p-16 rounded-3xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#C9A84C]/10 via-[#0F1D32] to-[#0B1825] text-center overflow-hidden group">
-            {/* Animated background */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#C9A84C]/5 via-transparent to-[#C9A84C]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"/>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-48 bg-[#C9A84C]/20 blur-[100px] rounded-full"/>
-            
-            <div className="relative z-10">
-              <div className="flex justify-center mb-6">
-                <div className="p-4 rounded-2xl bg-[#C9A84C]/10 border border-[#C9A84C]/20 float-animation w-20 h-20 flex items-center justify-center">
-                  <div className="w-12 h-12 flex items-center justify-center">
-                    {ICON_V3.fantasy}
-                  </div>
+      <section className="py-24 px-4 relative overflow-hidden" style={{background:BG3}}>
+        <div className="max-w-5xl mx-auto" ref={ctaRef}>
+          <div className="relative rounded-3xl border border-[#C9A84C]/20 overflow-hidden group">
+            {/* Imagen de estadio como fondo */}
+            <img
+              src="/img/imagenessilviu/Estadio Atmosphere.png"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="lazy"
+            />
+            {/* Overlay oscuro para legibilidad */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/85 to-[#060B14]/70"/>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#C9A84C]/10 via-transparent to-[#C9A84C]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"/>
+
+            <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 p-10 sm:p-16">
+              {/* Balón dorado */}
+              <div className="flex-shrink-0">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-[#C9A84C]/20 blur-[60px] rounded-full"/>
+                  <img
+                    src="/img/zonamundial-images/imagenes/logos para sustuir emojis/unete ahora.png"
+                    alt="Únete ahora"
+                    className="relative w-48 h-48 sm:w-60 sm:h-60 object-contain float-animation drop-shadow-[0_0_40px_rgba(201,168,76,0.4)]"
+                    loading="lazy"
+                  />
                 </div>
               </div>
-              <h2 className="text-4xl sm:text-5xl font-black text-white mb-4">{h.ctaFinal.title}</h2>
-              <p className="text-gray-400 mb-8 max-w-xl mx-auto text-lg">
-                {h.ctaFinal.desc}
-              </p>
-              <MagneticButton href="/registro" variant="primary">
-                {h.ctaFinal.cta}
-              </MagneticButton>
+
+              {/* Texto + CTA */}
+              <div className="text-center lg:text-left flex-1">
+                <h2 className="text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">{h.ctaFinal.title}</h2>
+                <p className="text-gray-300 mb-8 max-w-xl text-lg leading-relaxed">
+                  {h.ctaFinal.desc}
+                </p>
+                <MagneticButton href="/registro" variant="primary">
+                  {h.ctaFinal.cta}
+                </MagneticButton>
+              </div>
             </div>
           </div>
         </div>

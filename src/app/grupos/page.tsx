@@ -212,12 +212,10 @@ function GrupoCard({ letra, index }: { letra: string; index: number }) {
                 </span>
               )}
               {team.mejorResultado?.includes('Campeón') && (
-                <span className="text-[10px] text-yellow-400" title={team.mejorResultado}>
-                  🏆
-                </span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#facc15"><title>{team.mejorResultado}</title><path d="M5 3h14l-1.5 6H20l-8 12v-8H7l2-10z"/></svg>
               )}
               {team.esAnfitrion && (
-                <span className="text-[10px] text-green-400">🏟️</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="#4ade80"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 3.5L18 12h-1.5v6h-9v-6H6L12 5.5z"/></svg>
               )}
             </Link>
           ))}
@@ -325,7 +323,35 @@ function GrupoDescripcion({ letra, index }: { letra: string; index: number }) {
         ))}
       </div>
 
-      <p className="text-sm text-gray-400 leading-relaxed">{descripcion}</p>
+      <p className="text-sm text-gray-400 leading-relaxed mb-4">{descripcion}</p>
+
+      {/* Análisis detallado */}
+      {gT.detailedAnalysis && gT.detailedAnalysis[letra as keyof typeof gT.detailedAnalysis] && (() => {
+        const analysis = gT.detailedAnalysis[letra as keyof typeof gT.detailedAnalysis];
+        const labels = gT.analysisLabels;
+        const sections = [
+          { key: 'keyMatchups', label: labels.keyMatchups, color: '#ef4444', icon: 'M12 2L2 12h3v8h14v-8h3L12 2z' },
+          { key: 'favorites', label: labels.favorites, color: '#c9a84c', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z' },
+          { key: 'darkHorses', label: labels.darkHorses, color: '#a855f7', icon: 'M13 10V3L4 14h7v7l9-11h-7z' },
+          { key: 'keyPlayers', label: labels.keyPlayers, color: '#3b82f6', icon: 'M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z' },
+          { key: 'history', label: labels.history, color: '#f59e0b', icon: 'M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z' },
+        ];
+        return (
+          <div className="space-y-3 pt-3 border-t border-white/5">
+            {sections.map(s => (
+              <div key={s.key} className="flex gap-3">
+                <div className="flex-shrink-0 mt-0.5">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill={s.color}><path d={s.icon}/></svg>
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: s.color }}>{s.label}</p>
+                  <p className="text-xs text-gray-400 leading-relaxed">{analysis[s.key as keyof typeof analysis]}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        );
+      })()}
     </div>
   );
 }
@@ -475,8 +501,8 @@ export default function GruposIndex() {
       {/* Hero Section */}
       <section ref={heroRef} className="relative overflow-hidden" style={{ padding: '20px 20px 60px' }}>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_60%)]" />
-        <div className="absolute top-10 left-10 text-8xl opacity-[0.03] rotate-[-15deg]">📊</div>
-        <div className="absolute bottom-10 right-10 text-7xl opacity-[0.03] rotate-[15deg]">⚽</div>
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png" alt="" className="absolute top-10 left-10 w-28 h-28 opacity-[0.06] rotate-[-15deg] pointer-events-none" />
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="absolute bottom-10 right-10 w-24 h-24 opacity-[0.06] rotate-[15deg] pointer-events-none" />
 
         <div className="max-w-6xl mx-auto relative">
           {/* Breadcrumb */}
@@ -501,13 +527,13 @@ export default function GruposIndex() {
             {/* Stats */}
             <div ref={statsRef} className="flex flex-wrap justify-center gap-4">
               {[
-                { value: '12', label: gT.stats.grupos, icon: '📊' },
-                { value: '48', label: gT.stats.equipos, icon: '⚽' },
-                { value: '72', label: gT.stats.partidos, icon: '🏟️' },
-                { value: '32', label: gT.stats.clasifican, icon: '✅' },
+                { value: '12', label: gT.stats.grupos, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png' },
+                { value: '48', label: gT.stats.equipos, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png' },
+                { value: '72', label: gT.stats.partidos, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png' },
+                { value: '32', label: gT.stats.clasifican, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png' },
               ].map((stat) => (
                 <div key={stat.label} className="stat-item flex items-center gap-3 px-4 py-2 bg-[#0F1D32] rounded-xl border border-white/5">
-                  <span className="text-2xl">{stat.icon}</span>
+                  <img src={stat.icon} alt="" className="w-10 h-10 object-contain" />
                   <div className="text-left">
                     <p className="text-xl font-black text-[#c9a84c]">{stat.value}</p>
                     <p className="text-xs text-[#6a7a9a]">{stat.label}</p>
@@ -520,9 +546,10 @@ export default function GruposIndex() {
       </section>
 
       {/* Sponsor */}
-      <div className="max-w-6xl mx-auto px-4 mb-12">
-        <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="grupos-hero">
-          <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-12 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Grupos&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Grupos.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
 
@@ -530,7 +557,7 @@ export default function GruposIndex() {
       <section className="max-w-6xl mx-auto px-4 mb-16">
         <div ref={sectionTitleRef} className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-            <span className="text-2xl">🏆</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-white">{gT.allGroups}</h2>
@@ -549,7 +576,7 @@ export default function GruposIndex() {
       <section className="max-w-6xl mx-auto px-4 mb-16">
         <div className="flex items-center gap-4 mb-8">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-            <span className="text-2xl">📖</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-2xl md:text-3xl font-bold text-white">{gT.analysis}</h2>
@@ -569,7 +596,7 @@ export default function GruposIndex() {
         <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 md:p-8 border border-white/5">
           <div className="flex items-center gap-4 mb-8">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 flex items-center justify-center border border-blue-500/20">
-              <span className="text-2xl">🎯</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" alt="" className="w-8 h-8 object-contain" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white">{gT.format.title}</h2>
@@ -579,16 +606,16 @@ export default function GruposIndex() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { step: '1', title: gT.format.step1Title, desc: gT.format.step1Desc, icon: '🏆' },
-              { step: '2', title: gT.format.step2Title, desc: gT.format.step2Desc, icon: '⭐' },
-              { step: '3', title: gT.format.step3Title, desc: gT.format.step3Desc, icon: '🎯' },
+              { step: '1', title: gT.format.step1Title, desc: gT.format.step1Desc, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png' },
+              { step: '2', title: gT.format.step2Title, desc: gT.format.step2Desc, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png' },
+              { step: '3', title: gT.format.step3Title, desc: gT.format.step3Desc, icon: '/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png' },
             ].map((item) => (
               <div key={item.step} className="format-step relative">
                 <div className="flex items-center gap-3 mb-4">
                   <div className="w-10 h-10 rounded-xl bg-[#c9a84c]/10 text-[#c9a84c] flex items-center justify-center font-black text-lg border border-[#c9a84c]/20">
                     {item.step}
                   </div>
-                  <span className="text-2xl">{item.icon}</span>
+                  <img src={item.icon} alt="" className="w-8 h-8 object-contain" />
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-[#8a94b0] leading-relaxed">{item.desc}</p>
@@ -598,7 +625,7 @@ export default function GruposIndex() {
 
           <div className="mt-8 pt-6 border-t border-white/5 flex flex-wrap items-center justify-between gap-4">
             <p className="text-sm text-[#8a94b0]">
-              📅 {gT.format.finalNote} <span className="text-[#c9a84c] font-bold">{gT.format.finalDate}</span> {gT.format.finalCity}
+              {gT.format.finalNote} <span className="text-[#c9a84c] font-bold">{gT.format.finalDate}</span> {gT.format.finalCity}
             </p>
             <Link
               href="/datos/formato-2026"
@@ -611,38 +638,35 @@ export default function GruposIndex() {
       </section>
 
       {/* CTA Final */}
-      <section className="max-w-4xl mx-auto px-4 mb-16">
-        <div 
-          ref={ctaRef}
-          className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#c9a84c]/10 via-[#0B1825] to-[#0F1D32] border border-[#c9a84c]/20 p-8 md:p-12 text-center"
-         
-        >
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#c9a84c]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-          
-          <div className="relative">
-            <span className="text-5xl mb-4 block">🎯</span>
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-              {gT.cta.title}
-            </h2>
-            <p className="text-[#8a94b0] mb-8 max-w-xl mx-auto">
-              {gT.cta.desc}
-            </p>
-            <Link
-              href="/registro"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] transition-all hover:-translate-y-0.5"
-            >
-              {gT.cta.btn}
-              <span>→</span>
-            </Link>
+      <section className="max-w-5xl mx-auto px-4 mb-16">
+        <div ref={ctaRef} className="relative rounded-3xl border border-[#c9a84c]/20 overflow-hidden group">
+          <img src="/img/imagenessilviu/Estadio Atmosphere.png" alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/85 to-[#060B14]/70"/>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#c9a84c]/10 via-transparent to-[#c9a84c]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"/>
+
+          <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 p-8 md:p-12">
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <div className="absolute inset-0 bg-[#c9a84c]/20 blur-[60px] rounded-full"/>
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/unete ahora.png" alt="Únete ahora" className="relative w-48 h-48 sm:w-56 sm:h-56 object-contain float-animation drop-shadow-[0_0_40px_rgba(201,168,76,0.4)]" loading="lazy" />
+              </div>
+            </div>
+            <div className="text-center lg:text-left flex-1">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">{gT.cta.title}</h2>
+              <p className="text-gray-300 mb-8 max-w-xl text-lg leading-relaxed">{gT.cta.desc}</p>
+              <Link href="/registro" className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] transition-all hover:-translate-y-0.5">
+                {gT.cta.btn} <span>→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Sponsor footer */}
-      <div className="max-w-6xl mx-auto px-4 mb-8">
-        <a href="#" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="grupos-footer">
-          <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_53_21 p.m..png" alt="Publicidad" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-8 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Grupos%20(footer)&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Grupos%20(footer).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
     </div>

@@ -59,9 +59,10 @@ export default function HistoriaClient() {
       </header>
 
       {/* Sponsor */}
-      <div className="w-full bg-[#0B1825] border border-[#1a2a3f] rounded-xl flex items-center justify-center mb-8 sm:mb-10 py-3" data-sponsor-slot="historia-hero">
-        <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer">
-          <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="w-full text-center mb-8 sm:mb-10">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Historia&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Historia.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
 
@@ -69,7 +70,7 @@ export default function HistoriaClient() {
       <section className="mb-10 sm:mb-12">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#C9A84C]/20 to-[#C9A84C]/5 flex items-center justify-center border border-[#C9A84C]/20">
-            <span className="text-2xl">🏆</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.iconicTitle}</h2>
@@ -84,7 +85,7 @@ export default function HistoriaClient() {
                 style={{ background: `radial-gradient(circle at 50% 0%, ${moment.color}10 0%, transparent 70%)` }} />
               <div className="relative z-10">
                 <div className="flex items-center gap-3 mb-3">
-                  <span className="text-3xl">{moment.emoji}</span>
+                  <img src={moment.emoji} alt="" className="w-8 h-8 object-contain" />
                   <span className="text-xs font-bold px-2 py-0.5 rounded-full" style={{ background: `${moment.color}20`, color: moment.color }}>{moment.year}</span>
                 </div>
                 <h3 className="text-lg font-bold text-white mb-2">{moment.title}</h3>
@@ -99,7 +100,7 @@ export default function HistoriaClient() {
       <section className="mb-10 sm:mb-12">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500/20 to-amber-600/5 flex items-center justify-center border border-amber-500/20">
-            <span className="text-2xl">📊</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.recordsTitle}</h2>
@@ -126,7 +127,7 @@ export default function HistoriaClient() {
       <section className="mb-10 sm:mb-12">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500/20 to-blue-600/5 flex items-center justify-center border border-blue-500/20">
-            <span className="text-2xl">🌍</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.hostsTitle}</h2>
@@ -146,11 +147,86 @@ export default function HistoriaClient() {
         </div>
       </section>
 
+      {/* Evolución del Mundial */}
+      {hT.evolutionPeriods && (
+        <section className="mb-10 sm:mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" alt="" className="w-8 h-8 object-contain" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.evolutionTitle}</h2>
+              <p className="text-sm text-gray-500">{hT.evolutionSub}</p>
+            </div>
+          </div>
+          <div className="space-y-4">
+            {hT.evolutionPeriods.map((era: { period: string; title: string; content: string; color: string }, i: number) => (
+              <div key={i} className="relative p-6 rounded-2xl border border-white/5 bg-[#0F1D32]/80 overflow-hidden">
+                <div className="absolute top-0 left-0 w-1 h-full" style={{ background: era.color }} />
+                <p className="text-xs font-bold tracking-wider uppercase mb-2" style={{ color: era.color }}>{era.period}</p>
+                <h3 className="text-lg font-bold text-white mb-3">{era.title}</h3>
+                <p className="text-sm text-gray-400 leading-relaxed">{era.content}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Máximos goleadores */}
+      {hT.topScorers && (
+        <section className="mb-10 sm:mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-red-500/20 to-red-600/5 flex items-center justify-center border border-red-500/20">
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="w-8 h-8 object-contain" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.topScorersTitle}</h2>
+              <p className="text-sm text-gray-500">{hT.topScorersSub}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {hT.topScorers.map((scorer: { name: string; goals: number; country: string; flag: string; editions: string }, i: number) => (
+              <div key={i} className="p-5 rounded-2xl border border-white/5 bg-[#0F1D32]/80 hover:border-[#c9a84c]/30 transition-all group">
+                <div className="flex items-center gap-3 mb-3">
+                  <span className="text-2xl font-black text-[#c9a84c]">{scorer.goals}</span>
+                  <img src={`https://flagcdn.com/w20/${scorer.flag}.png`} alt={scorer.country} className="w-6 h-4 object-cover rounded" />
+                </div>
+                <h4 className="font-bold text-white text-sm mb-1 group-hover:text-[#c9a84c] transition-colors">{scorer.name}</h4>
+                <p className="text-xs text-gray-500">{scorer.country} · {scorer.editions}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Curiosidades */}
+      {hT.curiosities && (
+        <section className="mb-10 sm:mb-12">
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/5 flex items-center justify-center border border-emerald-500/20">
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/trivia.png" alt="" className="w-8 h-8 object-contain" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.curiositiesTitle}</h2>
+              <p className="text-sm text-gray-500">{hT.curiositiesSub}</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {hT.curiosities.map((fact: string, i: number) => (
+              <div key={i} className="flex gap-3 p-4 rounded-xl border border-white/5 bg-[#0B1825] hover:border-emerald-500/20 transition-colors">
+                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xs font-bold">{i + 1}</span>
+                <p className="text-sm text-gray-400 leading-relaxed">{fact}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* All World Cups */}
       <section className="mb-10 sm:mb-12">
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/20 to-purple-600/5 flex items-center justify-center border border-purple-500/20">
-            <span className="text-2xl">📜</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-white">{hT.allTitle}</h2>
@@ -202,14 +278,14 @@ export default function HistoriaClient() {
               </div>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-base">🏆</span>
+                  <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-5 h-5 object-contain" />
                   <img src={`https://flagcdn.com/w20/${wc.champFlag}.png`} className="w-5 h-3.5 rounded-[1px] object-cover" alt="" />
                   <span className="text-sm font-bold text-white">{wc.champion}</span>
                 </div>
                 <span className="text-xs text-gray-500">{wc.teams} {hT.mobileTeams}</span>
               </div>
               <div className="flex items-center gap-2 mt-2">
-                <span className="text-base">🥈</span>
+                <span className="text-base font-bold text-gray-400" style={{ color: '#A0AEC0' }}>2&#186;</span>
                 <img src={`https://flagcdn.com/w20/${wc.ruFlag}.png`} className="w-5 h-3.5 rounded-[1px] object-cover" alt="" />
                 <span className="text-sm text-gray-400">{wc.runnerUp}</span>
               </div>
@@ -221,12 +297,12 @@ export default function HistoriaClient() {
       {/* CTAs */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <Link href="/historia/campeones" className="p-6 rounded-2xl border border-[#C9A84C]/20 bg-gradient-to-br from-[#C9A84C]/10 to-transparent text-center hover:border-[#C9A84C]/40 transition-all duration-300 group">
-          <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🏆</div>
+          <div className="mb-3 group-hover:scale-110 transition-transform flex justify-center"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/historia.png" alt="" className="w-10 h-10 object-contain" /></div>
           <h3 className="text-lg font-bold text-white mb-2">{hT.cta1Title}</h3>
           <p className="text-sm text-gray-400">{hT.cta1Desc}</p>
         </Link>
         <Link href="/app/trivia" className="p-6 rounded-2xl border border-white/10 bg-[#0F1D32] text-center hover:border-[#C9A84C]/30 transition-all duration-300 group">
-          <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎯</div>
+          <div className="mb-3 group-hover:scale-110 transition-transform flex justify-center"><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="w-10 h-10 object-contain" /></div>
           <h3 className="text-lg font-bold text-white mb-2">{hT.cta2Title}</h3>
           <p className="text-sm text-gray-400">{hT.cta2Desc}</p>
         </Link>

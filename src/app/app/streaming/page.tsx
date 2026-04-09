@@ -5,10 +5,11 @@ import { useLanguage } from "@/i18n/LanguageContext"
 
 const BG = "#060B14", BG2 = "#0F1D32", BG3 = "#0B1825", GOLD = "#c9a84c", GOLD2 = "#e8d48b", MID = "#8a94b0", DIM = "#6a7a9a"
 
-const CREATOR_ICONS = ["🎮","📺","🎵","📝","⚽","😂"];
-const CHAT_FEAT_ICONS = ["🔥","🎯","🗳️","📊","🎁"];
-const REWARD_ICONS = ["⏱️","🎁","📺","🎤"];
-const WATCH_FEAT_ICONS = ["⚽","💬","🎯","📊"];
+const IMG_BASE = "/img/zonamundial-images/imagenes/logos para sustuir emojis/";
+const CREATOR_ICONS = [`${IMG_BASE}streaming.png`,`${IMG_BASE}streaming.png`,`${IMG_BASE}streaming.png`,`${IMG_BASE}creadores.png`,`${IMG_BASE}match center.png`,`${IMG_BASE}creadores.png`];
+const CHAT_FEAT_ICONS = [`${IMG_BASE}micro-predicciones.png`,`${IMG_BASE}predicciones.png`,`${IMG_BASE}predicciones.png`,`${IMG_BASE}ranking.png`,`${IMG_BASE}micro-predicciones.png`];
+const REWARD_ICONS = [`${IMG_BASE}formato 2026.png`,`${IMG_BASE}micro-predicciones.png`,`${IMG_BASE}streaming.png`,`${IMG_BASE}streaming.png`];
+const WATCH_FEAT_ICONS = [`${IMG_BASE}match center.png`,`${IMG_BASE}chat en vivo.png`,`${IMG_BASE}predicciones.png`,`${IMG_BASE}ranking.png`];
 
 export default function StreamingPage() {
   const { t } = useLanguage(); const sT = t.streamingPage;
@@ -81,7 +82,7 @@ export default function StreamingPage() {
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {watchFeatures.map((item, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
-                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    <img src={item.icon} alt="" style={{ width: 20, height: 20 }} />
                     {item.text}
                   </div>
                 ))}
@@ -108,7 +109,7 @@ export default function StreamingPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
-              🎙️ {sT.creatorsSectionTitle} <span style={{ color: GOLD }}>{sT.creatorsSectionTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/streaming.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {sT.creatorsSectionTitle} <span style={{ color: GOLD }}>{sT.creatorsSectionTitleHighlight}</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>{sT.creatorsSectionDesc}</p>
           </div>
@@ -120,7 +121,7 @@ export default function StreamingPage() {
                 border: "1px solid rgba(255,255,255,0.05)",
                 display: "flex", gap: 16, alignItems: "center"
               }}>
-                <div style={{ fontSize: 32 }}>{creator.icon}</div>
+                <div><img src={creator.icon} alt="" style={{ width: 32, height: 32 }} /></div>
                 <div>
                   <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 4 }}>{creator.title}</h3>
                   <p style={{ fontSize: 14, color: DIM }}>{creator.desc}</p>
@@ -136,7 +137,7 @@ export default function StreamingPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
-              💬 {sT.chatSectionTitle} <span style={{ color: GOLD }}>{sT.chatSectionTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/chat en vivo.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {sT.chatSectionTitle} <span style={{ color: GOLD }}>{sT.chatSectionTitleHighlight}</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>{sT.chatSectionDesc}</p>
           </div>
@@ -147,7 +148,7 @@ export default function StreamingPage() {
                 padding: 24, borderRadius: 16, background: BG2,
                 border: "1px solid rgba(255,255,255,0.05)", textAlign: "center"
               }}>
-                <div style={{ fontSize: 32, marginBottom: 12 }}>{feature.icon}</div>
+                <div style={{ marginBottom: 12 }}><img src={feature.icon} alt="" style={{ width: 32, height: 32 }} /></div>
                 <h3 style={{ fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{feature.title}</h3>
                 <p style={{ fontSize: 13, color: DIM }}>{feature.desc}</p>
               </div>
@@ -161,7 +162,7 @@ export default function StreamingPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
-              🎁 {sT.rewardsSectionTitle} <span style={{ color: GOLD }}>{sT.rewardsSectionTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/micro-predicciones.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {sT.rewardsSectionTitle} <span style={{ color: GOLD }}>{sT.rewardsSectionTitleHighlight}</span>
             </h2>
             <p style={{ color: MID, marginTop: 12 }}>{sT.rewardsSectionDesc}</p>
           </div>
@@ -172,7 +173,7 @@ export default function StreamingPage() {
                 padding: 28, borderRadius: 16, background: BG2,
                 border: "1px solid rgba(255,255,255,0.05)", textAlign: "center"
               }}>
-                <div style={{ fontSize: 40, marginBottom: 12 }}>{reward.icon}</div>
+                <div style={{ marginBottom: 12 }}><img src={reward.icon} alt="" style={{ width: 40, height: 40 }} /></div>
                 <h3 style={{ fontWeight: 700, fontSize: 16, marginBottom: 8 }}>{reward.title}</h3>
                 <p style={{ fontSize: 14, color: DIM }}>{reward.desc}</p>
               </div>
@@ -186,7 +187,7 @@ export default function StreamingPage() {
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(28px,5vw,42px)", fontWeight: 800 }}>
-              📅 {sT.modesSectionTitle} <span style={{ color: GOLD }}>{sT.modesSectionTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {sT.modesSectionTitle} <span style={{ color: GOLD }}>{sT.modesSectionTitleHighlight}</span>
             </h2>
           </div>
 
@@ -231,7 +232,7 @@ export default function StreamingPage() {
       {/* CTA */}
       <section style={{ padding: "80px 20px", textAlign: "center" }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ fontSize: 64, marginBottom: 24 }}>🎯</div>
+          <div style={{ marginBottom: 24 }}><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{ width: 48, height: 48, margin: "0 auto" }} /></div>
           <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
             {sT.ctaTitle} <span style={{ color: GOLD }}>{sT.ctaTitle2}</span>
           </h2>

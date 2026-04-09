@@ -443,7 +443,7 @@ function DateHeader({date,count}:{date:string;count:number}){
         justifyContent:"center",
         boxShadow:"0 0 20px rgba(201,168,76,0.15)"
       }}>
-        <span style={{fontSize:20}}>📅</span>
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/formato 2026.png" alt="" style={{width:20,height:20,objectFit:"contain"}} />
       </div>
       
       <div>
@@ -575,7 +575,7 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
               borderRadius:10,
               border:isFinal?"none":"1px solid rgba(201,168,76,0.3)"
             }}>
-              {isFinal?"🏆 FINAL":"⚽ SEMIFINAL"}
+              {isFinal?"FINAL":"SEMIFINAL"}
             </span>
           )}
         </div>
@@ -693,7 +693,7 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
             marginBottom:32,
             border:"1px solid rgba(255,255,255,0.05)"
           }}>
-            <span style={{fontSize:24}}>🏟️</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" style={{width:24,height:24,objectFit:"contain"}} />
             <div>
               <p style={{fontSize:16,fontWeight:700,color:"#fff"}}>{m.vn}</p>
               <p style={{fontSize:14,color:MID}}>{m.vc}</p>
@@ -711,7 +711,7 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
               textAlign:"center",
               transition:"all 0.3s"
             }}>
-              <span style={{fontSize:28,display:"block",marginBottom:8}}>🎯</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{width:28,height:28,objectFit:"contain",marginBottom:8}} />
               <span style={{fontWeight:700,color:"#fff"}}>{cT.predice}</span>
             </Link>
             <Link href="/selecciones" style={{
@@ -723,7 +723,7 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
               textAlign:"center",
               transition:"all 0.3s"
             }}>
-              <span style={{fontSize:28,display:"block",marginBottom:8}}>⚽</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" style={{width:28,height:28,objectFit:"contain",marginBottom:8}} />
               <span style={{fontWeight:700,color:MID}}>{cT.equipos}</span>
             </Link>
             <Link href="/sedes" style={{
@@ -735,7 +735,7 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
               textAlign:"center",
               transition:"all 0.3s"
             }}>
-              <span style={{fontSize:28,display:"block",marginBottom:8}}>🏟️</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" style={{width:28,height:28,objectFit:"contain",marginBottom:8}} />
               <span style={{fontWeight:700,color:MID}}>{cT.sede}</span>
             </Link>
           </div>
@@ -809,8 +809,8 @@ function MatchModal({m,onClose,onNav}:{m:typeof M[0];onClose:()=>void;onNav:(id:
 // Página principal
 export default function CalendarioPage(){
   const{t,locale}=useLanguage();const cT=t.calendario;const nav=t.nav;
-  const[phase,setPhase]=useState("all");
-  const[group,setGroup]=useState("all");
+  const[phase,setPhase]=useState("Fase de grupos");
+  const[group,setGroup]=useState("A");
   const[selected,setSelected]=useState<typeof M[0]|null>(null);
   const scrollRef=useRef<HTMLDivElement>(null);
   const countdown=useCountdown();
@@ -938,76 +938,79 @@ export default function CalendarioPage(){
 
       {/* Contenido principal */}
       <div style={{maxWidth:1200,margin:"0 auto",padding:"0 24px 80px"}}>
-        {/* Filtros */}
+        {/* Tabs de Fase */}
         <div style={{
-          marginBottom:40,
-          padding:24,
+          marginBottom:24,
           background:BG2,
-          borderRadius:24,
-          border:"1px solid rgba(255,255,255,0.05)"
+          borderRadius:20,
+          border:"1px solid rgba(255,255,255,0.05)",
+          padding:"6px",
+          display:"flex",
+          gap:4,
+          overflowX:"auto",
         }}>
-          <div style={{marginBottom:20}}>
-            <p style={{fontSize:13,color:DIM,fontWeight:700,marginBottom:12,textTransform:"uppercase",letterSpacing:1}}>{cT.fase}</p>
-            <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-              <FilterBtn label={cT.todas} active={phase==="all"} onClick={()=>setPhase("all")}/>
-              {PHASES.map(p=><FilterBtn key={p} label={p} active={phase===p} onClick={()=>setPhase(p)}/>)}
-            </div>
-          </div>
+          <FilterBtn label={cT.todas} active={phase==="all"} onClick={()=>{setPhase("all");setGroup("all")}}/>
+          {PHASES.map(p=><FilterBtn key={p} label={p} active={phase===p} onClick={()=>{setPhase(p);if(p==="Fase de grupos")setGroup("A");else setGroup("all")}}/>)}
+        </div>
 
-          {(phase==="all"||phase==="Fase de grupos")&&(
-            <div style={{marginBottom:20,paddingTop:20,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-              <p style={{fontSize:13,color:DIM,fontWeight:700,marginBottom:12,textTransform:"uppercase",letterSpacing:1}}>{cT.grupo}</p>
-              <div style={{display:"flex",gap:10,flexWrap:"wrap"}}>
-                <FilterBtn label={cT.todos} active={group==="all"} onClick={()=>setGroup("all")}/>
-                {GROUPS.map(g=><FilterBtn key={g} label={g} active={group===g} onClick={()=>setGroup(g)}/>)}
-              </div>
-            </div>
-          )}
-
-          <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",paddingTop:20,borderTop:"1px solid rgba(255,255,255,0.05)"}}>
-            <span style={{color:DIM,fontSize:14}}>
-              <strong style={{color:"#fff"}}>{filtered.length}</strong> {cT.encontrados}
-            </span>
-            {(phase!=="all"||group!=="all")&&(
+        {/* Tabs de Grupo (solo en fase de grupos) */}
+        {(phase==="all"||phase==="Fase de grupos")&&(
+          <div style={{
+            marginBottom:24,
+            display:"flex",
+            gap:6,
+            flexWrap:"wrap",
+            justifyContent:"center",
+          }}>
+            {phase==="all"&&<FilterBtn label={cT.todos} active={group==="all"} onClick={()=>setGroup("all")}/>}
+            {GROUPS.map(g=>(
               <button
-                onClick={()=>{setPhase("all");setGroup("all")}}
+                key={g}
+                onClick={()=>setGroup(g)}
                 style={{
-                  background:"none",
-                  border:"none",
-                  color:GOLD,
-                  cursor:"pointer",
+                  padding:"8px 16px",
+                  borderRadius:12,
+                  border: group===g ? `2px solid ${GOLD}` : "1px solid rgba(255,255,255,0.08)",
+                  background: group===g ? "rgba(201,168,76,0.15)" : "rgba(255,255,255,0.03)",
+                  color: group===g ? GOLD : MID,
+                  fontWeight: group===g ? 800 : 500,
                   fontSize:14,
-                  fontWeight:600
+                  cursor:"pointer",
+                  transition:"all 0.2s",
+                  minWidth:44,
                 }}
               >
-                {cT.limpiar}
+                {g}
               </button>
-            )}
+            ))}
           </div>
+        )}
+
+        {/* Counter + Clear */}
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:28}}>
+          <span style={{color:DIM,fontSize:14}}>
+            <strong style={{color:"#fff"}}>{filtered.length}</strong> {cT.encontrados}
+          </span>
+          {(phase!=="all"||group!=="all")&&(
+            <button
+              onClick={()=>{setPhase("all");setGroup("all")}}
+              style={{background:"none",border:"none",color:GOLD,cursor:"pointer",fontSize:14,fontWeight:600}}
+            >
+              {cT.limpiar}
+            </button>
+          )}
         </div>
 
         {/* Lista de partidos por fecha */}
-        <div style={{position:"relative"}}>
-          {/* Línea de tiempo vertical */}
-          <div style={{
-            position:"absolute",
-            left:24,
-            top:0,
-            bottom:0,
-            width:2,
-            background:"linear-gradient(180deg, rgba(201,168,76,0.4), rgba(201,168,76,0.05))",
-            borderRadius:2
-          }}/>
-
+        <div>
           {[...grouped.entries()].map(([date,matches])=> (
-            <div key={date} style={{marginBottom:48,position:"relative"}}>
+            <div key={date} style={{marginBottom:32}}>
               <DateHeader date={date} count={matches.length}/>
-              
+
               <div style={{
                 display:"grid",
                 gridTemplateColumns:"repeat(auto-fill, minmax(320px, 1fr))",
-                gap:20,
-                paddingLeft:64
+                gap:16,
               }}>
                 {matches.map(m=> (
                   <MatchCard key={m.i} m={m} onClick={()=>setSelected(m)}/>
@@ -1026,7 +1029,7 @@ export default function CalendarioPage(){
           border:"1px solid rgba(201,168,76,0.15)",
           textAlign:"center"
         }}>
-          <span style={{fontSize:48,marginBottom:16,display:"block"}}>🎯</span>
+          <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{width:48,height:48,objectFit:"contain",margin:"0 auto 16px",display:"block"}} />
           <h2 style={{fontSize:28,fontWeight:900,marginBottom:12}}>{cT.ctaTitle}</h2>
           <p style={{color:MID,maxWidth:500,margin:"0 auto 24px",fontSize:16}}>
             {cT.ctaDesc}

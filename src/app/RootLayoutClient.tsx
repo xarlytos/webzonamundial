@@ -2,8 +2,10 @@
 
 import { useState, useCallback, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useLanguage } from "@/i18n/LanguageContext";
 import type { Translations } from "@/i18n/translations";
+import PromoPopup from "@/components/PromoPopup";
 
 const BG="#060B14",BG2="#0F1D32",BG3="#0B1825",GOLD="#c9a84c",GOLD2="#e8d48b",MID="#8a94b0",DIM="#6a7a9a",DARK="#4a5570";
 
@@ -218,6 +220,8 @@ function LanguageToggle() {
 
 export default function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const { t } = useLanguage();
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expandedMobile, setExpandedMobile] = useState<string | null>(null);
@@ -366,11 +370,11 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
         </nav>
       </div>
 
-      {/* ═══ LATERAL ADS — Desktop only (120x600) ═══ */}
+      {/* ═══ LATERAL ADS — Desktop only, todas las páginas, estáticas arriba ═══ */}
       <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer"
         className="lateral-ad lateral-ad-left"
         style={{
-          position:"fixed",top:"50%",left:16,transform:"translateY(-50%)",zIndex:50,
+          position:"absolute",top:220,left:16,zIndex:40,
           display:"none",
         }}>
         <img src="/img/imagenessilviu/rotulemos120x600.png" alt="Rotulemos - Publicidad" style={{width:160,height:"auto",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
@@ -378,11 +382,14 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
       <a href="#" target="_blank" rel="noopener noreferrer"
         className="lateral-ad lateral-ad-right"
         style={{
-          position:"fixed",top:"50%",right:16,transform:"translateY(-50%)",zIndex:50,
+          position:"absolute",top:220,right:16,zIndex:40,
           display:"none",
         }}>
         <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_49_43 p.m..png" alt="Publicidad" style={{width:160,height:"auto",borderRadius:14,boxShadow:"0 4px 24px rgba(0,0,0,0.4)"}} />
       </a>
+
+      {/* ═══ PROMO POPUP (global) ═══ */}
+      <PromoPopup />
 
       {/* ═══ PAGE CONTENT ═══ */}
       <main>{children}</main>

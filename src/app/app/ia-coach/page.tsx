@@ -10,7 +10,7 @@ export default function IACoachPage() {
 
   const howItWorksSteps = [
     {
-      num: "1️⃣",
+      num: "1",
       title: iT.step1Title,
       items: [
         iT.step1Item1,
@@ -22,7 +22,7 @@ export default function IACoachPage() {
       ]
     },
     {
-      num: "2️⃣",
+      num: "2",
       title: iT.step2Title,
       desc: iT.step2Desc,
       example: [
@@ -32,7 +32,7 @@ export default function IACoachPage() {
       ]
     },
     {
-      num: "3️⃣",
+      num: "3",
       title: iT.step3Title,
       desc: iT.step3Desc,
       example: [
@@ -43,12 +43,12 @@ export default function IACoachPage() {
   ];
 
   const iaFeatures = [
-    { icon: "🔮", title: iT.feat1Title, desc: iT.feat1Desc },
-    { icon: "📊", title: iT.feat2Title, desc: iT.feat2Desc },
-    { icon: "⚠️", title: iT.feat3Title, desc: iT.feat3Desc },
-    { icon: "🎯", title: iT.feat4Title, desc: iT.feat4Desc },
-    { icon: "📈", title: iT.feat5Title, desc: iT.feat5Desc },
-    { icon: "💡", title: iT.feat6Title, desc: iT.feat6Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", title: iT.feat1Title, desc: iT.feat1Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png", title: iT.feat2Title, desc: iT.feat2Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", title: iT.feat3Title, desc: iT.feat3Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", title: iT.feat4Title, desc: iT.feat4Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png", title: iT.feat5Title, desc: iT.feat5Desc },
+    { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ia coach.png", title: iT.feat6Title, desc: iT.feat6Desc },
   ];
 
   return (
@@ -90,12 +90,12 @@ export default function IACoachPage() {
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {[
-                  { icon: "🔮", text: iT.iaBullet1 },
-                  { icon: "📊", text: iT.iaBullet2 },
-                  { icon: "⚠️", text: iT.iaBullet3 },
+                  { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", text: iT.iaBullet1 },
+                  { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png", text: iT.iaBullet2 },
+                  { icon: "/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png", text: iT.iaBullet3 },
                 ].map((item, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 15 }}>
-                    <span style={{ fontSize: 20 }}>{item.icon}</span>
+                    <img src={item.icon} alt="" style={{ width: 20, height: 20 }} />
                     {item.text}
                   </div>
                 ))}
@@ -127,7 +127,7 @@ export default function IACoachPage() {
         <div style={{ maxWidth: 1000, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              🧠 {iT.howTitle} <span style={{ color: GOLD }}>{iT.howTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ia coach.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {iT.howTitle} <span style={{ color: GOLD }}>{iT.howTitleHighlight}</span>
             </h2>
           </div>
 
@@ -138,7 +138,7 @@ export default function IACoachPage() {
               border: "1px solid rgba(255,255,255,0.05)"
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                <span style={{ fontSize: 40 }}>{howItWorksSteps[0].num}</span>
+                <span style={{ fontSize: 24, fontWeight: 800, width: 44, height: 44, borderRadius: "50%", background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{howItWorksSteps[0].num}</span>
                 <h3 style={{ fontWeight: 700, fontSize: 24, color: GOLD }}>{howItWorksSteps[0].title}</h3>
               </div>
               <p style={{ color: MID, marginBottom: 16, fontSize: 15 }}>{iT.step1Intro}</p>
@@ -158,7 +158,7 @@ export default function IACoachPage() {
               border: "1px solid rgba(255,255,255,0.05)"
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                <span style={{ fontSize: 40 }}>{howItWorksSteps[1].num}</span>
+                <span style={{ fontSize: 24, fontWeight: 800, width: 44, height: 44, borderRadius: "50%", background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{howItWorksSteps[1].num}</span>
                 <h3 style={{ fontWeight: 700, fontSize: 24, color: GOLD }}>{howItWorksSteps[1].title}</h3>
               </div>
               <p style={{ color: MID, marginBottom: 16, fontSize: 15 }}>{howItWorksSteps[1].desc}</p>
@@ -182,7 +182,7 @@ export default function IACoachPage() {
               border: "1px solid rgba(255,255,255,0.05)"
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                <span style={{ fontSize: 40 }}>{howItWorksSteps[2].num}</span>
+                <span style={{ fontSize: 24, fontWeight: 800, width: 44, height: 44, borderRadius: "50%", background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{howItWorksSteps[2].num}</span>
                 <h3 style={{ fontWeight: 700, fontSize: 24, color: GOLD }}>{howItWorksSteps[2].title}</h3>
               </div>
               <p style={{ color: MID, marginBottom: 16, fontSize: 15 }}>{howItWorksSteps[2].desc}</p>
@@ -215,7 +215,7 @@ export default function IACoachPage() {
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              ✨ {iT.featSectionTitle} <span style={{ color: GOLD }}>{iT.featSectionTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ranking.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {iT.featSectionTitle} <span style={{ color: GOLD }}>{iT.featSectionTitleHighlight}</span>
             </h2>
           </div>
 
@@ -226,7 +226,7 @@ export default function IACoachPage() {
                 border: "1px solid rgba(255,255,255,0.05)",
                 display: "flex", flexDirection: "column"
               }}>
-                <div style={{ fontSize: 40, marginBottom: 16 }}>{feature.icon}</div>
+                <div style={{ marginBottom: 16 }}><img src={feature.icon} alt="" style={{ width: 40, height: 40 }} /></div>
                 <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 12 }}>{feature.title}</h3>
                 <p style={{ fontSize: 14, color: DIM, lineHeight: 1.6, flex: 1 }}>{feature.desc}</p>
               </div>
@@ -240,7 +240,7 @@ export default function IACoachPage() {
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              💬 {iT.exampleTitle} <span style={{ color: GOLD }}>{iT.exampleTitleHighlight}</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/chat en vivo.png" alt="" style={{ width: 32, height: 32, display: "inline-block", verticalAlign: "middle" }} /> {iT.exampleTitle} <span style={{ color: GOLD }}>{iT.exampleTitleHighlight}</span>
             </h2>
           </div>
 
@@ -254,9 +254,9 @@ export default function IACoachPage() {
                 width: 44, height: 44, borderRadius: "50%",
                 background: "linear-gradient(135deg, #3b82f6, #1d4ed8)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 20, flexShrink: 0
+                flexShrink: 0, overflow: "hidden"
               }}>
-                👤
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/creadores.png" alt="" style={{ width: 28, height: 28 }} />
               </div>
               <div style={{
                 padding: "16px 20px", borderRadius: 16,
@@ -276,9 +276,9 @@ export default function IACoachPage() {
                 width: 44, height: 44, borderRadius: "50%",
                 background: `linear-gradient(135deg, ${GOLD}, ${GOLD2})`,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 20, flexShrink: 0
+                flexShrink: 0, overflow: "hidden"
               }}>
-                🤖
+                <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/ia coach.png" alt="" style={{ width: 28, height: 28 }} />
               </div>
               <div style={{
                 padding: "20px 24px", borderRadius: 16,
@@ -321,7 +321,7 @@ export default function IACoachPage() {
             border: "1px solid rgba(251,191,36,0.3)",
             display: "flex", gap: 16, alignItems: "flex-start"
           }}>
-            <span style={{ fontSize: 28 }}>⚠️</span>
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{ width: 28, height: 28, flexShrink: 0 }} />
             <div>
               <h4 style={{ fontWeight: 700, fontSize: 15, color: "#fbbf24", marginBottom: 8 }}>{iT.disclaimerTitle}</h4>
               <p style={{ fontSize: 14, color: MID, lineHeight: 1.6, fontStyle: "italic" }}>
@@ -335,7 +335,7 @@ export default function IACoachPage() {
       {/* CTA */}
       <section style={{ padding: "80px 20px", textAlign: "center", background: BG3 }}>
         <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ fontSize: 64, marginBottom: 24 }}>🎯</div>
+          <div style={{ marginBottom: 24 }}><img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" style={{ width: 48, height: 48, margin: "0 auto" }} /></div>
           <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
             {iT.ctaFinalTitle} <span style={{ color: GOLD }}>{iT.ctaFinalTitleHighlight}</span>
           </h2>

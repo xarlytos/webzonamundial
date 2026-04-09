@@ -1,158 +1,202 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { FeatureIcon } from "@/components/FeatureIcon";
 import { useLanguage } from "@/i18n/LanguageContext";
-import PromoPopup from "@/components/PromoPopup";
 
 const BG = "#060B14", BG2 = "#0F1D32", BG3 = "#0B1825", GOLD = "#c9a84c", GOLD2 = "#e8d48b", MID = "#8a94b0", DIM = "#6a7a9a", DARK = "#4a5570";
+const IMG = "/img/zonamundial-images/imagenes/logos para sustuir emojis";
 
 export default function PremiumPage() {
   const { t } = useLanguage();
   const pT = t.premium;
+  const isEN = t.nav.selecciones === '48 Teams';
   const COMPARISON_DATA = pT.comparison;
-  const PRICING_PLANS    = pT.plans;
+  const PRICING_PLANS = pT.plans;
   const PREMIUM_FEATURES = pT.features;
+  const [showTable, setShowTable] = useState(false);
+
   return (
     <div style={{ background: BG, color: "#fff", fontFamily: "'Outfit',sans-serif", minHeight: "100vh" }}>
-      <PromoPopup />
-      {/* Hero */}
-      <section style={{ padding: "20px 20px 60px", textAlign: "center", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center,rgba(201,168,76,0.15) 0%,transparent 60%)" }} />
-        <div style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-          <div style={{ marginBottom: 16, display: 'flex', justifyContent: 'center' }}>
-            <FeatureIcon title="Fantasy" size={64} />
-          </div>
-          <h1 style={{ fontSize: "clamp(32px,6vw,52px)", fontWeight: 900, lineHeight: 1.1 }}>
+
+      {/* Hero - Impactante y directo */}
+      <section className="relative overflow-hidden" style={{ padding: "30px 20px 50px" }}>
+        <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at center,rgba(201,168,76,0.15) 0%,transparent 60%)" }} />
+        <div className="absolute top-0 left-0 w-full h-1" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}, transparent)` }} />
+
+        <div className="max-w-4xl mx-auto relative z-10 text-center">
+          <img src={`${IMG}/fantasy.png`} alt="" className="w-16 h-16 object-contain mx-auto mb-4" />
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-4 leading-tight">
             {pT.heroTitle}
           </h1>
-          <p style={{ color: GOLD, fontSize: "clamp(18px,3vw,24px)", fontWeight: 600, marginTop: 16 }}>
+          <p className="text-xl sm:text-2xl font-semibold mb-6" style={{ color: GOLD }}>
             {pT.heroSub}
           </p>
-          <p style={{ color: MID, marginTop: 20, maxWidth: 600, margin: "20px auto 0", lineHeight: 1.7, fontSize: 17 }}>
+          <p className="text-lg max-w-2xl mx-auto mb-8 leading-relaxed" style={{ color: MID }}>
             {pT.heroDesc}
           </p>
+
+          {/* Precio destacado inline */}
+          <div className="flex flex-wrap justify-center gap-6 mb-8">
+            {PRICING_PLANS.map((plan: { region: string; price: string; period: string; badge: string }, i: number) => (
+              <div key={i} className="flex items-center gap-3 px-6 py-3 rounded-2xl border" style={{ borderColor: `${GOLD}40`, background: `${GOLD}08` }}>
+                <span className="text-3xl font-black text-white">{plan.price}</span>
+                <div className="text-left">
+                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: GOLD }}>{plan.region}</p>
+                  <p className="text-xs" style={{ color: DIM }}>{plan.period}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <Link
+            href="/registro"
+            className="inline-block px-10 py-4 rounded-xl font-bold text-lg no-underline transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)]"
+            style={{ background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG }}
+          >
+            {pT.pricingCta}
+          </Link>
         </div>
       </section>
 
-      {/* Comparison Table */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              {pT.tableTitle.split(' vs ')[0]} vs <span style={{ color: GOLD }}>{pT.tableTitle.split(' vs ')[1]}</span>
+      {/* Qué incluye Premium - Visual Grid */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
+              {pT.featuresTitle.split("Premium")[0]}<span style={{ color: GOLD }}>Premium</span>{pT.featuresTitle.split("Premium")[1]}
             </h2>
           </div>
 
-          <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.1)" }}>
-            {/* Header */}
-            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", background: BG2, padding: "16px 20px", fontWeight: 700, fontSize: 14 }}>
-              <span>{pT.tableHeader.feature}</span>
-              <span style={{ textAlign: "center" }}>{pT.tableHeader.free}</span>
-              <span style={{ textAlign: "center", color: GOLD }}>{pT.tableHeader.premium}</span>
-            </div>
-
-            {/* Rows */}
-            {COMPARISON_DATA.map((row, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {PREMIUM_FEATURES.map((feature: { iconTitle: string; title: string; desc: string }, i: number) => (
               <div
                 key={i}
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "2fr 1fr 1fr",
-                  padding: "14px 20px",
-                  background: i % 2 === 0 ? BG3 : BG2,
-                  borderTop: "1px solid rgba(255,255,255,0.05)",
-                  fontSize: 14,
-                }}
+                className="group p-6 rounded-2xl border border-white/5 hover:border-[#c9a84c]/30 transition-all duration-300 hover:-translate-y-1"
+                style={{ background: BG2 }}
               >
-                <span style={{ color: "#fff", fontWeight: row.highlight ? 600 : 400 }}>
-                  {row.feature}
-                </span>
-                <span style={{ textAlign: "center", color: row.free === "✅" ? GOLD : row.free === "❌" ? DARK : DIM }}>
-                  {row.free}
-                </span>
-                <span style={{ textAlign: "center", color: row.premium === "✅" || row.highlight ? GOLD : DIM, fontWeight: row.highlight ? 700 : 400 }}>
-                  {row.premium}
-                </span>
+                <div className="mb-4">
+                  <FeatureIcon title={feature.iconTitle} size={44} />
+                </div>
+                <h3 className="font-bold text-base mb-2" style={{ color: GOLD }}>{feature.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: DIM }}>{feature.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Pricing */}
-      <section style={{ padding: "60px 20px", background: BG3 }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              <span style={{ color: GOLD }}>{pT.pricingTitle}</span>
+      {/* Free vs Premium - Compacto con toggle */}
+      <section style={{ padding: "60px 20px" }}>
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl sm:text-4xl font-black text-white mb-3">
+              {pT.tableTitle.split(' vs ')[0]} vs <span style={{ color: GOLD }}>{pT.tableTitle.split(' vs ')[1]}</span>
             </h2>
-            <p style={{ color: MID, marginTop: 12, fontSize: 16 }}>
-              {pT.pricingSub}
-            </p>
+            <button
+              onClick={() => setShowTable(!showTable)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border text-sm font-semibold transition-all cursor-pointer"
+              style={{
+                borderColor: `${GOLD}40`,
+                color: showTable ? BG : GOLD,
+                background: showTable ? GOLD : 'transparent',
+              }}
+            >
+              {showTable
+                ? (isEN ? 'Hide comparison' : 'Ocultar comparación')
+                : (isEN ? 'View full comparison' : 'Ver comparación completa')
+              }
+              <span className="transition-transform inline-block" style={{ transform: showTable ? 'rotate(180deg)' : 'none' }}>▼</span>
+            </button>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 32, maxWidth: 900, margin: "0 auto" }}>
-            {PRICING_PLANS.map((plan, index) => (
-              <div
-                key={index}
-                style={{
-                  padding: 48,
-                  borderRadius: 24,
-                  background: BG2,
-                  border: `2px solid ${GOLD}`,
-                  position: "relative",
-                  textAlign: "center",
-                }}
-              >
-                <div style={{
-                  position: "absolute",
-                  top: -15,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  padding: "8px 24px",
-                  borderRadius: 20,
-                  background: GOLD,
-                  color: BG,
-                  fontSize: 13,
-                  fontWeight: 800,
-                  textTransform: "uppercase",
-                  letterSpacing: 1,
-                }}>
+          {/* Quick highlights (siempre visible) */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-6">
+            {[
+              { label: isEN ? 'Unlimited predictions' : 'Predicciones ilimitadas', icon: `${IMG}/predicciones.png` },
+              { label: isEN ? 'Pro AI Coach' : 'IA Coach Pro', icon: `${IMG}/ia coach.png` },
+              { label: isEN ? 'No ads' : 'Sin anuncios', icon: `${IMG}/streaming.png` },
+              { label: isEN ? 'Advanced stats' : 'Stats avanzadas', icon: `${IMG}/ranking.png` },
+              { label: isEN ? 'Premium leagues' : 'Ligas Premium', icon: `${IMG}/ligas privadas.png` },
+              { label: isEN ? 'Priority support' : 'Soporte prioritario', icon: `${IMG}/chat en vivo.png` },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-3 p-3 rounded-xl border border-white/5" style={{ background: BG2 }}>
+                <img src={item.icon} alt="" className="w-6 h-6 object-contain flex-shrink-0" />
+                <span className="text-sm text-white font-medium">{item.label}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Full comparison table (toggle) */}
+          {showTable && (
+            <div className="rounded-2xl overflow-hidden border border-white/10">
+              <div className="grid grid-cols-[2fr_1fr_1fr] text-sm font-bold" style={{ background: BG2, padding: "14px 20px" }}>
+                <span>{pT.tableHeader.feature}</span>
+                <span className="text-center">{pT.tableHeader.free}</span>
+                <span className="text-center" style={{ color: GOLD }}>{pT.tableHeader.premium}</span>
+              </div>
+              {COMPARISON_DATA.map((row: { feature: string; free: string; premium: string; highlight: boolean }, i: number) => (
+                <div
+                  key={i}
+                  className="grid grid-cols-[2fr_1fr_1fr] text-sm"
+                  style={{
+                    padding: "12px 20px",
+                    background: i % 2 === 0 ? BG3 : BG2,
+                    borderTop: "1px solid rgba(255,255,255,0.05)",
+                  }}
+                >
+                  <span style={{ fontWeight: row.highlight ? 600 : 400 }}>{row.feature}</span>
+                  <span className="text-center">
+                    {row.free === "✅" ? <svg className="inline" width="16" height="16" viewBox="0 0 24 24" fill={GOLD}><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                    : row.free === "❌" ? <svg className="inline" width="14" height="14" viewBox="0 0 24 24" fill={DARK}><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                    : <span style={{ color: DIM }}>{row.free}</span>}
+                  </span>
+                  <span className="text-center" style={{ color: row.highlight ? GOLD : DIM, fontWeight: row.highlight ? 600 : 400 }}>
+                    {row.premium === "✅" ? <svg className="inline" width="16" height="16" viewBox="0 0 24 24" fill={GOLD}><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+                    : row.premium.startsWith("✅") ? <><svg className="inline mr-1" width="14" height="14" viewBox="0 0 24 24" fill={GOLD}><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>{row.premium.replace("✅ ", "")}</>
+                    : row.premium}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* Pricing Cards */}
+      <section style={{ padding: "60px 20px", background: BG3 }}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl sm:text-4xl font-black mb-3">
+              <span style={{ color: GOLD }}>{pT.pricingTitle}</span>
+            </h2>
+            <p style={{ color: MID, fontSize: 16 }}>{pT.pricingSub}</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-2xl mx-auto">
+            {PRICING_PLANS.map((plan: { badge: string; region: string; name: string; price: string; period: string; description: string }, i: number) => (
+              <div key={i} className="relative p-10 rounded-3xl text-center border-2 overflow-hidden" style={{ background: BG2, borderColor: GOLD }}>
+                <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, ${GOLD}, ${GOLD2})` }} />
+                <div className="absolute -top-px left-1/2 -translate-x-1/2 px-5 py-1.5 rounded-b-xl text-[11px] font-bold uppercase tracking-wider" style={{ background: GOLD, color: BG }}>
                   {plan.badge}
                 </div>
 
-                <p style={{ color: MID, fontSize: 14, marginBottom: 16, fontWeight: 700, textTransform: "uppercase", letterSpacing: 2 }}>
-                  {plan.region}
-                </p>
-                
-                <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 20, color: GOLD }}>
-                  {plan.name}
-                </h3>
-                
-                <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 8, marginBottom: 16 }}>
-                  <span style={{ fontSize: 56, fontWeight: 800 }}>{plan.price}</span>
-                  <span style={{ fontSize: 16, color: MID }}>{plan.period}</span>
+                <p className="text-xs font-bold uppercase tracking-widest mt-4 mb-3" style={{ color: MID }}>{plan.region}</p>
+                <h3 className="text-lg font-bold mb-5" style={{ color: GOLD }}>{plan.name}</h3>
+
+                <div className="flex items-baseline justify-center gap-2 mb-4">
+                  <span className="text-5xl font-black">{plan.price}</span>
+                  <span className="text-sm" style={{ color: MID }}>{plan.period}</span>
                 </div>
 
-                <p style={{ color: MID, fontSize: 15, marginBottom: 32, lineHeight: 1.6 }}>
-                  {plan.description}
-                </p>
+                <p className="text-sm mb-8 leading-relaxed" style={{ color: MID }}>{plan.description}</p>
 
                 <Link
                   href="/registro"
-                  style={{
-                    display: "block",
-                    width: "100%",
-                    padding: "16px 0",
-                    borderRadius: 12,
-                    background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
-                    color: BG,
-                    fontWeight: 800,
-                    fontSize: 16,
-                    textAlign: "center",
-                    textDecoration: "none",
-                  }}
+                  className="block w-full py-4 rounded-xl font-bold text-base no-underline transition-all hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] hover:-translate-y-0.5"
+                  style={{ background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG }}
                 >
                   {pT.pricingCta}
                 </Link>
@@ -162,75 +206,36 @@ export default function PremiumPage() {
         </div>
       </section>
 
-      {/* Premium Features Detail */}
-      <section style={{ padding: "60px 20px" }}>
-        <div style={{ maxWidth: 1000, margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
-            <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800 }}>
-              {pT.featuresTitle.split("Premium")[0]}<span style={{ color: GOLD }}>Premium</span>{pT.featuresTitle.split("Premium")[1]}
-            </h2>
-          </div>
+      {/* CTA Final con estadio */}
+      <section className="relative overflow-hidden" style={{ padding: "80px 20px" }}>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <div className="relative rounded-3xl border overflow-hidden group" style={{ borderColor: `${GOLD}30` }}>
+            <img src="/img/imagenessilviu/Estadio Atmosphere.png" alt="" className="absolute inset-0 w-full h-full object-cover" loading="lazy" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/85 to-[#060B14]/70" />
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 24 }}>
-            {PREMIUM_FEATURES.map((feature, i) => (
-              <div
-                key={i}
-                style={{
-                  padding: 28,
-                  borderRadius: 16,
-                  background: BG2,
-                  border: "1px solid rgba(255,255,255,0.05)",
-                }}
-              >
-                <div style={{ marginBottom: 16 }}>
-                  <FeatureIcon title={feature.iconTitle} size={48} />
+            <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 p-10 sm:p-14">
+              <div className="flex-shrink-0">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-[#c9a84c]/20 blur-[60px] rounded-full" />
+                  <img src={`${IMG}/unete ahora.png`} alt="" className="relative w-44 h-44 object-contain float-animation drop-shadow-[0_0_40px_rgba(201,168,76,0.4)]" loading="lazy" />
                 </div>
-                <h3 style={{ fontWeight: 700, fontSize: 18, marginBottom: 12, color: GOLD }}>
-                  {feature.title}
-                </h3>
-                <p style={{ fontSize: 14, color: DIM, lineHeight: 1.6 }}>
-                  {feature.desc}
-                </p>
               </div>
-            ))}
+              <div className="text-center lg:text-left flex-1">
+                <h2 className="text-3xl sm:text-4xl font-black text-white mb-4 leading-tight">{pT.cta.title}</h2>
+                <p className="text-gray-300 mb-8 text-lg leading-relaxed">{pT.cta.desc}</p>
+                <Link
+                  href="/registro"
+                  className="inline-block px-10 py-4 rounded-xl font-bold text-lg no-underline transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)]"
+                  style={{ background: `linear-gradient(135deg,${GOLD},${GOLD2})`, color: BG }}
+                >
+                  {pT.cta.btn}
+                </Link>
+                <p className="mt-4 text-sm" style={{ color: DARK }}>{pT.cta.hint}</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
-
-      {/* CTA */}
-      <section style={{ padding: "80px 20px", textAlign: "center", background: BG3 }}>
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-          <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'center' }}>
-            <FeatureIcon title="Predicciones" size={64} />
-          </div>
-          <h2 style={{ fontSize: "clamp(24px,4vw,36px)", fontWeight: 800, marginBottom: 16 }}>
-            {pT.cta.title}
-          </h2>
-          <p style={{ color: MID, marginBottom: 32, fontSize: 16 }}>
-            {pT.cta.desc}
-          </p>
-          <Link
-            href="/registro"
-            style={{
-              padding: "18px 48px",
-              borderRadius: 12,
-              background: `linear-gradient(135deg,${GOLD},${GOLD2})`,
-              color: BG,
-              fontWeight: 800,
-              fontSize: 18,
-              textDecoration: "none",
-              display: "inline-block",
-            }}
-          >
-            {pT.cta.btn}
-          </Link>
-          <p style={{ color: DARK, marginTop: 16, fontSize: 13 }}>
-            {pT.cta.hint}
-          </p>
-        </div>
-      </section>
-
-
     </div>
   );
 }

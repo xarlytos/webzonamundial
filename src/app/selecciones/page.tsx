@@ -7,7 +7,7 @@ import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { GRUPOS, getSeleccionesByGrupo, SELECCIONES } from '@/data/selecciones';
+import { SELECCIONES } from '@/data/selecciones';
 import FlagImage from '@/components/FlagImage';
 import { useLanguage } from '@/i18n/LanguageContext';
 
@@ -23,8 +23,6 @@ const MID = "#8a94b0";
 
 // Componente de tarjeta de selección
 function SeleccionCard({ team, index = 0 }: { team: typeof SELECCIONES[0]; index?: number }) {
-  const cardRef = useRef<HTMLAnchorElement>(null);
-  
   const getConfederacionColor = (conf: string) => {
     switch (conf) {
       case 'UEFA': return 'from-blue-500/20 to-blue-600/10';
@@ -37,36 +35,10 @@ function SeleccionCard({ team, index = 0 }: { team: typeof SELECCIONES[0]; index
     }
   };
 
-  useEffect(() => {
-    if (!cardRef.current) return;
-
-    const card = cardRef.current;
-    const hoverAnimation = gsap.to(card, {
-      y: -4,
-      boxShadow: '0 8px 32px rgba(201,168,76,0.15)',
-      duration: 0.3,
-      ease: 'power2.out',
-      paused: true
-    });
-
-    const handleMouseEnter = () => hoverAnimation.play();
-    const handleMouseLeave = () => hoverAnimation.reverse();
-
-    card.addEventListener('mouseenter', handleMouseEnter);
-    card.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      card.removeEventListener('mouseenter', handleMouseEnter);
-      card.removeEventListener('mouseleave', handleMouseLeave);
-      hoverAnimation.kill();
-    };
-  }, []);
-
   return (
     <Link
-      ref={cardRef}
       href={`/selecciones/${team.slug}`}
-      className="group relative block gsap-card"
+      className="group relative block gsap-card transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_8px_32px_rgba(201,168,76,0.15)]"
     >
       <div 
         className={`relative overflow-hidden rounded-xl bg-gradient-to-br ${getConfederacionColor(team.confederacion)} 
@@ -90,13 +62,13 @@ function SeleccionCard({ team, index = 0 }: { team: typeof SELECCIONES[0]; index
             
             <div className="flex flex-col items-end gap-1">
               {team.esAnfitrion && (
-                <span className="px-2 py-0.5 text-[9px] font-bold bg-[#c9a84c]/20 text-[#c9a84c] rounded-full border border-[#c9a84c]/30">
-                  🏟️
+                <span className="px-2 py-0.5 text-[9px] font-bold bg-[#c9a84c]/20 text-[#c9a84c] rounded-full border border-[#c9a84c]/30 flex items-center gap-1">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 12h3v8h14v-8h3L12 2zm0 3.5L18 12h-1.5v6h-9v-6H6L12 5.5z"/></svg>
                 </span>
               )}
               {team.esPlayoff && (
-                <span className="px-2 py-0.5 text-[9px] font-bold bg-orange-500/20 text-orange-400 rounded-full border border-orange-500/30">
-                  ⏳
+                <span className="px-2 py-0.5 text-[9px] font-bold bg-orange-500/20 text-orange-400 rounded-full border border-orange-500/30 flex items-center gap-1">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8zm.5-13H11v6l5.2 3.2.8-1.3-4.5-2.7V7z"/></svg>
                 </span>
               )}
             </div>
@@ -128,72 +100,16 @@ function SeleccionCard({ team, index = 0 }: { team: typeof SELECCIONES[0]; index
   );
 }
 
-// Componente de grupo
-function GrupoSection({ letra, selecciones }: { letra: string; selecciones: typeof SELECCIONES }) {
-  const { t } = useLanguage();
-  const sT = t.selecciones;
-  return (
-    <div className="bg-[#0B1825] rounded-2xl overflow-hidden border border-white/5 hover:border-[#c9a84c]/20 transition-colors">
-      {/* Header del grupo */}
-      <div className="bg-gradient-to-r from-[#0F1D32] to-[#0B1825] px-5 py-4 border-b border-white/5 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c9a84c] to-[#e8d48b] flex items-center justify-center shadow-lg">
-            <span className="text-[#060B14] font-black text-lg">{letra}</span>
-          </div>
-          <div>
-            <h3 className="font-bold text-white">{t.ui.grupo} {letra}</h3>
-            <p className="text-xs text-[#6a7a9a]">{selecciones.length} {sT.grupoN}</p>
-          </div>
-        </div>
-        <Link
-          href={`/grupos/grupo-${letra.toLowerCase()}`}
-          className="text-xs text-[#8a94b0] hover:text-[#c9a84c] transition-colors flex items-center gap-1"
-        >
-          {sT.verGrupo}
-        </Link>
-      </div>
-
-      {/* Lista de selecciones */}
-      <div className="p-4 space-y-2">
-        {selecciones.map((team) => (
-          <Link
-            key={team.slug}
-            href={`/selecciones/${team.slug}`}
-            className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-all group"
-          >
-            <FlagImage
-              code={team.flagCode}
-              alt={team.nombre}
-              width={40}
-              className="w-8 h-6 object-cover rounded shadow-md group-hover:scale-110 transition-transform"
-            />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate group-hover:text-[#c9a84c] transition-colors">
-                {team.nombre}
-              </p>
-              <p className="text-[10px] text-[#6a7a9a]">{team.confederacion}</p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-[#6a7a9a]">#{team.rankingFIFA || '-'}</span>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export default function SeleccionesIndex() {
   const { t } = useLanguage();
   const sT = t.selecciones;
-  const grupos = Object.entries(GRUPOS);
-  
+
   // Refs para animaciones
   const heroRef = useRef<HTMLElement>(null);
   const favoritosRef = useRef<HTMLElement>(null);
   const aSeguirRef = useRef<HTMLElement>(null);
   const confederacionesRef = useRef<HTMLElement>(null);
-  const gruposRef = useRef<HTMLElement>(null);
+  const restoRef = useRef<HTMLElement>(null);
   const ctaRef = useRef<HTMLElement>(null);
   
   // Selecciones destacadas (favoritos)
@@ -202,9 +118,13 @@ export default function SeleccionesIndex() {
   );
 
   // Selecciones a seguir
-  const aSeguir = SELECCIONES.filter(s => 
+  const aSeguir = SELECCIONES.filter(s =>
     ['mexico', 'estados-unidos', 'canada', 'marruecos', 'noruega'].includes(s.slug)
   );
+
+  // Resto de selecciones (las que no están en favoritos ni a seguir)
+  const favoritosYSeguirSlugs = ['argentina', 'francia', 'brasil', 'espana', 'inglaterra', 'portugal', 'alemania', 'mexico', 'estados-unidos', 'canada', 'marruecos', 'noruega'];
+  const resto = SELECCIONES.filter(s => !favoritosYSeguirSlugs.includes(s.slug)).sort((a, b) => (a.rankingFIFA || 999) - (b.rankingFIFA || 999));
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -343,9 +263,9 @@ export default function SeleccionesIndex() {
         );
       }
 
-      // Grupos section
-      if (gruposRef.current) {
-        gsap.fromTo('.gsap-grupos-header',
+      // Resto de selecciones section
+      if (restoRef.current) {
+        gsap.fromTo('.gsap-resto-header',
           { opacity: 0, y: 50 },
           {
             opacity: 1,
@@ -353,23 +273,23 @@ export default function SeleccionesIndex() {
             duration: 0.8,
             ease: 'power3.out',
             scrollTrigger: {
-              trigger: gruposRef.current,
+              trigger: restoRef.current,
               start: 'top 80%',
               toggleActions: 'play none none none'
             }
           }
         );
 
-        gsap.fromTo('.gsap-grupo',
-          { opacity: 0, y: 50 },
+        gsap.fromTo(restoRef.current.querySelectorAll('.gsap-card'),
+          { opacity: 0, y: 30 },
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 0.6,
             ease: 'power3.out',
-            stagger: 0.1,
+            stagger: 0.03,
             scrollTrigger: {
-              trigger: gruposRef.current,
+              trigger: restoRef.current,
               start: 'top 75%',
               toggleActions: 'play none none none'
             }
@@ -416,8 +336,8 @@ export default function SeleccionesIndex() {
       <section ref={heroRef} className="relative overflow-hidden" style={{ padding: '20px 20px 60px' }}>
         {/* Background effects */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(201,168,76,0.08)_0%,transparent_60%)]" />
-        <div className="absolute top-10 left-10 text-8xl opacity-[0.03] rotate-[-15deg]">⚽</div>
-        <div className="absolute bottom-10 right-10 text-7xl opacity-[0.03] rotate-[15deg]">🏆</div>
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/match center.png" alt="" className="absolute top-10 left-10 w-28 h-28 opacity-[0.06] rotate-[-15deg] pointer-events-none" />
+        <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="absolute bottom-10 right-10 w-24 h-24 opacity-[0.06] rotate-[15deg] pointer-events-none" />
         
         <div className="max-w-6xl mx-auto relative">
           {/* Breadcrumb */}
@@ -461,9 +381,10 @@ export default function SeleccionesIndex() {
       </section>
 
       {/* Sponsor slot */}
-      <div className="max-w-6xl mx-auto px-4 mb-12">
-        <a href="#" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="selecciones-hero">
-          <img src="/img/imagenessilviu/ChatGPT Image 8 abr 2026, 04_53_21 p.m..png" alt="Publicidad" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-12 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Selecciones&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Selecciones.%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
 
@@ -510,7 +431,7 @@ export default function SeleccionesIndex() {
         <div className="bg-gradient-to-br from-[#0B1825] to-[#0F1D32] rounded-2xl p-6 md:p-8 border border-white/5">
           <div className="gsap-conf-header flex items-center gap-4 mb-8" style={{ opacity: 0 }}>
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-500/20 to-green-600/5 flex items-center justify-center border border-green-500/20">
-              <span className="text-2xl">🌎</span>
+              <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-8 h-8 object-contain" />
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white">{sT.confederaciones}</h2>
@@ -537,60 +458,78 @@ export default function SeleccionesIndex() {
         </div>
       </section>
 
-      {/* Los 12 grupos */}
-      <section ref={gruposRef} className="max-w-6xl mx-auto px-4 mb-16">
-        <div className="gsap-grupos-header flex items-center gap-4 mb-8" style={{ opacity: 0 }}>
-          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#c9a84c]/20 to-[#c9a84c]/5 flex items-center justify-center border border-[#c9a84c]/20">
-            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/los 12 grupos.png" alt="" className="w-8 h-8 object-contain" />
+      {/* Resto de selecciones */}
+      <section ref={restoRef} className="max-w-6xl mx-auto px-4 mb-16">
+        <div className="gsap-resto-header flex items-center gap-4 mb-6" style={{ opacity: 0 }}>
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-600/5 flex items-center justify-center border border-emerald-500/20">
+            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/48 selecciones.png" alt="" className="w-8 h-8 object-contain" />
           </div>
           <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white">{sT.losGrupos}</h2>
-            <p className="text-sm text-[#6a7a9a]">{sT.losGruposSub}</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-white">{sT.restoSelecciones}</h2>
+            <p className="text-sm text-[#6a7a9a]">{sT.restoSeleccionesSub}</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {grupos.map(([letra]) => {
-            const selecciones = getSeleccionesByGrupo(letra);
-            return (
-              <div key={letra} className="gsap-grupo" style={{ opacity: 0 }}>
-                <GrupoSection letra={letra} selecciones={selecciones} />
-              </div>
-            );
-          })}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+          {resto.map((team, index) => (
+            <SeleccionCard key={team.slug} team={team} index={index} />
+          ))}
         </div>
       </section>
 
       {/* CTA Final */}
-      <section ref={ctaRef} className="max-w-4xl mx-auto px-4 mb-16">
-        <div className="gsap-cta-content relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#c9a84c]/10 via-[#0B1825] to-[#0F1D32] border border-[#c9a84c]/20 p-8 md:p-12 text-center" style={{ opacity: 0 }}>
-          {/* Decoración */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-[#c9a84c]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#c9a84c]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
-          
-          <div className="relative">
-            <img src="/img/zonamundial-images/imagenes/logos para sustuir emojis/predicciones.png" alt="" className="w-16 h-16 mx-auto mb-4 object-contain" />
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4">
-              {sT.cta.title}
-            </h2>
-            <p className="text-[#8a94b0] mb-8 max-w-xl mx-auto">
-              {sT.cta.desc}
-            </p>
-            <Link
-              href="/registro"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] transition-all hover:-translate-y-0.5"
-            >
-              {sT.cta.btn}
-              <span>→</span>
-            </Link>
+      <section ref={ctaRef} className="max-w-5xl mx-auto px-4 mb-16">
+        <div className="gsap-cta-content relative rounded-3xl border border-[#c9a84c]/20 overflow-hidden group" style={{ opacity: 0 }}>
+          {/* Imagen de estadio como fondo */}
+          <img
+            src="/img/imagenessilviu/Estadio Atmosphere.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+            loading="lazy"
+          />
+          {/* Overlay oscuro */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/85 to-[#060B14]/70"/>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#c9a84c]/10 via-transparent to-[#c9a84c]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700"/>
+
+          <div className="relative z-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-12 p-8 md:p-12">
+            {/* Imagen Únete Ahora */}
+            <div className="flex-shrink-0">
+              <div className="relative">
+                <div className="absolute inset-0 bg-[#c9a84c]/20 blur-[60px] rounded-full"/>
+                <img
+                  src="/img/zonamundial-images/imagenes/logos para sustuir emojis/unete ahora.png"
+                  alt="Únete ahora"
+                  className="relative w-48 h-48 sm:w-56 sm:h-56 object-contain float-animation drop-shadow-[0_0_40px_rgba(201,168,76,0.4)]"
+                  loading="lazy"
+                />
+              </div>
+            </div>
+
+            {/* Texto + CTA */}
+            <div className="text-center lg:text-left flex-1">
+              <h2 className="text-3xl md:text-4xl font-black text-white mb-4 leading-tight">
+                {sT.cta.title}
+              </h2>
+              <p className="text-gray-300 mb-8 max-w-xl text-lg leading-relaxed">
+                {sT.cta.desc}
+              </p>
+              <Link
+                href="/registro"
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold rounded-xl hover:shadow-[0_8px_32px_rgba(201,168,76,0.4)] transition-all hover:-translate-y-0.5"
+              >
+                {sT.cta.btn}
+                <span>→</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Sponsor footer */}
-      <div className="max-w-6xl mx-auto px-4 mb-8">
-        <a href="https://rotulemos.com" target="_blank" rel="noopener noreferrer" className="w-full bg-[#0B1825] border border-white/5 rounded-xl flex items-center justify-center py-3" data-sponsor-slot="selecciones-footer">
-          <img src="/img/imagenessilviu/rotulemos320x50.png" alt="Rotulemos" className="rounded-lg" style={{maxWidth:"100%",height:"auto"}} />
+      <div className="max-w-6xl mx-auto px-4 mb-8 text-center">
+        <a href="mailto:info@sprintmarkt.com?subject=Publicidad%20en%20ZonaMundial%20-%20P%C3%A1gina%20Selecciones%20(footer)&body=Hola%20equipo%20de%20ZonaMundial%2C%0A%0AMe%20interesa%20contratar%20un%20espacio%20publicitario%20en%20la%20p%C3%A1gina%20de%20Selecciones%20(footer).%0A%0AEmpresa%3A%20%0AContacto%3A%20%0APresupuesto%20estimado%3A%20%0A%0AQuedo%20a%20la%20espera%20de%20vuestra%20propuesta.%0A%0AGracias." className="inline-block w-full bg-[#0B1825] border border-dashed border-[#C9A84C]/30 rounded-xl py-4 hover:bg-[#C9A84C]/5 hover:border-[#C9A84C]/50 transition-all group">
+          <p className="text-[#C9A84C]/60 text-sm font-bold tracking-widest uppercase mb-2 group-hover:text-[#C9A84C]/80">Espacio disponible para publicidad</p>
+          <p className="text-gray-500 text-sm group-hover:text-gray-400">Contacta con nosotros → info@sprintmarkt.com</p>
         </a>
       </div>
     </div>
