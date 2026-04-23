@@ -8,12 +8,22 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface ParallaxImageProps {
   src: string;
+  /** Opcional: fuente WebP para navegadores modernos (reduce ~35% peso). */
+  srcWebp?: string;
   alt: string;
   className?: string;
   speed?: number;
+  loading?: "lazy" | "eager";
 }
 
-export function ParallaxImage({ src, alt, className = "", speed = 0.5 }: ParallaxImageProps) {
+export function ParallaxImage({
+  src,
+  srcWebp,
+  alt,
+  className = "",
+  speed = 0.5,
+  loading = "lazy",
+}: ParallaxImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
 
@@ -40,13 +50,18 @@ export function ParallaxImage({ src, alt, className = "", speed = 0.5 }: Paralla
 
   return (
     <div ref={containerRef} className={`overflow-hidden ${className}`}>
-      <img
-        ref={imageRef}
-        src={src}
-        alt={alt}
-        className="w-full h-full object-cover"
-        style={{ willChange: "transform" }}
-      />
+      <picture>
+        {srcWebp && <source srcSet={srcWebp} type="image/webp" />}
+        <img
+          ref={imageRef}
+          src={src}
+          alt={alt}
+          loading={loading}
+          decoding="async"
+          className="w-full h-full object-cover"
+          style={{ willChange: "transform" }}
+        />
+      </picture>
     </div>
   );
 }

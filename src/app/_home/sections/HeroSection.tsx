@@ -43,16 +43,19 @@ export function HeroSection({
       ref={heroRef}
       className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-12 pb-20 overflow-hidden"
     >
-      {/* Stadium background image */}
+      {/* Stadium background image — local optimized (WebP con JPG fallback) */}
       <div className="absolute inset-0">
-        <img
-          src="https://images.pexels.com/photos/28847309/pexels-photo-28847309.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop"
-          alt="Estadio de fútbol con gradas iluminadas durante el Mundial 2026"
-          className="w-full h-full object-cover"
-          loading="eager"
-          decoding="async"
-          fetchPriority="high"
-        />
+        <picture>
+          <source srcSet="/img/heroes/hero-stadium.webp" type="image/webp" />
+          <img
+            src="/img/heroes/hero-stadium.jpg"
+            alt="Estadio de fútbol con gradas iluminadas durante el Mundial 2026"
+            className="w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
       </div>
       {/* Overlays for readability */}
       <div
