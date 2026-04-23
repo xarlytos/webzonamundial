@@ -1,217 +1,284 @@
 "use client";
 
-import { useEffect, RefObject } from "react";
-import { gsap } from "gsap";
-import { LuxuryBallBanner } from "@/components/LuxuryBallBanner";
-import { FloatingElements } from "@/components/FloatingElements";
-import { MagneticButton } from "../components/MagneticButton";
-import { BG, BG2, ACCENT_ORANGE } from "../constants";
+import { RefObject } from "react";
+import Link from "next/link";
+import styles from "./HeroSection.module.css";
 
-export function HeroSection({
-  heroRef,
-  titleRef,
-  h,
-  cd,
-  IMGS,
-}: {
+type Props = {
   heroRef: RefObject<HTMLDivElement | null>;
   titleRef: RefObject<HTMLHeadingElement | null>;
   h: any;
   cd: { d: number; h: number; m: number; s: number };
   IMGS: Record<string, string>;
-}) {
-  useEffect(() => {
-    if (titleRef.current) {
-      const lines = titleRef.current.querySelectorAll(".hero-title-line");
-      gsap.fromTo(
-        lines,
-        { y: 60, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          stagger: 0.2,
-          ease: "power3.out",
-          delay: 0.5,
-        }
-      );
-    }
-  }, [titleRef]);
+};
+
+/* ---------- Inline SVG icons (no deps) ---------- */
+const ICON_PATHS: Record<string, string> = {
+  soccer: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM8 6l4 3 4-3M6 10l2 5M16 15l2-5M9 19l3-4 3 4",
+  trophy: "M7 4h10v4a5 5 0 0 1-10 0V4zM5 4H3v2a3 3 0 0 0 3 3M19 4h2v2a3 3 0 0 1-3 3M12 13v4M8 21h8M10 17h4",
+  bot: "M12 3v3M6 8h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2zM9 13h.01M15 13h.01M9 17h6",
+  users: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75",
+  target: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12zm0 4a2 2 0 1 0 0 4 2 2 0 0 0 0-4z",
+  zap: "M13 2L3 14h8l-1 8 10-12h-8l1-8z",
+  arrow: "M5 12h14m-7-7 7 7-7 7",
+  play: "M5 3l14 9-14 9V3z",
+  globe: "M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zM2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20",
+  shield: "M12 2l8 4v6c0 5-3.5 9-8 10-4.5-1-8-5-8-10V6l8-4z",
+  lock: "M19 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2zM7 11V7a5 5 0 1 1 10 0v4",
+  flame:
+    "M8.5 14.5A2.5 2.5 0 0 0 11 17c1.5 0 2.5-1 2.5-2.5 0-1.5-2-2.5-3.5-6 0 0-3 3-3 6.5A4 4 0 0 0 12 22a4 4 0 0 0 4-4c0-3-3-7-4-10-1 3-3.5 5.5-3.5 7z",
+};
+
+function Icon({ name, size = 18 }: { name: keyof typeof ICON_PATHS; size?: number }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d={ICON_PATHS[name] || ICON_PATHS.soccer} />
+    </svg>
+  );
+}
+
+/* ---------- HERO LEFT ---------- */
+function HeroLeft({ cd }: { cd: Props["cd"] }) {
+  const dd = cd.d;
+  const hh = String(cd.h).padStart(2, "0");
+  const mm = String(cd.m).padStart(2, "0");
 
   return (
-    <section
-      ref={heroRef}
-      className="relative min-h-screen flex flex-col items-center justify-center px-4 pt-12 pb-20 overflow-hidden"
-    >
-      {/* Stadium background image — local optimized (WebP con JPG fallback) */}
-      <div className="absolute inset-0">
-        <picture>
-          <source srcSet="/img/heroes/hero-stadium.webp" type="image/webp" />
-          <img
-            src="/img/heroes/hero-stadium.jpg"
-            alt="Estadio de fútbol con gradas iluminadas durante el Mundial 2026"
-            className="w-full h-full object-cover"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-          />
-        </picture>
+    <div className={styles.zmLeft}>
+      <div className={styles.zmCountdown}>
+        <span className={styles.zmLiveDot} />
+        Copa del Mundo · EE.UU · México · Canadá
+        <span className={styles.zmTimer}>
+          <b>{dd}</b>d <b>{hh}</b>h <b>{mm}</b>m
+        </span>
       </div>
-      {/* Overlays for readability */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `linear-gradient(170deg, ${BG2}ee 0%, ${BG}dd 40%, #0a0f1aee 100%)`,
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 30% 20%, rgba(201,168,76,0.15) 0%, transparent 50%)",
-        }}
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 70% 80%, rgba(0,180,220,0.05) 0%, transparent 40%)",
-        }}
-      />
 
-      {/* Animated Field pattern */}
-      <svg
-        className="absolute inset-0 w-full h-full opacity-[0.03] pointer-events-none parallax-slow"
-        viewBox="0 0 1200 800"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <rect x="50" y="50" width="1100" height="700" fill="none" stroke="#c9a84c" strokeWidth="2" />
-        <line x1="600" y1="50" x2="600" y2="750" stroke="#c9a84c" strokeWidth="2" />
-        <circle cx="600" cy="400" r="91.5" fill="none" stroke="#c9a84c" strokeWidth="2" />
-        <circle cx="600" cy="400" r="3" fill="#c9a84c" />
-        <rect x="50" y="244" width="165" height="312" fill="none" stroke="#c9a84c" strokeWidth="2" />
-        <rect x="985" y="244" width="165" height="312" fill="none" stroke="#c9a84c" strokeWidth="2" />
-      </svg>
+      <h1 className={styles.zmH1}>
+        <span className="line">El Mundial</span>
+        <span className="line">
+          <span className="strike">no se mira.</span>
+        </span>
+        <span className="line gold">Se juega.</span>
+      </h1>
 
-      {/* Floating orbs */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[#C9A84C]/10 rounded-full blur-[100px] animate-pulse" />
-      <div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-[120px] animate-pulse"
-        style={{ animationDelay: "1s" }}
-      />
+      <p className={styles.zmSub}>
+        Predice en tiempo real, compite en <b>ligas privadas</b>, crea tu fantasy y juega con{" "}
+        <span className={styles.zmChip}>IA Coach</span> durante los <b>104 partidos</b> del Mundial
+        2026.
+      </p>
 
-      {/* Floating Elements */}
-      <FloatingElements />
-
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
-        {/* Badge */}
-        <div className="gsap-hero-item inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-[#C9A84C]/30 bg-[#C9A84C]/5 mb-8 hover:bg-[#C9A84C]/10 transition-all cursor-default">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#C9A84C] animate-pulse" />
-          <span className="text-[#C9A84C] text-xs font-bold tracking-wider uppercase">
-            {h.heroBadge}
-          </span>
-        </div>
-
-        {/* Title con animación GSAP */}
-        <h1
-          ref={titleRef}
-          className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter"
-        >
-          <span className="hero-title-line block">{h.heroTitle1}</span>
-          <span className="hero-title-line block text-transparent bg-clip-text bg-gradient-to-r from-[#C9A84C] via-[#E8D48B] to-[#ff6b35] animate-gradient">
-            {h.heroTitle2}
-          </span>
-        </h1>
-
-        {/* VIDEO LOGO */}
-        <div className="gsap-hero-item mb-8 flex justify-center">
-          <div className="relative rounded-full overflow-hidden shadow-[0_0_80px_rgba(201,168,76,0.4)] hover:shadow-[0_0_120px_rgba(201,168,76,0.6)] transition-shadow duration-500">
-            <div className="absolute inset-0 bg-gradient-to-t from-[#C9A84C]/20 to-transparent z-10" />
-            <video
-              src="/img/zonamundial-images/video logo dando vueltas.mp4"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full max-w-[320px] h-auto block"
-              style={{ mixBlendMode: "screen" }}
-            />
+      <div className={styles.zmPillars}>
+        <div className={styles.zmPillar}>
+          <div className={styles.zmPillarIc}>
+            <Icon name="zap" size={16} />
+          </div>
+          <div className={styles.zmPillarN}>
+            104<small>×</small>
+          </div>
+          <div className={styles.zmPillarL}>
+            Partidos
+            <br />
+            en directo
           </div>
         </div>
+        <div className={styles.zmPillar}>
+          <div className={styles.zmPillarIc}>
+            <Icon name="bot" size={16} />
+          </div>
+          <div className={styles.zmPillarN}>24/7</div>
+          <div className={styles.zmPillarL}>
+            IA Coach
+            <br />
+            personal
+          </div>
+        </div>
+        <div className={styles.zmPillar}>
+          <div className={styles.zmPillarIc}>
+            <Icon name="trophy" size={16} />
+          </div>
+          <div className={styles.zmPillarN}>€250k</div>
+          <div className={styles.zmPillarL}>
+            En premios
+            <br />y exclusivos
+          </div>
+        </div>
+      </div>
 
-        <p className="gsap-hero-item text-xl text-[#8a94b0] max-w-2xl mx-auto mb-10 leading-relaxed">
-          {h.heroSubtitle}
-        </p>
+      <div className={styles.zmCtas}>
+        <Link href="/registro" className={styles.zmCtaPrimary}>
+          Pre-regístrate gratis
+          <span className={styles.zmCtaPrimaryArrow}>
+            <Icon name="arrow" size={14} />
+          </span>
+        </Link>
+        <Link href="/la-app" className={styles.zmCtaGhost}>
+          <span className={styles.zmCtaGhostPlay}>
+            <Icon name="play" size={10} />
+          </span>
+          Ver cómo funciona
+        </Link>
+      </div>
 
-        {/* Countdown */}
-        <div className="gsap-hero-item flex justify-center gap-3 sm:gap-5 mb-10">
+      <div className={styles.zmCtaNote}>
+        <Icon name="lock" size={14} />
+        Sin tarjeta · <b>Acceso anticipado</b> al Founders Pass
+      </div>
+
+      <div className={styles.zmProof}>
+        <div className={styles.zmProofAvatars}>
           {[
-            { v: cd.d, l: h.countdown.days },
-            { v: cd.h, l: h.countdown.hours },
-            { v: cd.m, l: h.countdown.min },
-            { v: cd.s, l: h.countdown.sec },
-          ].map((u) => (
-            <div key={u.l} className="text-center group">
-              <div className="relative w-[70px] sm:w-[85px] h-[70px] sm:h-[85px] rounded-2xl bg-gradient-to-br from-[#0F1D32] to-[#0B1825] border border-[#C9A84C]/20 flex items-center justify-center shadow-lg group-hover:border-[#C9A84C]/50 group-hover:shadow-[0_0_30px_rgba(201,168,76,0.3)] transition-all duration-300">
-                <span className="text-3xl sm:text-4xl font-black text-[#C9A84C] tabular-nums group-hover:scale-110 transition-transform">
-                  {String(u.v).padStart(2, "0")}
-                </span>
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#C9A84C]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-              </div>
-              <span className="text-[11px] text-gray-400 font-semibold mt-3 block tracking-widest">
-                {u.l}
-              </span>
+            { i: "JA", bg: "linear-gradient(135deg,#2E86AB,#9b51e0)" },
+            { i: "MR", bg: "linear-gradient(135deg,#D4A853,#B8913F)" },
+            { i: "LS", bg: "linear-gradient(135deg,#9b51e0,#D4A853)" },
+            { i: "CP", bg: "linear-gradient(135deg,#2E86AB,#4FA0C2)" },
+            { i: "NV", bg: "linear-gradient(135deg,#D4A853,#2E86AB)" },
+          ].map((a, ix) => (
+            <div key={ix} className={styles.zmProofAvatar} style={{ background: a.bg }}>
+              {a.i}
             </div>
           ))}
         </div>
+        <div className={styles.zmProofText}>
+          <b>12.400+ aficionados</b> ya están en la lista
+          <br />
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
+            Se añaden ~180 cada día
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
-        {/* CTAs */}
-        <div className="gsap-hero-item flex flex-wrap justify-center gap-4">
-          <MagneticButton href="/registro" variant="primary">
-            {h.heroCta1}
-          </MagneticButton>
-          <MagneticButton href="/selecciones" variant="secondary">
-            {h.heroCta2}
-          </MagneticButton>
+/* ---------- HERO RIGHT (phone stage) ---------- */
+function HeroRight() {
+  return (
+    <div className={styles.zmRight}>
+      <div className={styles.zmPhoneStage}>
+        <div className={styles.zmSpotlight} />
+        <div className={styles.zmPhoneGlow} />
+
+        <div className={styles.zmPhone}>
+          <picture>
+            <source srcSet="/img/hero/app-phone.webp" type="image/webp" />
+            <img src="/img/hero/app-phone.webp" alt="Pantalla de la app ZonaMundial" loading="eager" fetchPriority="high" decoding="async" />
+          </picture>
         </div>
 
-        {/* Social proof — contador pre-registros */}
-        <div className="gsap-hero-item mt-8 flex flex-col items-center gap-3">
-          <div className="flex items-center gap-2">
-            {/* Avatares apilados */}
-            <div className="flex -space-x-2">
-              {[IMGS.c_jose_cobo, IMGS.c_svgiago, IMGS.c_pimpeano, IMGS.c_nachocp].map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt=""
-                  role="presentation"
-                  loading="lazy"
-                  decoding="async"
-                  className="w-8 h-8 rounded-full border-2 border-[#060B14] object-cover"
-                />
-              ))}
-            </div>
-            <div className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-              <span className="text-sm text-gray-300">
-                <span className="font-bold text-white">{h.socialProof.count}</span>{" "}
-                {h.socialProof.label}
-              </span>
+        <div className={`${styles.zmChipCard} ${styles.zmChipLive}`}>
+          <div className={styles.zmChipIc}>
+            <Icon name="flame" size={14} />
+          </div>
+          <div>
+            <div className={styles.zmChipSub}>En vivo ahora</div>
+            <div className={styles.zmChipVal}>
+              <span className={styles.zmPulseDotRed} />MEX 1 – 0 RSA
             </div>
           </div>
-          <p className="text-xs text-gray-400">{h.socialProof.trust}</p>
         </div>
 
-      </div>
+        <div className={`${styles.zmChipCard} ${styles.zmChipScore}`}>
+          <div className={styles.zmChipIc}>
+            <Icon name="target" size={14} />
+          </div>
+          <div>
+            <div className={styles.zmChipMain}>Tu predicción</div>
+            <div className={styles.zmChipSub}>+47 puntos · gol min. 23</div>
+          </div>
+        </div>
 
-      {/* Luxury Ball Background - Parabolic Motion */}
-      <div className="absolute inset-0 pointer-events-none z-[1] overflow-hidden">
-        <div className="relative w-full h-full">
-          <LuxuryBallBanner />
+        <div className={`${styles.zmChipCard} ${styles.zmChipPoints}`}>
+          <div className={styles.zmChipIc}>
+            <Icon name="trophy" size={14} />
+          </div>
+          <div>
+            <div className={styles.zmChipSub}>Ranking liga</div>
+            <div className={styles.zmChipVal}>
+              1.847{" "}
+              <small style={{ fontSize: 11, color: "#10B981", fontWeight: 600 }}>▲ 24</small>
+            </div>
+          </div>
+        </div>
+
+        <div className={`${styles.zmChipCard} ${styles.zmChipAi}`}>
+          <div className={styles.zmChipIc}>
+            <Icon name="bot" size={14} />
+          </div>
+          <div>
+            <div className={styles.zmChipMain}>IA Coach sugiere</div>
+            <div className={styles.zmChipSub}>Cambia a Mbappé (+12%)</div>
+          </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/* ---------- MAIN EXPORT ---------- */
+export function HeroSection({ heroRef, titleRef, cd }: Props) {
+  return (
+    <section ref={heroRef} className={styles.zmPage}>
+      <div className={styles.zmStadiumPhoto}>
+        <picture>
+          <source srcSet="/img/hero/stadium.webp" type="image/webp" />
+          <img
+            src="/img/hero/stadium.webp"
+            alt=""
+            role="presentation"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </picture>
+      </div>
+      <div className={styles.zmGrid} />
+      <div className={styles.zmGrain} />
+
+      <div className={styles.zmHero}>
+        {/* titleRef kept for parent GSAP compatibility */}
+        <div ref={titleRef as unknown as RefObject<HTMLDivElement>} style={{ display: "contents" }}>
+          <HeroLeft cd={cd} />
+          <HeroRight />
+        </div>
+      </div>
+
+      <StatsBar />
     </section>
+  );
+}
+
+/* ---------- STATS BAR (bottom of hero) ---------- */
+function StatsBar() {
+  const stats: Array<{ ic: keyof typeof ICON_PATHS; n: string; l: string }> = [
+    { ic: "users", n: "+2.5M", l: "Usuarios activos" },
+    { ic: "shield", n: "16", l: "Sedes oficiales" },
+    { ic: "globe", n: "48", l: "Selecciones" },
+    { ic: "target", n: "12", l: "Grupos" },
+    { ic: "soccer", n: "100%", l: "Fútbol puro" },
+  ];
+  return (
+    <div className={styles.zmStats}>
+      <div className={styles.zmStatsInner}>
+        {stats.map((s, i) => (
+          <div key={i} className={styles.zmStat}>
+            <span className={styles.zmStatIc}>
+              <Icon name={s.ic} size={16} />
+            </span>
+            <b>{s.n}</b>
+            <span className={styles.zmStatL}>{s.l}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

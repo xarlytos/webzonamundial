@@ -10,6 +10,23 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
+/* Hero design fonts: self-hosted woff2 + Google fallbacks for missing weights */
+@font-face {
+  font-family: 'Syne';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/Syne-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/Inter-Medium.woff2') format('woff2');
+}
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@500;600;800&family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
 :root {
   --zm-bg: #060B14;
   --zm-surface: #0F1D32;
