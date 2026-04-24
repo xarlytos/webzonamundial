@@ -248,7 +248,8 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
   const FOOTER_LINKS = buildFooterLinks(t);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll(); // set correct state on mount (SSR hydration fix)
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -260,19 +261,21 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
       ref={containerRef}
       style={{
         background: BG, color: "#fff", fontFamily: "'Outfit',sans-serif",
-        minHeight: "100vh", overflowX: "hidden",
+        minHeight: "100vh",
         position: "relative",
       }}
     >
       {/* ═══ HEADER ═══ */}
       <header style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: scrolled ? "rgba(6,11,20,0.94)" : "transparent",
-        backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(201,168,76,0.08)" : "1px solid transparent",
-        boxShadow: scrolled ? "0 4px 30px rgba(0,0,0,0.3)" : "none",
-        transition: "all 0.4s",
+        position: "sticky", top: 0, zIndex: 1000,
+        background: scrolled
+          ? "rgba(6,11,20,0.88)"
+          : "linear-gradient(180deg, rgba(6,11,20,0.55) 0%, rgba(6,11,20,0.15) 70%, transparent 100%)",
+        backdropFilter: scrolled ? "blur(18px) saturate(180%)" : "blur(6px)",
+        WebkitBackdropFilter: scrolled ? "blur(18px) saturate(180%)" : "blur(6px)",
+        borderBottom: scrolled ? "1px solid rgba(201,168,76,0.1)" : "1px solid transparent",
+        boxShadow: scrolled ? "0 10px 40px -10px rgba(0,0,0,0.5)" : "none",
+        transition: "background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease",
       }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px", height: 64, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           {/* Logo */}
