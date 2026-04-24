@@ -48,9 +48,59 @@ const STEPS = [
 
 /* =================== COMPONENT =================== */
 
+/* Particles spread across the section */
+const PARTICLES = [
+  { left: "6%", dur: "14s", delay: "0s" },
+  { left: "18%", dur: "18s", delay: "3s" },
+  { left: "32%", dur: "16s", delay: "6s" },
+  { left: "45%", dur: "20s", delay: "2s" },
+  { left: "58%", dur: "15s", delay: "9s" },
+  { left: "71%", dur: "17s", delay: "4s" },
+  { left: "84%", dur: "13s", delay: "11s" },
+  { left: "94%", dur: "19s", delay: "7s" },
+];
+
+/* Twinkling stars */
+const TWINKLES = [
+  { left: "10%", top: "12%", dur: "3s", delay: "0s" },
+  { left: "24%", top: "28%", dur: "4s", delay: "1s" },
+  { left: "38%", top: "8%", dur: "3.5s", delay: "2s" },
+  { left: "52%", top: "18%", dur: "3s", delay: "0.5s" },
+  { left: "66%", top: "10%", dur: "4.2s", delay: "1.8s" },
+  { left: "80%", top: "22%", dur: "3.6s", delay: "3s" },
+  { left: "92%", top: "14%", dur: "4s", delay: "0.8s" },
+  { left: "15%", top: "78%", dur: "3s", delay: "2.5s" },
+  { left: "45%", top: "84%", dur: "4s", delay: "1.2s" },
+  { left: "75%", top: "80%", dur: "3.8s", delay: "3.4s" },
+];
+
 export function StatsHowSection() {
   const stepsRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+
+  /* Track cursor to feed the interactive glow */
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        el.style.setProperty("--mx", `${x}%`);
+        el.style.setProperty("--my", `${y}%`);
+        raf = 0;
+      });
+    };
+    el.addEventListener("mousemove", onMove);
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
 
   /* Track scroll position on mobile steps slider to update active dot */
   useEffect(() => {
@@ -98,7 +148,38 @@ export function StatsHowSection() {
   }, []);
 
   return (
-    <section className={styles.section} id="stats-how">
+    <section ref={sectionRef} className={styles.section} id="stats-how">
+      {/* Interactive cursor glow */}
+      <div className={styles.cursorGlow} aria-hidden="true" />
+      {/* Floating particles */}
+      <div className={styles.particles} aria-hidden="true">
+        {PARTICLES.map((p, i) => (
+          <span
+            key={`p-${i}`}
+            className={styles.particle}
+            style={{
+              left: p.left,
+              bottom: "-20px",
+              ["--dur" as string]: p.dur,
+              ["--delay" as string]: p.delay,
+            }}
+          />
+        ))}
+        {TWINKLES.map((t, i) => (
+          <span
+            key={`t-${i}`}
+            className={styles.twinkle}
+            style={{
+              left: t.left,
+              top: t.top,
+              ["--dur" as string]: t.dur,
+              ["--delay" as string]: t.delay,
+            }}
+          />
+        ))}
+        <span className={styles.shimmer} />
+      </div>
+
       <div className={styles.inner}>
         {/* ========== Block 1: Stats ========== */}
         <div className={styles.statsHead}>
