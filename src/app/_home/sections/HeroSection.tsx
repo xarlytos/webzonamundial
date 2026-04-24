@@ -54,11 +54,15 @@ function Icon({ name, size = 18 }: { name: keyof typeof ICON_PATHS; size?: numbe
 
 /* ---------- Variants for headlines ---------- */
 function Headline({ variant }: { variant: Variant }) {
+  const { locale } = useLanguage();
+  const v = homeSections[locale].hero.variants;
+
   if (variant === "ia") {
+    const ia = v.ia;
     return (
       <h1 className={styles.zmH1}>
-        <span className={styles.zmH1Line}>Predice. Compite.</span>
-        <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>Gana.</span>
+        <span className={styles.zmH1Line}>{ia.line1}</span>
+        <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>{ia.gold}</span>
         <span
           className={styles.zmH1Line}
           style={{
@@ -68,28 +72,29 @@ function Headline({ variant }: { variant: Variant }) {
             marginTop: 12,
           }}
         >
-          Con <em className={styles.zmH1Em}>IA Coach</em> de tu lado.
+          {ia.subPrefix} <em className={styles.zmH1Em}>{ia.subEm}</em> {ia.subSuffix}
         </span>
       </h1>
     );
   }
   if (variant === "fantasy") {
+    const fa = v.fantasy;
     return (
       <h1 className={styles.zmH1}>
-        <span className={styles.zmH1Line}>Arma tu</span>
-        <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>selección ideal</span>
-        <span className={styles.zmH1Line}>y reta al mundo.</span>
+        <span className={styles.zmH1Line}>{fa.line1}</span>
+        <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>{fa.gold}</span>
+        <span className={styles.zmH1Line}>{fa.line3}</span>
       </h1>
     );
   }
-  // juega (default)
+  const ju = v.juega;
   return (
     <h1 className={styles.zmH1}>
-      <span className={styles.zmH1Line}>El Mundial</span>
+      <span className={styles.zmH1Line}>{ju.line1}</span>
       <span className={styles.zmH1Line}>
-        <span className={styles.zmH1Strike}>no se mira.</span>
+        <span className={styles.zmH1Strike}>{ju.strike}</span>
       </span>
-      <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>Se juega.</span>
+      <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>{ju.gold}</span>
     </h1>
   );
 }
@@ -105,7 +110,9 @@ function HeroLeft({
   showCountdown: boolean;
 }) {
   const { locale } = useLanguage();
-  const countdownLabel = homeSections[locale].countdownLabel;
+  const hs = homeSections[locale];
+  const countdownLabel = hs.countdownLabel;
+  const tH = hs.hero;
   const dd = cd.d;
   const hh = String(cd.h).padStart(2, "0");
   const mm = String(cd.m).padStart(2, "0");
@@ -133,9 +140,10 @@ function HeroLeft({
       </div>
 
       <p className={styles.zmSub}>
-        Predice en tiempo real, compite en <b>ligas privadas</b>, crea tu fantasy y juega con{" "}
-        <span className={styles.zmChip}>IA Coach</span> durante los <b>104 partidos</b> del Mundial
-        2026.
+        {tH.sub.part1} <b>{tH.sub.bold1}</b>
+        {tH.sub.part2}{" "}
+        <span className={styles.zmChip}>{tH.sub.chip}</span> {tH.sub.part3}{" "}
+        <b>{tH.sub.bold2}</b> {tH.sub.part4}
       </p>
 
       <div className={styles.zmPillars}>
@@ -144,40 +152,41 @@ function HeroLeft({
             <Icon name="zap" size={16} />
           </div>
           <div className={styles.zmPillarN}>
-            104<small>×</small>
+            104<small>{tH.pillars[0].suffix ?? ""}</small>
           </div>
           <div className={styles.zmPillarL}>
-            Partidos
+            {tH.pillars[0].top}
             <br />
-            en directo
+            {tH.pillars[0].bottom}
           </div>
         </div>
         <div className={styles.zmPillar}>
           <div className={styles.zmPillarIc}>
             <Icon name="bot" size={16} />
           </div>
-          <div className={styles.zmPillarN}>24/7</div>
+          <div className={styles.zmPillarN}>{tH.pillars[1].value}</div>
           <div className={styles.zmPillarL}>
-            IA Coach
+            {tH.pillars[1].top}
             <br />
-            personal
+            {tH.pillars[1].bottom}
           </div>
         </div>
         <div className={styles.zmPillar}>
           <div className={styles.zmPillarIc}>
             <Icon name="trophy" size={16} />
           </div>
-          <div className={styles.zmPillarN}>€250k</div>
+          <div className={styles.zmPillarN}>{tH.pillars[2].value}</div>
           <div className={styles.zmPillarL}>
-            En premios
-            <br />y exclusivos
+            {tH.pillars[2].top}
+            <br />
+            {tH.pillars[2].bottom}
           </div>
         </div>
       </div>
 
       <div className={styles.zmCtas}>
         <Link href="/registro" className={styles.zmCtaPrimary}>
-          Pre-regístrate gratis
+          {tH.ctaPrimary}
           <span className={styles.zmCtaPrimaryArrow}>
             <Icon name="arrow" size={14} />
           </span>
@@ -186,34 +195,27 @@ function HeroLeft({
           <span className={styles.zmCtaGhostPlay}>
             <Icon name="play" size={10} />
           </span>
-          Ver cómo funciona
+          {tH.ctaSecondary}
         </Link>
       </div>
 
       <div className={styles.zmCtaNote}>
         <Icon name="lock" size={14} />
-        Sin tarjeta · <b>Acceso anticipado</b> al Founders Pass
+        {tH.ctaNote1} <b>{tH.ctaNoteBold}</b> {tH.ctaNote2}
       </div>
 
       <div className={styles.zmProof}>
         <div className={styles.zmProofAvatars}>
           {creatorAvatars.map((a, ix) => (
             <div key={ix} className={styles.zmProofAvatar} title={a.nombre}>
-              <img
-                src={a.imagen}
-                alt={`Creator ${a.nombre}`}
-                loading="lazy"
-                decoding="async"
-              />
+              <img src={a.imagen} alt={a.nombre} loading="lazy" decoding="async" />
             </div>
           ))}
         </div>
         <div className={styles.zmProofText}>
-          <b>12.400+ aficionados</b> ya están en la lista
+          <b>{tH.proof.highlight}</b> {tH.proof.after}
           <br />
-          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
-            Se añaden ~180 cada día
-          </span>
+          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.4)" }}>{tH.proof.small}</span>
         </div>
       </div>
     </div>
@@ -292,11 +294,6 @@ function HeroRight() {
 }
 
 /* ---------- Slider Dots (bottom center of hero) ---------- */
-const VARIANT_LABELS: Record<Variant, string> = {
-  juega: "Juega",
-  ia: "IA Coach",
-  fantasy: "Fantasy",
-};
 
 function SliderDots({
   variants,
@@ -311,8 +308,11 @@ function SliderDots({
   paused: boolean;
   setPaused: (b: boolean) => void;
 }) {
+  const { locale } = useLanguage();
+  const labels = homeSections[locale].hero.sliderDots;
+  const hero = homeSections[locale].hero;
   return (
-    <div className={styles.zmSliderDots} role="tablist" aria-label="Elegir titular">
+    <div className={styles.zmSliderDots} role="tablist" aria-label={labels.juega}>
       {variants.map((v) => {
         const active = v === current;
         return (
@@ -321,12 +321,12 @@ function SliderDots({
             type="button"
             role="tab"
             aria-selected={active}
-            aria-label={VARIANT_LABELS[v]}
+            aria-label={labels[v]}
             className={`${styles.zmSliderDot} ${active ? styles.zmSliderDotActive : ""}`}
             onClick={() => onSelect(v)}
           >
             <span className={styles.zmSliderDotFill} />
-            <span className={styles.zmSliderDotLabel}>{VARIANT_LABELS[v]}</span>
+            <span className={styles.zmSliderDotLabel}>{labels[v]}</span>
           </button>
         );
       })}
@@ -334,7 +334,7 @@ function SliderDots({
         type="button"
         className={styles.zmSliderPauseBtn}
         onClick={() => setPaused(!paused)}
-        aria-label={paused ? "Reanudar slider" : "Pausar slider"}
+        aria-label={paused ? hero.pauseOn : hero.pauseOff}
         aria-pressed={paused}
       >
         {paused ? (

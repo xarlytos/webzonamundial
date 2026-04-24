@@ -334,6 +334,60 @@ export const homeSections = {
 
     /* ============ Countdown label shared with Hero ============ */
     countdownLabel: "Copa del Mundo · EE.UU · México · Canadá",
+
+    /* ============ Hero (rotating headline variants + UI) ============ */
+    hero: {
+      variants: {
+        juega: {
+          line1: "El Mundial",
+          strike: "no se mira.",
+          gold: "Se juega.",
+        },
+        ia: {
+          line1: "Predice. Compite.",
+          gold: "Gana.",
+          subPrefix: "Con",
+          subEm: "IA Coach",
+          subSuffix: "de tu lado.",
+        },
+        fantasy: {
+          line1: "Arma tu",
+          gold: "selección ideal",
+          line3: "y reta al mundo.",
+        },
+      },
+      sub: {
+        part1: "Predice en tiempo real, compite en",
+        bold1: "ligas privadas",
+        part2: ", crea tu fantasy y juega con",
+        chip: "IA Coach",
+        part3: "durante los",
+        bold2: "104 partidos",
+        part4: "del Mundial 2026.",
+      },
+      pillars: [
+        { suffix: "×", top: "Partidos", bottom: "en directo" },
+        { value: "24/7", top: "IA Coach", bottom: "personal" },
+        { value: "€250k", top: "En premios", bottom: "y exclusivos" },
+      ],
+      ctaPrimary: "Pre-regístrate gratis",
+      ctaSecondary: "Ver cómo funciona",
+      ctaNote1: "Sin tarjeta ·",
+      ctaNoteBold: "Acceso anticipado",
+      ctaNote2: "al Founders Pass",
+      proof: {
+        highlight: "12.400+ aficionados",
+        after: "ya están en la lista",
+        small: "Se añaden ~180 cada día",
+      },
+      sliderDots: {
+        juega: "Juega",
+        ia: "IA Coach",
+        fantasy: "Fantasy",
+      },
+      pauseOn: "Reanudar slider",
+      pauseOff: "Pausar slider",
+    },
   },
 
   en: {
@@ -648,6 +702,59 @@ export const homeSections = {
     },
 
     countdownLabel: "World Cup · USA · Mexico · Canada",
+
+    hero: {
+      variants: {
+        juega: {
+          line1: "The World Cup",
+          strike: "isn't watched.",
+          gold: "It's played.",
+        },
+        ia: {
+          line1: "Predict. Compete.",
+          gold: "Win.",
+          subPrefix: "With",
+          subEm: "AI Coach",
+          subSuffix: "on your side.",
+        },
+        fantasy: {
+          line1: "Build your",
+          gold: "ideal squad",
+          line3: "and challenge the world.",
+        },
+      },
+      sub: {
+        part1: "Predict live, compete in",
+        bold1: "private leagues",
+        part2: ", build your fantasy and play with",
+        chip: "AI Coach",
+        part3: "across the",
+        bold2: "104 matches",
+        part4: "of the 2026 World Cup.",
+      },
+      pillars: [
+        { suffix: "×", top: "Live", bottom: "matches" },
+        { value: "24/7", top: "Personal", bottom: "AI Coach" },
+        { value: "€250k", top: "In prizes", bottom: "and drops" },
+      ],
+      ctaPrimary: "Sign up free",
+      ctaSecondary: "See how it works",
+      ctaNote1: "No card ·",
+      ctaNoteBold: "Early access",
+      ctaNote2: "to the Founders Pass",
+      proof: {
+        highlight: "12,400+ fans",
+        after: "already on the list",
+        small: "~180 more join every day",
+      },
+      sliderDots: {
+        juega: "Play",
+        ia: "AI Coach",
+        fantasy: "Fantasy",
+      },
+      pauseOn: "Resume slider",
+      pauseOff: "Pause slider",
+    },
   },
 } as const;
 

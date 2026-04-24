@@ -427,6 +427,13 @@
     padding: 32px 32px 72px;
     min-height: auto;
   }
+  /* Center all copy in the left column when it stacks on top of the phone */
+  .zmLeft { text-align: center; }
+  .zmSub { margin-left: auto; margin-right: auto; }
+  .zmPillars { margin-left: auto; margin-right: auto; }
+  .zmCtas { justify-content: center; }
+  .zmCtaNote { justify-content: center; flex-wrap: wrap; }
+  .zmProof { justify-content: center; }
   .zmStatsInner { padding: 20px 32px 28px; }
   .zmRight { min-height: 0; }
   .zmPhoneStage {
@@ -448,6 +455,15 @@
     padding: 20px 20px 56px;
     gap: 36px;
   }
+
+  /* All copy centered on mobile per spec */
+  .zmLeft { text-align: center; align-items: center; }
+  .zmH1, .zmSub { text-align: center; }
+  .zmSub { margin-left: auto; margin-right: auto; }
+  .zmPillars { margin-left: auto; margin-right: auto; }
+  .zmCtaNote { justify-content: center; flex-wrap: wrap; }
+  .zmProof { justify-content: center; flex-direction: column; text-align: center; }
+  .zmProofText { text-align: center; }
 
   /* Countdown pill: bigger, centered (both pill and its label text) */
   .zmCountdown {
