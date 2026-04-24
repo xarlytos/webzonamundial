@@ -5,7 +5,8 @@
 
 .section {
   position: relative;
-  padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 56px);
+  /* Top generous, bottom tight so sparkles hug the CTA */
+  padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 56px) clamp(28px, 3.5vw, 48px);
   background:
     radial-gradient(ellipse 40% 30% at 10% 25%, rgba(212,168,83,0.08), transparent 60%),
     radial-gradient(ellipse 40% 25% at 92% 10%, rgba(170,190,230,0.05), transparent 65%),
@@ -34,52 +35,53 @@
 .ambientGlobe,
 .ambientStadium {
   position: absolute;
-  opacity: 0.55;
 }
 .ambientGlobe {
-  left: -220px;
-  top: -80px;
-  width: 720px;
-  height: 720px;
+  left: -280px;
+  top: -120px;
+  width: 980px;
+  height: 980px;
   background-image: url("/img/modules-grid-bg/planet-gold.webp");
   background-size: contain;
   background-repeat: no-repeat;
-  /* fade edges into the dark background (right + bottom) */
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 45% 45%, #000 30%, transparent 75%);
-          mask-image: radial-gradient(ellipse 60% 60% at 45% 45%, #000 30%, transparent 75%);
+  opacity: 0.95;
+  /* Feather only outer edges so the globe stays clearly visible */
+  -webkit-mask-image: radial-gradient(ellipse 58% 58% at 50% 50%, #000 55%, rgba(0,0,0,0.65) 78%, transparent 96%);
+          mask-image: radial-gradient(ellipse 58% 58% at 50% 50%, #000 55%, rgba(0,0,0,0.65) 78%, transparent 96%);
 }
 .ambientStadium {
-  right: -80px;
-  top: -40px;
-  width: 900px;
-  height: 500px;
+  right: -120px;
+  top: -60px;
+  width: 1200px;
+  height: 640px;
   background-image: url("/img/modules-grid-bg/stadium-lights.webp");
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
-  opacity: 0.5;
+  opacity: 0.85;
+  /* Fade left edge so floodlights remain visible on the right */
   -webkit-mask-image: linear-gradient(
     to left,
     #000 0%,
-    rgba(0, 0, 0, 0.85) 40%,
-    rgba(0, 0, 0, 0.35) 75%,
+    rgba(0, 0, 0, 0.95) 35%,
+    rgba(0, 0, 0, 0.55) 70%,
     transparent 100%
   );
           mask-image: linear-gradient(
     to left,
     #000 0%,
-    rgba(0, 0, 0, 0.85) 40%,
-    rgba(0, 0, 0, 0.35) 75%,
+    rgba(0, 0, 0, 0.95) 35%,
+    rgba(0, 0, 0, 0.55) 70%,
     transparent 100%
   );
 }
 
-/* Golden sparkles under the CTA */
+/* Golden sparkles under the CTA — tight, no huge empty space */
 .sparkles {
   position: relative;
   width: 100%;
-  height: 120px;
-  margin-top: 8px;
+  height: 56px;
+  margin-top: 4px;
   pointer-events: none;
   overflow: hidden;
 }
@@ -92,11 +94,11 @@
   transform: translate(-50%, -50%);
 }
 .sparkles::before {
-  /* soft warm glow */
-  width: 600px;
-  height: 120px;
-  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,168,83,0.25), transparent 70%);
-  filter: blur(10px);
+  /* soft warm glow — tighter */
+  width: 500px;
+  height: 56px;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,168,83,0.28), transparent 70%);
+  filter: blur(8px);
 }
 .sparkles::after {
   /* horizontal shimmer line */
@@ -292,6 +294,11 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 .iconWrap svg { width: 30px; height: 30px; }
+.iconImg {
+  width: 44px; height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--c) 55%, transparent));
+}
 
 .cardTitle {
   font-family: var(--zm-font-display, "Syne", sans-serif);
@@ -313,6 +320,7 @@
 .foot {
   text-align: center;
   margin-top: 56px;
+  padding-bottom: 0;
 }
 .exploreCta {
   display: inline-flex;

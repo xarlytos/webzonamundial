@@ -117,7 +117,14 @@ const MODULES: Module[] = [
     desc: "104 partidos en vivo con stats, alineaciones y eventos minuto a minuto.",
     color: "#F5D07A",
     bg: "/img/modules-grid/match-center.webp",
-    icon: <IconSoccer />,
+    icon: (
+      <img
+        src="/img/modules-grid-icons/soccer-ball.webp"
+        alt=""
+        className={styles.iconImg}
+        aria-hidden="true"
+      />
+    ),
   },
   {
     href: "/app/predicciones",
