@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, ReactNode } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./AlbumDominaSection.module.css";
 
 /* =============== Icons =============== */
@@ -61,43 +63,8 @@ const IconHandshake = () => (
 
 /* =============== Data =============== */
 
-type Benefit = {
-  n: string;
-  Icon: () => ReactNode;
-  title: string;
-  items: string[];
-};
-
-const BENEFITS: Benefit[] = [
-  {
-    n: "01",
-    Icon: IconAlbumBooks,
-    title: "48 selecciones. Un solo álbum.",
-    items: [
-      "Desde las potencias hasta los debutantes.",
-      "Cada cromo cuenta una historia.",
-      "Colecciónalos todas.",
-    ],
-  },
-  {
-    n: "02",
-    Icon: IconBallGold,
-    title: "Oro puro por ver partidos",
-    items: [
-      "No pagues. Gánalos.",
-      "Ediciones exclusivas que solo sueltan partidos épicos y desafíos cumplidos.",
-    ],
-  },
-  {
-    n: "03",
-    Icon: IconHandshake,
-    title: "Tradea como un profesional",
-    items: [
-      "¿Repetidos? Perfecto.",
-      "Cambia con amigos o negocia con la comunidad. El álbum se completa ganando.",
-    ],
-  },
-];
+/* Order matches the translation file's benefits array */
+const BENEFIT_ICONS = [IconAlbumBooks, IconBallGold, IconHandshake] as const;
 
 /* Floating gold sparks */
 const SPARKS = [
@@ -114,6 +81,8 @@ const SPARKS = [
 
 export function AlbumDominaSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { locale } = useLanguage();
+  const t = homeSections[locale].album;
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -162,7 +131,7 @@ export function AlbumDominaSection() {
             <img
               className={styles.heroImg}
               src="/img/album/album-hero.webp"
-              alt="Álbum dorado del Mundial 2026 con cromos de selecciones"
+              alt={t.heroAlt}
               loading="lazy"
               decoding="async"
             />
@@ -170,9 +139,9 @@ export function AlbumDominaSection() {
 
           <div className={styles.copyCol}>
             <h2 className={styles.title}>
-              Completa el <em className={styles.titleGold}>Álbum.</em>
+              {t.title1} <em className={styles.titleGold}>{t.titleGold1}</em>
               <br />
-              Domina el <em className={styles.titleGold}>Mundial.</em>
+              {t.title2} <em className={styles.titleGold}>{t.titleGold2}</em>
             </h2>
 
             <div className={styles.divider}>
@@ -185,34 +154,39 @@ export function AlbumDominaSection() {
               <span className={styles.dividerLine} />
             </div>
 
-            <p className={styles.eyebrow}>Cromos de oro de las 48 selecciones.</p>
+            <p className={styles.eyebrow}>{t.eyebrow}</p>
             <p className={styles.desc}>
-              Ediciones que solo desbloquean los que realmente viven el torneo.
-              <br />Y un mercado P2P para que nadie te frene.
+              {t.desc1}
+              <br />
+              {t.desc2}
             </p>
           </div>
         </div>
 
         {/* BENEFITS */}
         <div className={styles.benefits}>
-          {BENEFITS.map((b) => (
-            <div key={b.n} className={styles.card} data-num={b.n}>
-              <div className={styles.cardIconWrap}>
-                <b.Icon />
+          {t.benefits.map((b, idx) => {
+            const Icon = BENEFIT_ICONS[idx];
+            const n = String(idx + 1).padStart(2, "0");
+            return (
+              <div key={n} className={styles.card} data-num={n}>
+                <div className={styles.cardIconWrap}>
+                  <Icon />
+                </div>
+                <h3 className={styles.cardTitle}>{b.title}</h3>
+                <ul className={styles.cardList}>
+                  {b.items.map((it) => (
+                    <li key={it}>
+                      <span className={styles.checkIcon}>
+                        <IconCheck />
+                      </span>
+                      {it}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <h3 className={styles.cardTitle}>{b.title}</h3>
-              <ul className={styles.cardList}>
-                {b.items.map((it) => (
-                  <li key={it}>
-                    <span className={styles.checkIcon}>
-                      <IconCheck />
-                    </span>
-                    {it}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

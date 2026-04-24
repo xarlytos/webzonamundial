@@ -2,6 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { CREADORES } from "@/data/creadores";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./WaitlistSection.module.css";
 
 /* ====================== Icons ====================== */
@@ -107,20 +109,9 @@ const PhoneIcon = () => (
 
 /* ====================== Data ====================== */
 
-const BENEFITS = [
-  { Icon: IconLock, title: "Acceso anticipado a la app" },
-  { Icon: IconGift, title: "Beneficios exclusivos" },
-  { Icon: IconTrophy, title: "Compite desde el día uno" },
-];
-
-const STRIP_ITEMS = [
-  { Icon: StarGold, text: "La IA acertó 3\nresultados seguidos" },
-  { Icon: BoltGold, text: "El fantasy\nes adictivo" },
-  { Icon: TrendingUp, text: "Los creadores hacen\nque todo sea más épico" },
-  { Icon: PhoneIcon, text: "Por fin una app que\nentiende de fútbol" },
-  { Icon: StarGold, text: "El fantasy\nes adictivo" },
-  { Icon: BoltGold, text: "La IA acertó 3\nresultados seguidos" },
-];
+/* Icon order for benefits + strip (driven by i18n text arrays) */
+const BENEFIT_ICONS = [IconLock, IconGift, IconTrophy] as const;
+const STRIP_ICONS = [StarGold, BoltGold, TrendingUp, PhoneIcon, StarGold, BoltGold] as const;
 
 const SPARKS = [
   { left: "5%", top: "10%", dur: "12s", delay: "0s", kind: "dash" },
@@ -165,6 +156,8 @@ function useAnimatedCounter(target: number, duration = 1600) {
 
 export function WaitlistSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { locale } = useLanguage();
+  const t = homeSections[locale].waitlist;
 
   // Counter state (fetched from /api/waitlist on mount + after signup)
   const [targetCount, setTargetCount] = useState(1247);
@@ -240,14 +233,14 @@ export function WaitlistSection() {
       const data = await res.json();
       if (!res.ok || !data.ok) {
         setStatus("error");
-        setErrorMsg(data?.error || "No se pudo guardar. Intenta de nuevo.");
+        setErrorMsg(data?.error || t.errorGeneric);
         return;
       }
       if (typeof data.count === "number") setTargetCount(data.count);
       setStatus("success");
     } catch {
       setStatus("error");
-      setErrorMsg("Error de red. Intenta de nuevo.");
+      setErrorMsg(t.errorNetwork);
     }
   }
 
@@ -282,28 +275,31 @@ export function WaitlistSection() {
               <span className={styles.pillIcon}>
                 <IconStar />
               </span>
-              Lista de espera
+              {t.pill}
             </div>
 
             <h2 className={styles.title}>
-              Sé de los
-              <span className={styles.titleGold}>primeros.</span>
+              {t.title1}
+              <span className={styles.titleGold}>{t.titleGold}</span>
             </h2>
 
             <p className={styles.desc}>
-              La app llega pronto. Tu lugar está{" "}
-              <span className={styles.descBold}>reservado</span> si lo reclamas ahora.
+              {t.descBefore}{" "}
+              <span className={styles.descBold}>{t.descHighlight}</span> {t.descAfter}
             </p>
 
             <div className={styles.benefits}>
-              {BENEFITS.map((b) => (
-                <div key={b.title} className={styles.benefit}>
-                  <span className={styles.benefitIconWrap}>
-                    <b.Icon />
-                  </span>
-                  <p className={styles.benefitTitle}>{b.title}</p>
-                </div>
-              ))}
+              {t.benefits.map((title, i) => {
+                const Icon = BENEFIT_ICONS[i];
+                return (
+                  <div key={title} className={styles.benefit}>
+                    <span className={styles.benefitIconWrap}>
+                      <Icon />
+                    </span>
+                    <p className={styles.benefitTitle}>{title}</p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -319,14 +315,11 @@ export function WaitlistSection() {
                   <div className={styles.successIcon}>
                     <IconCheck />
                   </div>
-                  <h3>¡Estás dentro!</h3>
-                  <p>
-                    Tu lugar en la lista está reservado. Te avisaremos por email en cuanto la
-                    app esté disponible.
-                  </p>
+                  <h3>{t.successTitle}</h3>
+                  <p>{t.successMsg}</p>
                   <div className={styles.counter} style={{ marginTop: 22 }}>
                     <div className={styles.counterAvatars}>
-                      {avatars.map((c, i) => (
+                      {avatars.map((c) => (
                         <div key={c.slug} className={styles.counterAvatar}>
                           <img src={c.imagen} alt="" loading="lazy" decoding="async" />
                         </div>
@@ -334,9 +327,9 @@ export function WaitlistSection() {
                     </div>
                     <span className={styles.counterText}>
                       <span className={styles.counterNum}>
-                        {displayedCount.toLocaleString("es-ES")}
+                        {displayedCount.toLocaleString(locale === "es" ? "es-ES" : "en-US")}
                       </span>
-                      personas ya están dentro
+                      {t.counterLabelJoined}
                     </span>
                   </div>
                 </div>
@@ -344,7 +337,7 @@ export function WaitlistSection() {
                 <form onSubmit={onSubmit} noValidate>
                   <div className={styles.formHead}>
                     <p className={styles.formTitle}>
-                      Únete a la lista y asegura tu lugar
+                      {t.formTitle}
                     </p>
                   </div>
 
@@ -355,7 +348,7 @@ export function WaitlistSection() {
                     <input
                       type="email"
                       className={styles.emailInput}
-                      placeholder="Tu email"
+                      placeholder={t.emailPlaceholder}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -369,7 +362,7 @@ export function WaitlistSection() {
                     className={styles.submitBtn}
                     disabled={status === "loading" || !email}
                   >
-                    {status === "loading" ? "Reservando..." : "Unirme a la lista"}
+                    {status === "loading" ? t.submitting : t.submit}
                     {status !== "loading" && <IconArrowRight />}
                   </button>
 
@@ -383,7 +376,7 @@ export function WaitlistSection() {
                     <span className={styles.assuranceIcon}>
                       <IconShield />
                     </span>
-                    Sin spam. Sin compromiso. Solo fútbol.
+                    {t.assurance}
                   </div>
 
                   <div className={styles.counter}>
@@ -396,9 +389,9 @@ export function WaitlistSection() {
                     </div>
                     <span className={styles.counterText}>
                       <span className={styles.counterNum}>
-                        {displayedCount.toLocaleString("es-ES")}
+                        {displayedCount.toLocaleString(locale === "es" ? "es-ES" : "en-US")}
                       </span>
-                      personas delante de ti
+                      {t.counterLabel}
                     </span>
                   </div>
                 </form>
@@ -409,14 +402,17 @@ export function WaitlistSection() {
 
         {/* Bottom strip */}
         <div className={styles.strip}>
-          {STRIP_ITEMS.map((s, i) => (
-            <div key={i} className={styles.stripItem}>
-              <span className={styles.stripIconWrap}>
-                <s.Icon />
-              </span>
-              <span style={{ whiteSpace: "pre-line" }}>{s.text}</span>
-            </div>
-          ))}
+          {t.strip.map((text, i) => {
+            const Icon = STRIP_ICONS[i] || STRIP_ICONS[0];
+            return (
+              <div key={i} className={styles.stripItem}>
+                <span className={styles.stripIconWrap}>
+                  <Icon />
+                </span>
+                <span style={{ whiteSpace: "pre-line" }}>{text}</span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

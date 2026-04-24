@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./SiteFooter.module.css";
 
 /* Social icons */
@@ -28,64 +30,19 @@ const IconGlobe = () => (
   </svg>
 );
 
-/* =============== Data =============== */
-
 const SOCIALS = [
   { label: "Instagram", href: "https://www.instagram.com/zona.mundial", Icon: IconInstagram },
   { label: "Facebook", href: "https://www.facebook.com/share/1Ay733gLRU/", Icon: IconFacebook },
   { label: "TikTok", href: "https://www.tiktok.com/@zonamundialfutbol", Icon: IconTikTok },
 ];
 
-const COLUMNS: Array<{ title: string; links: Array<{ label: string; href: string }> }> = [
-  {
-    title: "Torneo",
-    links: [
-      { label: "48 Selecciones", href: "/selecciones" },
-      { label: "12 Grupos", href: "/grupos" },
-      { label: "16 Sedes", href: "/sedes" },
-      { label: "Calendario", href: "/calendario" },
-      { label: "Historia", href: "/historia" },
-    ],
-  },
-  {
-    title: "Plataforma",
-    links: [
-      { label: "Predicciones", href: "/app/predicciones" },
-      { label: "Fantasy", href: "/app/fantasy" },
-      { label: "IA Coach", href: "/app/ia-coach" },
-      { label: "Trivia", href: "/app/trivia" },
-      { label: "Modo Carrera", href: "/app/modo-carrera" },
-      { label: "Premium", href: "/premium" },
-    ],
-  },
-  {
-    title: "Comunidad",
-    links: [
-      { label: "Noticias", href: "/noticias" },
-      { label: "Blog", href: "/blog" },
-      { label: "Tutoriales", href: "/tutoriales" },
-      { label: "Creadores", href: "/creadores" },
-      { label: "Ligas Privadas", href: "/app/ligas" },
-      { label: "Rankings", href: "/app/rankings" },
-      { label: "Streaming", href: "/app/streaming" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Aviso Legal", href: "/legal/aviso-legal" },
-      { label: "Términos de uso", href: "/legal/terminos" },
-      { label: "Privacidad", href: "/legal/privacidad" },
-      { label: "Cookies", href: "/legal/cookies" },
-      { label: "EULA", href: "/legal/eula" },
-      { label: "Contacto", href: "mailto:business.dev@sprintmarkt.com" },
-    ],
-  },
-];
-
-/* =============== Component =============== */
-
 export function SiteFooter() {
+  const { locale } = useLanguage();
+  const t = homeSections[locale].footer;
+  const tSocial = homeSections[locale].socialDock;
+
+  const columns = [t.columns.torneo, t.columns.plataforma, t.columns.comunidad, t.columns.legal];
+
   return (
     <footer className={styles.footer}>
       <div className={styles.inner}>
@@ -96,9 +53,7 @@ export function SiteFooter() {
               <span className={styles.brandLogoWhite}>ZONA</span>
               <span className={styles.brandLogoGold}>MUNDIAL</span>
             </Link>
-            <p className={styles.brandTag}>
-              Predicciones, fantasy y engagement en español para la Copa del Mundo 2026.
-            </p>
+            <p className={styles.brandTag}>{t.tag}</p>
 
             <div className={styles.socials}>
               {SOCIALS.map((s) => (
@@ -107,7 +62,7 @@ export function SiteFooter() {
                   href={s.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`ZonaMundial en ${s.label}`}
+                  aria-label={`${tSocial.on} ${s.label}`}
                   className={styles.social}
                 >
                   <s.Icon />
@@ -116,7 +71,7 @@ export function SiteFooter() {
             </div>
 
             <p className={styles.poweredBy}>
-              Powered by{" "}
+              {t.poweredBy}{" "}
               <a href="https://sprintmarkt.com" target="_blank" rel="noopener noreferrer">
                 Sprintmarkt
               </a>
@@ -124,7 +79,7 @@ export function SiteFooter() {
           </div>
 
           {/* Link columns */}
-          {COLUMNS.map((col) => (
+          {columns.map((col) => (
             <div key={col.title}>
               <h4 className={styles.colTitle}>{col.title}</h4>
               <ul className={styles.colList}>
@@ -160,11 +115,9 @@ export function SiteFooter() {
             <span className={styles.bottomIcon}>
               <IconGlobe />
             </span>
-            © 2026 Sprintmarkt · Valencia, España
+            {t.copyright}
           </span>
-          <span className={styles.bottomItem}>
-            Plataforma de predicciones gratuita. No implica apuesta monetaria.
-          </span>
+          <span className={styles.bottomItem}>{t.disclaimer}</span>
         </div>
       </div>
     </footer>

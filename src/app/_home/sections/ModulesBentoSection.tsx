@@ -2,7 +2,14 @@
 
 import { useCallback, useRef, MouseEvent } from "react";
 import Link from "next/link";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./ModulesBentoSection.module.css";
+
+type BentoT = ReturnType<typeof getBentoT>;
+function getBentoT(locale: "es" | "en") {
+  return homeSections[locale].modulesBento;
+}
 
 /* ---------- Icons ---------- */
 function ArrowIcon({ size = 18 }: { size?: number }) {
@@ -41,7 +48,7 @@ function EyeIcon() {
   );
 }
 
-/* ---------- 3D tilt hook (subtle, 2026 style) ---------- */
+/* ---------- 3D tilt hook ---------- */
 function useTilt(max = 5) {
   const ref = useRef<HTMLElement>(null);
   const onMouseMove = useCallback(
@@ -64,13 +71,10 @@ function useTilt(max = 5) {
   return { ref, onMouseMove, onMouseLeave };
 }
 
-/* ---------- Shared card wrapper ---------- */
 type CardWrapperProps = {
   className: string;
   tiltMax?: number;
   children: React.ReactNode;
-  href?: string;
-  ariaLabel?: string;
 };
 function TiltArticle({ className, tiltMax = 5, children }: CardWrapperProps) {
   const tilt = useTilt(tiltMax);
@@ -86,38 +90,33 @@ function TiltArticle({ className, tiltMax = 5, children }: CardWrapperProps) {
   );
 }
 
-/* ---------- PREDICTIONS (hero card) ---------- */
-function PredictionsCard() {
+/* ---------- PREDICTIONS ---------- */
+function PredictionsCard({ t }: { t: BentoT }) {
   return (
     <TiltArticle className={styles.cardPredictions} tiltMax={3}>
       <div className={styles.cardImageWrap}>
         <img
           className={styles.cardImage}
           src="/img/modules/stadium-night.webp"
-          alt="Estadio iluminado del Mundial 2026"
+          alt=""
           loading="lazy"
           decoding="async"
         />
       </div>
       <div className={styles.body}>
-        <span className={styles.tag}>Copa del Mundo 2026 · EE.UU. · México · Canadá</span>
+        <span className={styles.tag}>{t.tags.wc}</span>
         <h3 className={styles.cardTitle}>
-          El Mundial 2026
+          {t.predictions.title1}
           <br />
-          te necesita, <em className={styles.cardPredictionsTitleEm}>no dejes que otro lo viva por ti</em>
+          {t.predictions.title2}{" "}
+          <em className={styles.cardPredictionsTitleEm}>{t.predictions.title3}</em>
         </h3>
         <div className={styles.bottom}>
           <div>
-            <span className={styles.label}>Predicciones</span>
-            <p className={styles.tagline}>
-              Predice cada resultado y compite con tu creador favorito
-            </p>
+            <span className={styles.label}>{t.predictions.label}</span>
+            <p className={styles.tagline}>{t.predictions.tagline}</p>
           </div>
-          <Link
-            href="/app/predicciones"
-            className={styles.cta}
-            aria-label="Ir a Predicciones"
-          >
+          <Link href="/app/predicciones" className={styles.cta} aria-label={t.predictions.label}>
             <ArrowIcon size={18} />
           </Link>
         </div>
@@ -127,28 +126,22 @@ function PredictionsCard() {
 }
 
 /* ---------- FANTASY ---------- */
-function FantasyCard() {
+function FantasyCard({ t }: { t: BentoT }) {
   return (
     <TiltArticle className={styles.cardFantasy}>
       <div className={styles.cardImageWrap}>
-        <img
-          className={styles.cardImage}
-          src="/img/modules/fantasy-433.webp"
-          alt="Alineación Fantasy 4-3-3"
-          loading="lazy"
-          decoding="async"
-        />
+        <img className={styles.cardImage} src="/img/modules/fantasy-433.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className={styles.body}>
         <div className={styles.headRow}>
-          <span className={styles.tag}>Fantasy</span>
-          <span className={styles.formation}>4-3-3</span>
+          <span className={styles.tag}>{t.tags.fantasy}</span>
+          <span className={styles.formation}>{t.fantasy.formation}</span>
         </div>
         <div className={styles.bottom}>
           <p className={styles.tagline} style={{ maxWidth: "85%" }}>
-            Arma tu equipo ideal y sube en el ranking
+            {t.fantasy.tagline}
           </p>
-          <Link href="/app/fantasy" className={styles.cta} aria-label="Ir a Fantasy">
+          <Link href="/app/fantasy" className={styles.cta} aria-label={t.tags.fantasy}>
             <ArrowIcon size={18} />
           </Link>
         </div>
@@ -158,32 +151,24 @@ function FantasyCard() {
 }
 
 /* ---------- TRIVIA ---------- */
-function TriviaCard() {
+function TriviaCard({ t }: { t: BentoT }) {
   return (
     <TiltArticle className={styles.cardTrivia}>
       <div className={styles.cardImageWrap}>
-        <img
-          className={styles.cardImage}
-          src="/img/modules/trophy-gold.webp"
-          alt="Trofeo dorado del Mundial"
-          loading="lazy"
-          decoding="async"
-        />
+        <img className={styles.cardImage} src="/img/modules/trophy-gold.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className={styles.body}>
-        <span className={styles.tag}>Trivia</span>
-        <h3 className={styles.cardTitle}>
-          ¿Quién marcó el gol de la mano de Dios en el Mundial de 1986?
-        </h3>
+        <span className={styles.tag}>{t.tags.trivia}</span>
+        <h3 className={styles.cardTitle}>{t.trivia.title}</h3>
         <div className={styles.bottom}>
           <div>
             <p className={styles.cardText} style={{ color: "rgba(255,255,255,0.85)" }}>
-              ¿Cuánto sabes de fútbol?
+              {t.trivia.text1}
               <br />
-              <strong style={{ color: "var(--zm-brand-gold, #D4A853)" }}>Demuéstralo</strong>
+              <strong style={{ color: "var(--zm-brand-gold, #D4A853)" }}>{t.trivia.text2}</strong>
             </p>
           </div>
-          <Link href="/app/trivia" className={styles.cta} aria-label="Ir a Trivia">
+          <Link href="/app/trivia" className={styles.cta} aria-label={t.tags.trivia}>
             <ArrowIcon size={18} />
           </Link>
         </div>
@@ -193,32 +178,26 @@ function TriviaCard() {
 }
 
 /* ---------- AI COACH ---------- */
-function AICoachCard() {
+function AICoachCard({ t }: { t: BentoT }) {
   return (
     <TiltArticle className={styles.cardAi}>
       <div className={styles.cardImageWrap}>
-        <img
-          className={styles.cardImage}
-          src="/img/modules/ai-orb.webp"
-          alt="IA Coach holográfico"
-          loading="lazy"
-          decoding="async"
-        />
+        <img className={styles.cardImage} src="/img/modules/ai-orb.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className={styles.body}>
         <div className={styles.headRow}>
-          <span className={styles.tag}>IA Coach</span>
-          <span className={styles.aiBadge}>Ventaja anfitrión</span>
+          <span className={styles.tag}>{t.tags.ai}</span>
+          <span className={styles.aiBadge}>{t.tags.aiBadge}</span>
         </div>
-        <h3 className={styles.cardTitle}>Tu asistente inteligente para cada partido</h3>
+        <h3 className={styles.cardTitle}>{t.ai.title}</h3>
         <ul className={styles.aiFeatures}>
-          <li>Análisis en tiempo real</li>
-          <li>Recomendaciones personalizadas</li>
-          <li>Estrategias ganadoras</li>
+          {t.ai.features.map((f) => (
+            <li key={f}>{f}</li>
+          ))}
         </ul>
         <div className={styles.bottom} style={{ paddingTop: 6 }}>
           <span />
-          <Link href="/app/ia-coach" className={styles.cta} aria-label="Ir a IA Coach">
+          <Link href="/app/ia-coach" className={styles.cta} aria-label={t.tags.ai}>
             <ArrowIcon size={18} />
           </Link>
         </div>
@@ -228,36 +207,26 @@ function AICoachCard() {
 }
 
 /* ---------- STREAMING ---------- */
-function StreamingCard() {
+function StreamingCard({ t }: { t: BentoT }) {
   return (
     <TiltArticle className={styles.cardStreaming}>
       <div className={styles.cardImageWrap}>
-        <img
-          className={styles.cardImage}
-          src="/img/modules/streaming-live.webp"
-          alt="Streaming en vivo con creadores"
-          loading="lazy"
-          decoding="async"
-        />
+        <img className={styles.cardImage} src="/img/modules/streaming-live.webp" alt="" loading="lazy" decoding="async" />
       </div>
       <div className={styles.body}>
         <div className={styles.headRow}>
-          <span className={`${styles.tag} ${styles.tagLive}`}>En vivo</span>
+          <span className={`${styles.tag} ${styles.tagLive}`}>{t.tags.liveTag}</span>
           <span className={styles.viewers}>
-            <EyeIcon /> 2.4K
+            <EyeIcon /> {t.streaming.viewers}
           </span>
         </div>
-        <h3 className={styles.cardTitle}>Vive los partidos con tus creadores en directo</h3>
+        <h3 className={styles.cardTitle}>{t.streaming.title}</h3>
         <div className={styles.chat}>
-          <div className={styles.chatMsg}>
-            <b>MessiFan2023</b> ¡Vamos España! 🇪🇸
-          </div>
-          <div className={styles.chatMsg}>
-            <b>FutbolTotal</b> Golazo 🔥🔥🔥
-          </div>
-          <div className={styles.chatMsg}>
-            <b>ZonaMundial</b> Increíble partido!
-          </div>
+          {t.streaming.chat.map((c, i) => (
+            <div key={i} className={styles.chatMsg}>
+              <b>{c.user}</b> {c.msg}
+            </div>
+          ))}
         </div>
         <div className={styles.bottom} style={{ paddingTop: 8 }}>
           <span
@@ -268,9 +237,9 @@ function StreamingCard() {
               letterSpacing: "0.1em",
             }}
           >
-            CHAT · REACCIONES · PREMIOS
+            {t.streaming.footer}
           </span>
-          <Link href="/app/streaming" className={styles.cta} aria-label="Ir a Streaming">
+          <Link href="/app/streaming" className={styles.cta} aria-label={t.streaming.title}>
             <ArrowIcon size={18} />
           </Link>
         </div>
@@ -290,6 +259,9 @@ const BENTO_SPARKS = [
 ];
 
 export function ModulesBentoSection() {
+  const { locale } = useLanguage();
+  const t = getBentoT(locale);
+
   return (
     <section className={styles.modules} id="modulos">
       <div className={styles.bentoSparks} aria-hidden="true">
@@ -308,29 +280,24 @@ export function ModulesBentoSection() {
       </div>
       <div className={styles.inner}>
         <div className={styles.head}>
-          <span className={styles.pill}>
-            Esto no es una app. Es un arma cargada de fútbol.
-          </span>
+          <span className={styles.pill}>{t.pill}</span>
           <h2 className={styles.title}>
-            Todo lo que necesitas, <em className={styles.titleEm}>en un solo lugar</em>
+            {t.title1} <em className={styles.titleEm}>{t.titleGold}</em>
           </h2>
-          <p className={styles.sub}>
-            Predicciones, fantasy, IA Coach, trivia y streaming — diseñado para el fanático que
-            no se pierde nada.
-          </p>
+          <p className={styles.sub}>{t.sub}</p>
         </div>
 
         <div className={styles.bento}>
-          <PredictionsCard />
-          <FantasyCard />
-          <TriviaCard />
-          <AICoachCard />
-          <StreamingCard />
+          <PredictionsCard t={t} />
+          <FantasyCard t={t} />
+          <TriviaCard t={t} />
+          <AICoachCard t={t} />
+          <StreamingCard t={t} />
         </div>
 
         <div className={styles.foot}>
           <Link href="/la-app" className={styles.explore}>
-            Explorar todos los módulos
+            {t.ctaExplore}
             <ArrowIcon size={16} />
           </Link>
         </div>

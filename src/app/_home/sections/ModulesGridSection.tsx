@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { ReactNode, CSSProperties } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./ModulesGridSection.module.css";
 
 /* ============== SVG ICONS (line style, matches mockup) ============== */
@@ -99,171 +101,94 @@ const IconArrow = () => (
   </svg>
 );
 
-/* ============== MODULES DATA ============== */
+/* ============== MODULES META (order matches i18n `items` array) ============== */
 
-type Module = {
+type ModuleMeta = {
   href: string;
-  title: string;
-  desc: string;
   color: string;
   bg: string;
   icon: ReactNode;
 };
 
-const MODULES: Module[] = [
-  {
-    href: "/app/matchcenter",
-    title: "Match Center",
-    desc: "104 partidos en vivo con stats, alineaciones y eventos minuto a minuto.",
-    color: "#F5D07A",
-    bg: "/img/modules-grid/match-center.webp",
-    icon: (
-      <img
-        src="/img/modules-grid-icons/soccer-ball.webp"
-        alt=""
-        className={styles.iconImg}
-        aria-hidden="true"
-      />
-    ),
-  },
-  {
-    href: "/app/predicciones",
-    title: "Predicciones",
-    desc: "8 tipos: resultado exacto, goleador, tarjetas, corners, MVP y más.",
-    color: "#EF4444",
-    bg: "/img/modules-grid/predicciones.webp",
-    icon: <IconTarget />,
-  },
-  {
-    href: "/app/fantasy",
-    title: "Fantasy",
-    desc: "Arma tu 11 ideal con presupuesto limitado. Puntos reales, ranking global.",
-    color: "#3B82F6",
-    bg: "/img/modules-grid/fantasy.webp",
-    icon: <IconTrophy />,
-  },
-  {
-    href: "/app/ia-coach",
-    title: "IA Coach",
-    desc: "Analista personal con inteligencia artificial: tácticas y recomendaciones.",
-    color: "#22C55E",
-    bg: "/img/modules-grid/ia-coach.webp",
-    icon: <IconBot />,
-  },
-  {
-    href: "/app/streaming",
-    title: "Zona Streaming",
-    desc: "Directos con creadores durante los partidos. Reacciones en vivo.",
-    color: "#F59E0B",
-    bg: "/img/modules-grid/streaming.webp",
-    icon: <IconVideo />,
-  },
-  {
-    href: "/app/trivia",
-    title: "Trivia Diaria",
-    desc: "Preguntas diarias de fútbol — gana puntos extra y escala posiciones.",
-    color: "#A855F7",
-    bg: "/img/modules-grid/trivia-diaria.webp",
-    icon: <IconShieldBolt />,
-  },
-  {
-    href: "/app/modo-carrera",
-    title: "Modo Carrera",
-    desc: "Dirige una selección durante todo el torneo como DT virtual.",
-    color: "#EC4899",
-    bg: "/img/modules-grid/modo-carrera.webp",
-    icon: <IconShirt />,
-  },
-  {
-    href: "/app/ligas",
-    title: "Ligas Privadas",
-    desc: "Crea ligas con amigos, compañeros o tu comunidad favorita.",
-    color: "#14B8A6",
-    bg: "/img/modules-grid/ligas-privadas.webp",
-    icon: <IconUsers />,
-  },
-  {
-    href: "/app/rankings",
-    title: "Rankings",
-    desc: "Global, por país, por creador — demuestra quién sabe más de fútbol.",
-    color: "#EAB308",
-    bg: "/img/modules-grid/rankings.webp",
-    icon: <IconBars />,
-  },
-  {
-    href: "/app/chat",
-    title: "Chat en Vivo",
-    desc: "Chat en tiempo real con tu liga durante cada partido.",
-    color: "#38BDF8",
-    bg: "/img/modules-grid/chat-vivo.webp",
-    icon: <IconChat />,
-  },
-  {
-    href: "/app/micro",
-    title: "Micro-predicciones",
-    desc: "Predicciones en directo: próximo gol, corner, tarjeta, cambio.",
-    color: "#F43F5E",
-    bg: "/img/modules-grid/micro.webp",
-    icon: <IconTimer />,
-  },
-  {
-    href: "/app/stories",
-    title: "Trivias Históricas",
-    desc: "Revive y compite con las mejores preguntas de Mundiales pasados.",
-    color: "#8B5CF6",
-    bg: "/img/modules-grid/trivias-historicas.webp",
-    icon: <IconStar />,
-  },
-];
+function buildModulesMeta(iconImgClass: string): ModuleMeta[] {
+  return [
+    {
+      href: "/app/matchcenter",
+      color: "#F5D07A",
+      bg: "/img/modules-grid/match-center.webp",
+      icon: (
+        <img
+          src="/img/modules-grid-icons/soccer-ball.webp"
+          alt=""
+          className={iconImgClass}
+          aria-hidden="true"
+        />
+      ),
+    },
+    { href: "/app/predicciones", color: "#EF4444", bg: "/img/modules-grid/predicciones.webp", icon: <IconTarget /> },
+    { href: "/app/fantasy", color: "#3B82F6", bg: "/img/modules-grid/fantasy.webp", icon: <IconTrophy /> },
+    { href: "/app/ia-coach", color: "#22C55E", bg: "/img/modules-grid/ia-coach.webp", icon: <IconBot /> },
+    { href: "/app/streaming", color: "#F59E0B", bg: "/img/modules-grid/streaming.webp", icon: <IconVideo /> },
+    { href: "/app/trivia", color: "#A855F7", bg: "/img/modules-grid/trivia-diaria.webp", icon: <IconShieldBolt /> },
+    { href: "/app/modo-carrera", color: "#EC4899", bg: "/img/modules-grid/modo-carrera.webp", icon: <IconShirt /> },
+    { href: "/app/ligas", color: "#14B8A6", bg: "/img/modules-grid/ligas-privadas.webp", icon: <IconUsers /> },
+    { href: "/app/rankings", color: "#EAB308", bg: "/img/modules-grid/rankings.webp", icon: <IconBars /> },
+    { href: "/app/chat", color: "#38BDF8", bg: "/img/modules-grid/chat-vivo.webp", icon: <IconChat /> },
+    { href: "/app/micro", color: "#F43F5E", bg: "/img/modules-grid/micro.webp", icon: <IconTimer /> },
+    { href: "/app/stories", color: "#8B5CF6", bg: "/img/modules-grid/trivias-historicas.webp", icon: <IconStar /> },
+  ];
+}
 
 /* ============== SECTION ============== */
 
 export function ModulesGridSection() {
+  const { locale } = useLanguage();
+  const t = homeSections[locale].modulesGrid;
+  const meta = buildModulesMeta(styles.iconImg);
+
   return (
     <section className={styles.section} id="modulos-grid">
       {/* Ambient background scene: desktop & mobile variants provided as image */}
       <div className={styles.ambient} aria-hidden="true" />
       <div className={styles.inner}>
         <div className={styles.head}>
-          <span className={styles.pill}>12 formas de ganar. Elige la tuya.</span>
+          <span className={styles.pill}>{t.pill}</span>
           <h2 className={styles.title}>
-            Todo lo que necesitas para<br />
-            no <em className={styles.titleEm}>quedarte fuera</em>
+            {t.title1}
+            <br />
+            {t.title2} <em className={styles.titleEm}>{t.titleGold}</em>
           </h2>
           <p className={styles.sub}>
-            Doce módulos diseñados para dominar cada minuto del Mundial 2026. Desde predicciones
-            en tiempo real hasta tu propio fantasy, pasando por trivias históricas y un coach de
-            inteligencia artificial.{" "}
-            <span className={styles.subAccent}>
-              Todo en un solo lugar. Todo gratis. Todo para ganar.
-            </span>
+            {t.sub}{" "}
+            <span className={styles.subAccent}>{t.subAccent}</span>
           </p>
         </div>
 
         <div className={styles.divider}>
           <span className={styles.dividerLine} />
-          <span className={styles.dividerLabel}>Módulos</span>
+          <span className={styles.dividerLabel}>{t.divider}</span>
           <span className={styles.dividerLine} />
         </div>
 
         <div className={styles.grid}>
-          {MODULES.map((m) => {
+          {t.items.map((item, i) => {
+            const m = meta[i];
             const style = {
               "--c": m.color,
               "--bg": `url('${m.bg}')`,
             } as CSSProperties;
             return (
               <Link
-                key={m.title}
+                key={item.title}
                 href={m.href}
                 className={styles.card}
                 style={style}
-                aria-label={m.title}
+                aria-label={item.title}
               >
                 <div className={styles.cardBody}>
                   <span className={styles.iconWrap}>{m.icon}</span>
-                  <h3 className={styles.cardTitle}>{m.title}</h3>
-                  <p className={styles.cardDesc}>{m.desc}</p>
+                  <h3 className={styles.cardTitle}>{item.title}</h3>
+                  <p className={styles.cardDesc}>{item.desc}</p>
                 </div>
               </Link>
             );
@@ -272,7 +197,7 @@ export function ModulesGridSection() {
 
         <div className={styles.foot}>
           <Link href="/la-app" className={styles.exploreCta}>
-            Explorar todos los módulos
+            {t.ctaExplore}
             <IconArrow />
           </Link>
           {/* Golden sparkles for perspective below the CTA */}

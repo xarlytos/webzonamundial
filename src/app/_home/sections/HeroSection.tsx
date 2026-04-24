@@ -3,6 +3,8 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CREADORES } from "@/data/creadores";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./HeroSection.module.css";
 
 type Props = {
@@ -102,6 +104,8 @@ function HeroLeft({
   variant: Variant;
   showCountdown: boolean;
 }) {
+  const { locale } = useLanguage();
+  const countdownLabel = homeSections[locale].countdownLabel;
   const dd = cd.d;
   const hh = String(cd.h).padStart(2, "0");
   const mm = String(cd.m).padStart(2, "0");
@@ -117,7 +121,7 @@ function HeroLeft({
       {showCountdown && (
         <div className={styles.zmCountdown}>
           <span className={styles.zmLiveDot} />
-          Copa del Mundo · EE.UU · México · Canadá
+          {countdownLabel}
           <span className={styles.zmTimer}>
             <b>{dd}</b>d <b>{hh}</b>h <b>{mm}</b>m
           </span>
