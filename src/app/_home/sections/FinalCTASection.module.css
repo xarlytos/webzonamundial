@@ -169,28 +169,38 @@
 
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
-  .card { min-height: 0; }
-  .content {
-    grid-template-columns: 1fr;
-    padding: clamp(40px, 5vw, 56px) clamp(24px, 5vw, 40px);
-  }
-  .imageSlot {
-    min-height: 240px;
-    position: relative;
-  }
   .card {
-    background-position: center top;
+    min-height: 0;
+    /* Swap to portrait BG with door on top + dark bottom for copy */
+    background-image:
+      linear-gradient(180deg, transparent 0%, transparent 42%, rgba(10, 10, 22, 0.6) 55%, #0A0A18 72%, #0A0A18 100%),
+      url("/img/final-cta/door-hero-mobile.webp");
+    background-size: cover;
+    background-position: top center;
+    background-color: #0A0A18;
   }
+  /* Kill the right-side dark overlay (was only for desktop) */
   .card::before {
     background:
-      linear-gradient(180deg, transparent 0%, rgba(6, 6, 14, 0.15) 35%, rgba(6, 6, 14, 0.85) 65%, #06060E 90%);
+      radial-gradient(ellipse 70% 30% at 50% 20%, rgba(212, 168, 83, 0.2), transparent 70%);
   }
+  .content {
+    grid-template-columns: 1fr;
+    /* Reserve top space for the door image + tight padding below */
+    padding: clamp(260px, 55vw, 380px) clamp(24px, 5vw, 36px) clamp(36px, 5vw, 48px);
+    gap: 0;
+  }
+  .imageSlot { display: none; }
+  .copy { text-align: left; }
 }
 @media (max-width: 560px) {
   .section { padding: 48px 14px; }
   .card { border-radius: 22px; }
+  .content {
+    padding: clamp(220px, 58vw, 300px) 22px clamp(32px, 6vw, 42px);
+  }
   .title { font-size: clamp(28px, 8vw, 38px); }
-  .assurance { gap: 14px; justify-content: center; }
+  .assurance { gap: 14px; justify-content: flex-start; }
   .assuranceSep { display: none; }
   .cta { width: 100%; justify-content: center; }
 }
