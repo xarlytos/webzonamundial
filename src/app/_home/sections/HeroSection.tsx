@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { CREADORES } from "@/data/creadores";
 import styles from "./HeroSection.module.css";
@@ -124,7 +124,9 @@ function HeroLeft({
         </div>
       )}
 
-      <Headline variant={variant} />
+      <div key={variant} className={styles.zmH1Wrap}>
+        <Headline variant={variant} />
+      </div>
 
       <p className={styles.zmSub}>
         Predice en tiempo real, compite en <b>ligas privadas</b>, crea tu fantasy y juega con{" "}
@@ -285,73 +287,64 @@ function HeroRight() {
   );
 }
 
-/* ---------- Tweaks panel (floating, togglable) ---------- */
-function TweaksPanel({
-  variant,
-  setVariant,
-  showCountdown,
-  setShowCountdown,
+/* ---------- Slider Dots (bottom center of hero) ---------- */
+const VARIANT_LABELS: Record<Variant, string> = {
+  juega: "Juega",
+  ia: "IA Coach",
+  fantasy: "Fantasy",
+};
+
+function SliderDots({
+  variants,
+  current,
+  onSelect,
+  paused,
+  setPaused,
 }: {
-  variant: Variant;
-  setVariant: (v: Variant) => void;
-  showCountdown: boolean;
-  setShowCountdown: (b: boolean) => void;
+  variants: Variant[];
+  current: Variant;
+  onSelect: (v: Variant) => void;
+  paused: boolean;
+  setPaused: (b: boolean) => void;
 }) {
-  const [open, setOpen] = useState(true);
   return (
-    <>
+    <div className={styles.zmSliderDots} role="tablist" aria-label="Elegir titular">
+      {variants.map((v) => {
+        const active = v === current;
+        return (
+          <button
+            key={v}
+            type="button"
+            role="tab"
+            aria-selected={active}
+            aria-label={VARIANT_LABELS[v]}
+            className={`${styles.zmSliderDot} ${active ? styles.zmSliderDotActive : ""}`}
+            onClick={() => onSelect(v)}
+          >
+            <span className={styles.zmSliderDotFill} />
+            <span className={styles.zmSliderDotLabel}>{VARIANT_LABELS[v]}</span>
+          </button>
+        );
+      })}
       <button
         type="button"
-        className={styles.zmTweaksToggleBtn}
-        onClick={() => setOpen((v) => !v)}
-        aria-label={open ? "Cerrar tweaks" : "Abrir tweaks"}
-        aria-expanded={open}
+        className={styles.zmSliderPauseBtn}
+        onClick={() => setPaused(!paused)}
+        aria-label={paused ? "Reanudar slider" : "Pausar slider"}
+        aria-pressed={paused}
       >
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-        </svg>
+        {paused ? (
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+            <rect x="6" y="5" width="4" height="14" rx="1" />
+            <rect x="14" y="5" width="4" height="14" rx="1" />
+          </svg>
+        )}
       </button>
-      <div className={`${styles.zmTweaks} ${open ? styles.zmTweaksOpen : ""}`}>
-        <h4>Tweaks</h4>
-        <div className={styles.zmTweakRow}>
-          <label>Titular</label>
-          <div className={styles.zmTweakOpts}>
-            <button
-              type="button"
-              className={variant === "juega" ? styles.zmTweakOn : ""}
-              onClick={() => setVariant("juega")}
-            >
-              Juega
-            </button>
-            <button
-              type="button"
-              className={variant === "ia" ? styles.zmTweakOn : ""}
-              onClick={() => setVariant("ia")}
-            >
-              IA
-            </button>
-            <button
-              type="button"
-              className={variant === "fantasy" ? styles.zmTweakOn : ""}
-              onClick={() => setVariant("fantasy")}
-            >
-              Fantasy
-            </button>
-          </div>
-        </div>
-        <div className={styles.zmTweakRow}>
-          <label className={styles.zmTweakToggle}>
-            <span>Countdown al Mundial</span>
-            <input
-              type="checkbox"
-              checked={showCountdown}
-              onChange={(e) => setShowCountdown(e.target.checked)}
-            />
-          </label>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
@@ -382,12 +375,43 @@ function StatsBar() {
 }
 
 /* ---------- MAIN EXPORT ---------- */
+const VARIANTS: Variant[] = ["juega", "ia", "fantasy"];
+const AUTO_ROTATE_MS = 5000;
+
 export function HeroSection({ heroRef, titleRef, cd }: Props) {
   const [variant, setVariant] = useState<Variant>("juega");
-  const [showCountdown, setShowCountdown] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const [showCountdown] = useState(true);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Auto-rotate every AUTO_ROTATE_MS. Pause on hover or when user toggles.
+  useEffect(() => {
+    if (paused) return;
+    intervalRef.current = setInterval(() => {
+      setVariant((curr) => {
+        const idx = VARIANTS.indexOf(curr);
+        return VARIANTS[(idx + 1) % VARIANTS.length];
+      });
+    }, AUTO_ROTATE_MS);
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [paused]);
+
+  // Respect reduced motion preference
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (mq.matches) setPaused(true);
+  }, []);
 
   return (
-    <section ref={heroRef} className={styles.zmPage}>
+    <section
+      ref={heroRef}
+      className={styles.zmPage}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
       <div className={styles.zmStadiumPhoto}>
         <picture>
           <source srcSet="/img/hero/stadium.webp" type="image/webp" />
@@ -411,14 +435,18 @@ export function HeroSection({ heroRef, titleRef, cd }: Props) {
         </div>
       </div>
 
-      <StatsBar />
-
-      <TweaksPanel
-        variant={variant}
-        setVariant={setVariant}
-        showCountdown={showCountdown}
-        setShowCountdown={setShowCountdown}
+      <SliderDots
+        variants={VARIANTS}
+        current={variant}
+        onSelect={(v) => {
+          setVariant(v);
+          setPaused(true);
+        }}
+        paused={paused}
+        setPaused={setPaused}
       />
+
+      <StatsBar />
     </section>
   );
 }

@@ -46,6 +46,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip; /* permite sticky pero evita scroll horizontal accidental */
 }
 
 body {
@@ -54,6 +55,7 @@ body {
   color: var(--zm-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
 /* ══════ SCROLLBAR ══════ */
