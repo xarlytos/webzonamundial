@@ -1,6 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./StatsHowSection.module.css";
 import {
   IconStatBall,
@@ -16,35 +18,17 @@ import {
 
 /* =================== DATA =================== */
 
-const STATS = [
-  { Icon: IconStatBall, num: "48", label: "Selecciones" },
-  { Icon: IconStatStadium, num: "16", label: "Sedes" },
-  { Icon: IconStatWhistle, num: "104", label: "Partidos" },
-  { Icon: IconStatGroup, num: "12", label: "Grupos" },
-  { Icon: IconStatFlag, num: "3", label: "Países" },
-  { Icon: IconStatPuzzle, num: "12", label: "Módulos" },
+/* Icon order matches translation labels/steps indices */
+const STAT_ICONS = [
+  { Icon: IconStatBall, num: "48", key: "selecciones" as const },
+  { Icon: IconStatStadium, num: "16", key: "sedes" as const },
+  { Icon: IconStatWhistle, num: "104", key: "partidos" as const },
+  { Icon: IconStatGroup, num: "12", key: "grupos" as const },
+  { Icon: IconStatFlag, num: "3", key: "paises" as const },
+  { Icon: IconStatPuzzle, num: "12", key: "modulos" as const },
 ];
 
-const STEPS = [
-  {
-    n: "01",
-    Icon: IconStepChoose,
-    title: "Selecciona a tu creador",
-    desc: "Eliges tu selección, descubre datos, fixture del Mundial 2026.",
-  },
-  {
-    n: "02",
-    Icon: IconStepPlay,
-    title: "Juega y predice",
-    desc: "Entra en predicciones, fantasy, trivia y ligas privadas con tus amigos.",
-  },
-  {
-    n: "03",
-    Icon: IconStepWin,
-    title: "Vive y gana",
-    desc: "Sigue los partidos en streaming con creadores y gana premios reales.",
-  },
-];
+const STEP_ICONS = [IconStepChoose, IconStepPlay, IconStepWin] as const;
 
 /* =================== COMPONENT =================== */
 
@@ -78,6 +62,8 @@ export function StatsHowSection() {
   const stepsRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
+  const { locale } = useLanguage();
+  const t = homeSections[locale].statsHow;
 
   /* Track cursor to feed the interactive glow */
   useEffect(() => {
@@ -184,63 +170,65 @@ export function StatsHowSection() {
         {/* ========== Block 1: Stats ========== */}
         <div className={styles.statsHead}>
           <h2 className={styles.statsTitle}>
-            48 selecciones. 16 sedes. 104 partidos. 1 ganador:{" "}
-            <em className={styles.statsTitleGold}>tú.</em>
+            {t.title} <em className={styles.statsTitleGold}>{t.titleGold}</em>
           </h2>
-          <p className={styles.statsSub}>
-            Todo lo que necesitas para vivir el Mundial 2026 como nunca antes.
-          </p>
+          <p className={styles.statsSub}>{t.subtitle}</p>
         </div>
 
         <div className={styles.statsGrid}>
-          {STATS.map((s) => (
-            <div key={s.label} className={styles.statCard}>
+          {STAT_ICONS.map((s) => (
+            <div key={s.key} className={styles.statCard}>
               <div className={styles.statIconWrap}>
                 <s.Icon size={72} />
               </div>
               <div className={styles.statNum}>{s.num}</div>
-              <div className={styles.statLabel}>{s.label}</div>
+              <div className={styles.statLabel}>{t.statLabels[s.key]}</div>
             </div>
           ))}
         </div>
 
         <div className={styles.divider} aria-hidden="true" />
 
-        {/* ========== Block 2: ¿Cómo funciona? ========== */}
+        {/* ========== Block 2: How it works ========== */}
         <div className={styles.howHead}>
-          <span className={styles.pill}>ASÍ DE FÁCIL</span>
-          <h2 className={styles.howTitle}>¿Cómo funciona?</h2>
-          <p className={styles.howSub}>
-            Tres pasos y ya estás dentro. Sin complicaciones, sin letra pequeña.
-          </p>
+          <span className={styles.pill}>{t.howPill}</span>
+          <h2 className={styles.howTitle}>{t.howTitle}</h2>
+          <p className={styles.howSub}>{t.howSub}</p>
         </div>
 
         <div className={styles.steps} ref={stepsRef}>
-          {STEPS.map((s) => (
-            <div key={s.n} className={styles.step}>
-              <div className={styles.stepIconWrap}>
-                <s.Icon size={120} />
-                <span className={styles.stepBadge}>{s.n}</span>
+          {t.steps.map((s, i) => {
+            const Icon = STEP_ICONS[i];
+            const n = String(i + 1).padStart(2, "0");
+            return (
+              <div key={n} className={styles.step}>
+                <div className={styles.stepIconWrap}>
+                  <Icon size={120} />
+                  <span className={styles.stepBadge}>{n}</span>
+                </div>
+                <h3 className={styles.stepTitle}>{s.title}</h3>
+                <p className={styles.stepDesc}>{s.desc}</p>
               </div>
-              <h3 className={styles.stepTitle}>{s.title}</h3>
-              <p className={styles.stepDesc}>{s.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Dots only visible in mobile (CSS-controlled) */}
-        <div className={styles.sliderDots} role="tablist" aria-label="Pasos">
-          {STEPS.map((s, i) => (
-            <button
-              key={s.n}
-              type="button"
-              role="tab"
-              aria-selected={active === i}
-              aria-label={`Paso ${s.n} · ${s.title}`}
-              onClick={() => goTo(i)}
-              className={`${styles.sliderDot} ${active === i ? styles.sliderDotActive : ""}`}
-            />
-          ))}
+        <div className={styles.sliderDots} role="tablist" aria-label={t.stepsA11y}>
+          {t.steps.map((s, i) => {
+            const n = String(i + 1).padStart(2, "0");
+            return (
+              <button
+                key={n}
+                type="button"
+                role="tab"
+                aria-selected={active === i}
+                aria-label={`${t.stepsA11y} ${n} · ${s.title}`}
+                onClick={() => goTo(i)}
+                className={`${styles.sliderDot} ${active === i ? styles.sliderDotActive : ""}`}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

@@ -1,5 +1,7 @@
 "use client";
 
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./SocialDock.module.css";
 
 const IconInstagram = () => (
@@ -21,28 +23,19 @@ const IconTikTok = () => (
 );
 
 const SOCIALS = [
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/zona.mundial",
-    Icon: IconInstagram,
-  },
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/share/1Ay733gLRU/",
-    Icon: IconFacebook,
-  },
-  {
-    label: "TikTok",
-    href: "https://www.tiktok.com/@zonamundialfutbol",
-    Icon: IconTikTok,
-  },
+  { label: "Instagram", href: "https://www.instagram.com/zona.mundial", Icon: IconInstagram },
+  { label: "Facebook", href: "https://www.facebook.com/share/1Ay733gLRU/", Icon: IconFacebook },
+  { label: "TikTok", href: "https://www.tiktok.com/@zonamundialfutbol", Icon: IconTikTok },
 ];
 
 export function SocialDock() {
+  const { locale } = useLanguage();
+  const t = homeSections[locale].socialDock;
+
   return (
-    <aside className={styles.dock} aria-label="Redes sociales de ZonaMundial">
+    <aside className={styles.dock} aria-label={t.a11y}>
       <span className={styles.eyebrow} aria-hidden="true">
-        SÍGUENOS
+        {t.eyebrow}
       </span>
       <span className={styles.line} aria-hidden="true" />
       {SOCIALS.map((s) => (
@@ -51,7 +44,7 @@ export function SocialDock() {
           href={s.href}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label={`ZonaMundial en ${s.label}`}
+          aria-label={`${t.on} ${s.label}`}
           className={styles.btn}
         >
           <s.Icon />

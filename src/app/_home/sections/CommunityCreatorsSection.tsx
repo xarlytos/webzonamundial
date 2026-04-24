@@ -3,6 +3,8 @@
 import { CSSProperties, useEffect, useRef } from "react";
 import Link from "next/link";
 import { CREADORES } from "@/data/creadores";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./CommunityCreatorsSection.module.css";
 
 /* ============== Icons ============== */
@@ -58,28 +60,8 @@ const IconCommunity = () => (
 
 /* ============== Data ============== */
 
-const FEATURES = [
-  {
-    Icon: IconBroadcast,
-    title: "Directos en vivo",
-    desc: "Sigue transmisiones en vivo con tus creadores favoritos.",
-  },
-  {
-    Icon: IconChat,
-    title: "Reacciones reales",
-    desc: "Vive cada jugada con reacciones auténticas y sin filtros.",
-  },
-  {
-    Icon: IconBars,
-    title: "Análisis experto",
-    desc: "Estadísticas, tácticas y opiniones de quienes más saben.",
-  },
-  {
-    Icon: IconCommunity,
-    title: "Comunidad única",
-    desc: "Conecta con millones de fanáticos que comparten tu pasión.",
-  },
-];
+/* Icon order matches i18n features array */
+const FEATURE_ICONS = [IconBroadcast, IconChat, IconBars, IconCommunity] as const;
 
 /* Floating sparks — mix gold + purple */
 const SPARKS: Array<{ left: string; dur: string; delay: string; kind: "gold" | "purple" }> = [
@@ -98,6 +80,8 @@ const SPARKS: Array<{ left: string; dur: string; delay: string; kind: "gold" | "
 
 export function CommunityCreatorsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { locale } = useLanguage();
+  const t = homeSections[locale].community;
 
   /* Track cursor for interactive glow */
   useEffect(() => {
@@ -150,34 +134,29 @@ export function CommunityCreatorsSection() {
               <span className={styles.pillShield}>
                 <IconShield />
               </span>
-              Respaldado por los que realmente entienden de fútbol
+              {t.pill}
             </div>
 
             <h2 className={styles.title}>
-              +12.3M de seguidores. Una sola app.{" "}
-              <em className={styles.titleAccent}>Tú eliges con quién vivirlo.</em>
+              {t.title1} <em className={styles.titleAccent}>{t.titleGold}</em>
             </h2>
 
-            <p className={styles.desc}>
-              Los creadores de contenido futbolístico más grandes del mundo están en ZonaMundial.
-              Directos, reacciones, análisis y debates en tiempo real con quienes mejor entienden
-              este deporte.
-            </p>
+            <p className={styles.desc}>{t.desc}</p>
 
             <div className={styles.infoBox}>
               <span className={styles.infoIconWrap}>
                 <IconGroup />
               </span>
               <p className={styles.infoText}>
-                Más de <span className={styles.infoHighlight}>12.3M de seguidores</span>{" "}
-                concentrados en una sola comunidad.
+                {t.infoBefore}{" "}
+                <span className={styles.infoHighlight}>{t.infoHighlight}</span> {t.infoAfter}
                 <br />
-                Elige con quién vivirlo cada partido.
+                {t.infoSub}
               </p>
             </div>
 
             <Link href="/creadores" className={styles.cta}>
-              Ver todos los creadores
+              {t.cta}
               <IconArrow />
             </Link>
           </div>
@@ -188,25 +167,27 @@ export function CommunityCreatorsSection() {
       <div className={styles.inner}>
         {/* ========== FEATURES STRIP ========== */}
         <div className={styles.features}>
-          {FEATURES.map((f) => (
-            <div key={f.title} className={styles.feature}>
-              <span className={styles.featureIcon}>
-                <f.Icon />
-              </span>
-              <div>
-                <h3 className={styles.featureTitle}>{f.title}</h3>
-                <p className={styles.featureDesc}>{f.desc}</p>
+          {t.features.map((f, i) => {
+            const Icon = FEATURE_ICONS[i];
+            return (
+              <div key={f.title} className={styles.feature}>
+                <span className={styles.featureIcon}>
+                  <Icon />
+                </span>
+                <div>
+                  <h3 className={styles.featureTitle}>{f.title}</h3>
+                  <p className={styles.featureDesc}>{f.desc}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* ========== CREATORS GRID ========== */}
         <div className={styles.creatorsHead}>
-          <h2 className={styles.creatorsTitle}>Conoce a los creadores</h2>
+          <h2 className={styles.creatorsTitle}>{t.creatorsTitle}</h2>
           <p className={styles.creatorsSub}>
-            {CREADORES.length} creadores oficiales. Elige tu favorito y vive el Mundial con su
-            comunidad.
+            {CREADORES.length} {t.creatorsSubA}
           </p>
         </div>
 

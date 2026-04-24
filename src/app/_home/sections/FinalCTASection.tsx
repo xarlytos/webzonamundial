@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./FinalCTASection.module.css";
 
 const IconArrowRight = () => (
@@ -32,28 +34,28 @@ const IconGroup = () => (
 );
 
 export function FinalCTASection() {
+  const { locale } = useLanguage();
+  const t = homeSections[locale].finalCta;
+
   return (
     <section className={styles.section} id="final-cta">
       <div className={styles.card}>
         <div className={styles.content}>
-          {/* Left slot is filled by the BG image of the door */}
           <div className={styles.imageSlot} aria-hidden="true" />
 
           <div className={styles.copy}>
             <h2 className={styles.title}>
-              ¿Quién ganará el <em className={styles.titleGold}>Mundial 2026?</em>
+              {t.title1} <em className={styles.titleGold}>{t.titleGold1}</em>
               <br />
-              Spoiler: da igual.
+              {t.title2}
               <br />
-              Gana quien lo viva en <em className={styles.titleGold}>ZonaMundial.</em>
+              {t.title3} <em className={styles.titleGold}>{t.titleGold2}</em>
             </h2>
 
-            <p className={styles.desc}>
-              Entra gratis. Si no te gusta, te devolvemos el silencio.
-            </p>
+            <p className={styles.desc}>{t.desc}</p>
 
             <Link href="/registro" className={styles.cta}>
-              Registrarme gratis
+              {t.cta}
               <IconArrowRight />
             </Link>
 
@@ -62,21 +64,21 @@ export function FinalCTASection() {
                 <span className={styles.assuranceIcon}>
                   <IconShield />
                 </span>
-                100% gratis
+                {t.assurance.free}
               </span>
               <span className={styles.assuranceSep} aria-hidden="true" />
               <span className={styles.assuranceItem}>
                 <span className={styles.assuranceIcon}>
                   <IconLock />
                 </span>
-                Sin tarjeta
+                {t.assurance.noCard}
               </span>
               <span className={styles.assuranceSep} aria-hidden="true" />
               <span className={styles.assuranceItem}>
                 <span className={styles.assuranceIcon}>
                   <IconGroup />
                 </span>
-                Sin compromiso
+                {t.assurance.noCommitment}
               </span>
             </div>
           </div>

@@ -8,6 +8,8 @@ import {
   ReactNode,
   MouseEvent,
 } from "react";
+import { useLanguage } from "@/i18n/LanguageContext";
+import { homeSections } from "@/i18n/home-sections";
 import styles from "./PlatformShowcaseSection.module.css";
 
 /* =================== HOOKS =================== */
@@ -432,7 +434,7 @@ function BarStat({
 
 const PHONE_SCREENS = ["/img/platform/app-fantasy-spain.webp"];
 
-function Phone() {
+function Phone({ alt }: { alt: string }) {
   const parallax = usePhoneParallax();
   const [idx, setIdx] = useState(0);
   const total = PHONE_SCREENS.length;
@@ -451,7 +453,7 @@ function Phone() {
       onMouseLeave={parallax.onMouseLeave}
     >
       <div className={styles.screen}>
-        <img src={PHONE_SCREENS[idx]} alt="App ZonaMundial" loading="lazy" decoding="async" />
+        <img src={PHONE_SCREENS[idx]} alt={alt} loading="lazy" decoding="async" />
         <div className={styles.cursorGlow} />
       </div>
       {total > 1 && (
@@ -462,7 +464,7 @@ function Phone() {
               type="button"
               className={`${styles.dot} ${i === idx ? styles.dotActive : ""}`}
               onClick={() => setIdx(i)}
-              aria-label={`Pantalla ${i + 1}`}
+              aria-label={`${alt} ${i + 1}`}
             />
           ))}
         </div>
@@ -475,6 +477,8 @@ function Phone() {
 
 export function PlatformShowcaseSection() {
   const [sectionRef, visible] = useOnScreen(0.2);
+  const { locale } = useLanguage();
+  const t = homeSections[locale].platform;
 
   return (
     <section
@@ -486,25 +490,19 @@ export function PlatformShowcaseSection() {
         <div className={styles.stage}>
           {/* Left: text */}
           <div className={styles.text}>
-            <div className={styles.eyebrow}>
-              ¿POR QUÉ ZONAMUNDIAL? PORQUE EL RESTO SE QUEDA CORTO.
-            </div>
+            <div className={styles.eyebrow}>{t.eyebrow}</div>
             <h2 className={styles.title}>
-              La plataforma que
+              {t.title1}
               <br />
-              el Mundial 2026
+              {t.title2}
               <br />
-              <em className={styles.titleEm}>merece,</em> no la que
+              <em className={styles.titleEm}>{t.title3a}</em> {t.title3b}
               <br />
-              necesita.
+              {t.title4}
             </h2>
-            <p className={styles.para}>
-              En ZonaMundial no hacemos lo mínimo. Hacemos lo máximo. Predicciones, fantasy,
-              trivia, streaming, IA coach y una comunidad de millones. Todo en un solo lugar.
-              Todo gratis.
-            </p>
+            <p className={styles.para}>{t.para}</p>
             <p className={styles.highlight}>
-              Sin anuncios intrusivos. <span>Sin letra pequeña.</span> Solo fútbol puro.
+              {t.highlight1} <span>{t.highlight2}</span> {t.highlight3}
             </p>
           </div>
 
@@ -515,7 +513,7 @@ export function PlatformShowcaseSection() {
               <span />
               <span />
             </div>
-            <Phone />
+            <Phone alt={t.phoneAlt} />
           </div>
 
           {/* Decorative connectors */}
@@ -536,23 +534,23 @@ export function PlatformShowcaseSection() {
           <StatCard
             icon={<IconShield />}
             num="48"
-            label="Selecciones"
-            desc="Datos, plantillas y estadísticas de todos los equipos clasificados al Mundial."
+            label={t.cards.selecciones.label}
+            desc={t.cards.selecciones.desc}
             target={48}
           />
           <StatCard
             icon={<IconBall />}
             num="100%"
-            label="Fútbol puro"
-            desc="Sin ruido, sin distracciones. Solo el Mundial y todo lo que lo rodea."
+            label={t.cards.futbolPuro.label}
+            desc={t.cards.futbolPuro.desc}
             target={100}
             suffix="%"
           />
           <StatCard
             icon={<IconTrophy />}
-            num="Todo en 1"
-            label="Una sola plataforma"
-            desc="Fantasy, predicciones, trivia, streaming, IA y mucho más, siempre a mano."
+            num={t.cards.todoEn1.num}
+            label={t.cards.todoEn1.label}
+            desc={t.cards.todoEn1.desc}
             target={1}
           />
         </div>
@@ -562,12 +560,12 @@ export function PlatformShowcaseSection() {
           <BarStat
             icon={<IconUsers />}
             target={2500000}
-            label="Usuarios registrados"
+            label={t.barLabels.usuarios}
             displayFormatter={(v) => `+${(v / 1000000).toFixed(1)}M`}
           />
-          <BarStat icon={<IconCalendar />} target={104} label="Partidos" />
-          <BarStat icon={<IconStadium />} target={16} label="Sedes" />
-          <BarStat icon={<IconGlobe />} target={3} label="Países anfitriones" />
+          <BarStat icon={<IconCalendar />} target={104} label={t.barLabels.partidos} />
+          <BarStat icon={<IconStadium />} target={16} label={t.barLabels.sedes} />
+          <BarStat icon={<IconGlobe />} target={3} label={t.barLabels.paises} />
         </div>
       </div>
     </section>
