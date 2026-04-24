@@ -17,6 +17,7 @@ import { StatsSection } from "./_home/sections/StatsSection";
 import { AppScreenshotsSection } from "./_home/sections/AppScreenshotsSection";
 import { WhyDifferentSection } from "./_home/sections/WhyDifferentSection";
 import { FeaturesCarouselSection } from "./_home/sections/FeaturesCarouselSection";
+import { ModulesBentoSection } from "./_home/sections/ModulesBentoSection";
 import { GuaranteesBar } from "./_home/sections/GuaranteesBar";
 import { CreatorsSection } from "./_home/sections/CreatorsSection";
 import { SocialProofTicker } from "./_home/sections/SocialProofTicker";
@@ -74,12 +75,7 @@ export default function HomePage() {
       <HowItWorksSection sectionRef={howItWorksRef} h={h} />
       <AppScreenshotsSection screenshotsRef={screenshotsRef} h={h} />
       <WhyDifferentSection h={h} />
-      <FeaturesCarouselSection
-        featuresRef={featuresRef}
-        cardsRef={cardsRef}
-        modules={MODULES}
-        h={h}
-      />
+      <ModulesBentoSection />
       <GuaranteesBar items={h.guarantees} />
       <CinematicDivider
         src="/img/heroes/ball-stadium-pitch.jpg"
