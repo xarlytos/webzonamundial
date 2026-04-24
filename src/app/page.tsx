@@ -13,7 +13,7 @@ import { MODULES_BASE } from "./_home/data";
 
 import { ScrollProgressBar } from "./_home/components/ScrollProgressBar";
 import { HeroSection } from "./_home/sections/HeroSection";
-import { StatsSection } from "./_home/sections/StatsSection";
+import { StatsHowSection } from "./_home/sections/StatsHowSection";
 import { PlatformShowcaseSection } from "./_home/sections/PlatformShowcaseSection";
 import { ModulesGridSection } from "./_home/sections/ModulesGridSection";
 import { ModulesBentoSection } from "./_home/sections/ModulesBentoSection";
@@ -22,7 +22,6 @@ import { CreatorsSection } from "./_home/sections/CreatorsSection";
 import { SocialProofTicker } from "./_home/sections/SocialProofTicker";
 import { AppBannerSection } from "./_home/sections/AppBannerSection";
 import { CtaFinalSection } from "./_home/sections/CtaFinalSection";
-import { HowItWorksSection } from "./_home/sections/HowItWorksSection";
 import { AlbumSection } from "./_home/sections/AlbumSection";
 import { CinematicDivider } from "./_home/sections/CinematicDivider";
 
@@ -70,8 +69,7 @@ export default function HomePage() {
         cd={cd}
         IMGS={IMGS}
       />
-      <StatsSection statsRef={statsRef} h={h} />
-      <HowItWorksSection sectionRef={howItWorksRef} h={h} />
+      <StatsHowSection />
       <ModulesGridSection />
       <PlatformShowcaseSection />
       <ModulesBentoSection />
