@@ -592,13 +592,33 @@
   50% { transform: rotate(-2deg) translateY(-8px); }
 }
 
-/* ===== HEADLINE FADE/SLIDE on variant change ===== */
+/* ===== HEADLINE WRAPPER: reserve space so variant change doesn't shift layout ===== */
 .zmH1Wrap {
-  animation: zmH1Fade .6s var(--zm-ease-out);
+  /* Reserve ~3 lines of the max headline size so all variants occupy
+     the same vertical space — prevents layout jumping when rotating */
+  min-height: calc((clamp(3rem, 7.2vw, 6.5rem) * 0.92) * 3 + 3.2rem);
+  display: flex;
+  align-items: flex-start;
+  animation: zmH1Fade .55s var(--zm-ease-out);
 }
 @keyframes zmH1Fade {
-  from { opacity: 0; transform: translateY(10px); filter: blur(4px); }
+  from { opacity: 0; transform: translateY(8px); filter: blur(4px); }
   to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+/* Stabilize left column height too, so the phone stage doesn't reflow */
+.zmLeft {
+  min-height: 620px;
+}
+@media (max-width: 1023px) {
+  .zmLeft { min-height: 0; }
+  .zmH1Wrap { min-height: calc((clamp(2.75rem, 8vw, 4.5rem) * 0.95) * 3 + 2.4rem); }
+}
+@media (max-width: 640px) {
+  .zmH1Wrap { min-height: calc((clamp(2.5rem, 11vw, 3.75rem) * 0.95) * 3 + 1.8rem); }
+}
+@media (max-width: 380px) {
+  .zmH1Wrap { min-height: calc((clamp(2.25rem, 12vw, 3rem) * 0.95) * 3 + 1.6rem); }
 }
 
 /* ===== HEADLINE SLIDER DOTS (within hero, under left column) ===== */
