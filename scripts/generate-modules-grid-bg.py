@@ -1,202 +1,194 @@
 """Generate ambient background images for ModulesGridSection.
 
-- planet-gold.webp  : dark sphere with golden city-light pattern, right side lit
-- stadium-lights.webp: dark stadium lights arc (top of a stadium bowl)
-
-Both designed to fade into a near-black background.
-
-Run: python scripts/generate-modules-grid-bg.py
-Output: public/img/modules-grid-bg/*.webp
+V2 — significantly more visible:
+- Planet: larger + brighter city lights + stronger rim + clearer continents
+- Stadium: bigger arc, brighter lights, visible floor
 """
 import math
 import random
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter
 
-random.seed(42)
+random.seed(7)
 
 OUT = Path(__file__).resolve().parent.parent / "public" / "img" / "modules-grid-bg"
 OUT.mkdir(parents=True, exist_ok=True)
 
-# =================== PLANET GOLD ===================
-def make_planet(size=900):
-    """Dark sphere with golden city-lights. Right side has a warm golden rim light."""
+
+# =================== PLANET ===================
+def make_planet(size=1200):
     W = H = size
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-
     cx, cy = W // 2, H // 2
-    r = int(W * 0.42)
+    r = int(W * 0.45)
 
-    # Base dark sphere (ellipse with radial gradient feel)
+    # Base sphere: dark but slightly visible (subtle radial)
+    base = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    bd = ImageDraw.Draw(base)
     for i in range(r, 0, -1):
         t = 1 - i / r
-        # darker toward center
-        shade = int(8 + 6 * (1 - t))
-        alpha = int(255 * (0.7 + 0.3 * t))
-        draw.ellipse(
+        shade = int(12 + 10 * (1 - t))
+        alpha = int(230 * (0.65 + 0.35 * (1 - abs(2 * t - 1))))
+        bd.ellipse(
             (cx - i, cy - i, cx + i, cy + i),
-            fill=(shade, shade, shade + 2, alpha),
+            fill=(shade, shade - 2, shade, alpha),
         )
+    img = Image.alpha_composite(img, base)
 
-    # City lights — scattered small golden dots + clusters
+    # City lights — many more, brighter, clustered like continents
     light_layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ld = ImageDraw.Draw(light_layer)
-    # Cluster centers (like continents)
-    clusters = [
-        (cx - r * 0.2, cy - r * 0.25, r * 0.35, 700),
-        (cx + r * 0.15, cy, r * 0.32, 800),
-        (cx - r * 0.1, cy + r * 0.3, r * 0.3, 500),
-        (cx + r * 0.25, cy - r * 0.35, r * 0.2, 300),
+    # Fake continents as big blurry gold patches
+    continents = [
+        (cx - r * 0.25, cy - r * 0.35, r * 0.38, 1600),
+        (cx + r * 0.10, cy - r * 0.10, r * 0.42, 2000),
+        (cx - r * 0.05, cy + r * 0.30, r * 0.36, 1400),
+        (cx + r * 0.30, cy - r * 0.42, r * 0.22, 600),
+        (cx - r * 0.40, cy + r * 0.15, r * 0.18, 400),
     ]
-    for ccx, ccy, cr, n in clusters:
+    for ccx, ccy, cr, n in continents:
+        # Faint continent base glow (ochre patch)
+        base_glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        bgd = ImageDraw.Draw(base_glow)
+        bgd.ellipse(
+            (ccx - cr * 1.1, ccy - cr * 0.8, ccx + cr * 1.1, ccy + cr * 0.8),
+            fill=(110, 75, 30, 80),
+        )
+        base_glow = base_glow.filter(ImageFilter.GaussianBlur(radius=18))
+        # Mask to sphere
+        mask = Image.new("L", (W, H), 0)
+        md = ImageDraw.Draw(mask)
+        md.ellipse((cx - r + 4, cy - r + 4, cx + r - 4, cy + r - 4), fill=255)
+        img.paste(base_glow, (0, 0), mask)
+
+        # Bright points
         for _ in range(n):
-            # gaussian-ish distribution inside cluster
             rr = abs(random.gauss(0, cr * 0.7))
             theta = random.uniform(0, math.tau)
             x = int(ccx + rr * math.cos(theta))
             y = int(ccy + rr * math.sin(theta))
-            # check point is inside sphere
             if (x - cx) ** 2 + (y - cy) ** 2 > (r - 3) ** 2:
                 continue
-            brightness = random.randint(160, 255)
-            size_dot = random.choice([1, 1, 1, 2])
+            brightness = random.randint(180, 255)
+            size_dot = random.choice([1, 1, 2, 2, 3])
             ld.ellipse(
-                (x, y, x + size_dot, y + size_dot),
-                fill=(brightness, int(brightness * 0.75), int(brightness * 0.25), random.randint(180, 255)),
+                (x - size_dot // 2, y - size_dot // 2, x + size_dot // 2 + 1, y + size_dot // 2 + 1),
+                fill=(brightness, int(brightness * 0.7), int(brightness * 0.2), random.randint(210, 255)),
             )
-    # Blur the lights a little so they glow
-    light_layer = light_layer.filter(ImageFilter.GaussianBlur(radius=0.6))
+    # Slight bloom on the lights
+    bloom = light_layer.filter(ImageFilter.GaussianBlur(radius=1.5))
+    img = Image.alpha_composite(img, bloom)
     img = Image.alpha_composite(img, light_layer)
 
-    # Warm golden rim light on right (like the reference image)
+    # Strong golden rim light on the right (signature look of the reference)
     rim = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     rd = ImageDraw.Draw(rim)
-    # Crescent of gold on the right side
-    for i in range(16):
-        offset = i * 1.3
-        op = int(120 - i * 7)
+    for i in range(20):
+        offset = i * 1.6
+        op = int(200 - i * 9)
         if op <= 0:
             break
         rd.ellipse(
             (cx - r + offset, cy - r, cx + r + offset, cy + r),
-            outline=(255, 200, 100, op),
-            width=2,
+            outline=(255, 200, 90, op),
+            width=3,
         )
-    rim = rim.filter(ImageFilter.GaussianBlur(radius=8))
+    rim = rim.filter(ImageFilter.GaussianBlur(radius=6))
     img = Image.alpha_composite(img, rim)
 
-    # Extra soft golden glow rim on right edge
+    # Big warm glow behind right crescent
     glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     gd = ImageDraw.Draw(glow)
-    gd.ellipse((cx - r + 40, cy - r, cx + r + 40, cy + r), fill=(220, 160, 60, 90))
+    gd.ellipse((cx - r + 60, cy - r * 0.95, cx + r + 60, cy + r * 0.95), fill=(230, 170, 60, 160))
     glow = glow.filter(ImageFilter.GaussianBlur(radius=40))
-    # Mask glow so only right side shows
+    # Show only on right half
     mask = Image.new("L", (W, H), 0)
     md = ImageDraw.Draw(mask)
-    md.rectangle((cx, 0, W, H), fill=255)
+    md.rectangle((cx - 20, 0, W, H), fill=255)
     mask = mask.filter(ImageFilter.GaussianBlur(radius=30))
     img.paste(glow, (0, 0), mask)
 
     return img
 
 
-# =================== STADIUM LIGHTS ===================
-def make_stadium(w=1600, h=900):
-    """Top arc of a stadium with bright floodlight halos + dim crowd spots."""
+# =================== STADIUM ===================
+def make_stadium(w=2000, h=1000):
     img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
-    # Stadium bowl outline (curved arc at top)
-    arc_top = int(h * 0.1)
-    arc_bottom = int(h * 0.55)
-    bowl_color = (18, 22, 36, 220)
+    # Bowl roof arc — clearer with multiple overlapping bands
+    arc_top = int(h * 0.08)
+    arc_mid = int(h * 0.35)
 
-    # Draw arc as overlapping ellipses for depth
-    for i in range(30):
-        y_off = i * 1.5
-        op = 140 - i * 4
-        if op <= 0:
-            break
+    for i in range(50):
+        op = max(0, 180 - i * 3)
+        y_off = i * 2.2
         draw.ellipse(
-            (-w * 0.2, arc_top - 40 + y_off, w * 1.2, arc_bottom + y_off),
-            outline=(20, 25, 45, op),
-            width=3,
+            (-w * 0.15, arc_top - 30 + y_off, w * 1.15, arc_mid + y_off),
+            outline=(30, 40, 70, op),
+            width=2,
         )
 
-    # Cloud layer above (subtle, dark navy)
-    cloud_layer = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    cd = ImageDraw.Draw(cloud_layer)
-    for _ in range(60):
-        cx = random.randint(0, w)
-        cy = random.randint(0, arc_top + 20)
-        rr = random.randint(60, 160)
-        cd.ellipse(
-            (cx - rr, cy - rr // 2, cx + rr, cy + rr // 2),
-            fill=(25, 30, 55, random.randint(40, 90)),
+    # Cloud / sky haze above
+    sky = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(sky)
+    for _ in range(80):
+        x = random.randint(-100, w + 100)
+        y = random.randint(0, arc_top + 40)
+        rr = random.randint(80, 220)
+        sd.ellipse(
+            (x - rr, y - rr // 2, x + rr, y + rr // 2),
+            fill=(40, 48, 75, random.randint(55, 110)),
         )
-    cloud_layer = cloud_layer.filter(ImageFilter.GaussianBlur(radius=25))
-    img = Image.alpha_composite(img, cloud_layer)
+    sky = sky.filter(ImageFilter.GaussianBlur(radius=30))
+    img = Image.alpha_composite(img, sky)
 
-    # Floodlights: two rows of bright white-blue points along the arc
+    # Floodlight rails — much brighter and visible
     lights = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     ld = ImageDraw.Draw(lights)
-    num_lights = 90
-    for i in range(num_lights):
-        t = i / (num_lights - 1)
-        # Place on arc path
-        angle = math.pi * (0.5 - t * 1.0)  # sweep from right to left
-        # ellipse param
-        ex = w / 2 + math.cos(angle) * (w * 0.55)
-        ey = arc_top + 15 + math.sin(angle) * 18
-        brightness = random.randint(210, 255)
-        size_l = random.choice([2, 2, 3, 3, 4])
-        ld.ellipse(
-            (ex - size_l, ey - size_l, ex + size_l, ey + size_l),
-            fill=(brightness, brightness, 255, 255),
-        )
-    # second row slightly below
-    for i in range(num_lights):
-        t = i / (num_lights - 1)
-        angle = math.pi * (0.5 - t * 1.0)
-        ex = w / 2 + math.cos(angle) * (w * 0.58)
-        ey = arc_top + 40 + math.sin(angle) * 18
-        brightness = random.randint(180, 230)
-        size_l = random.choice([1, 2, 2, 3])
-        ld.ellipse(
-            (ex - size_l, ey - size_l, ex + size_l, ey + size_l),
-            fill=(brightness, brightness, 255, 220),
-        )
+    # Two dense rows along the arc
+    num = 140
+    for row in range(2):
+        for i in range(num):
+            t = i / (num - 1)
+            angle = math.pi * (0.52 - t * 1.04)
+            ex = w / 2 + math.cos(angle) * (w * 0.56)
+            ey = arc_top + 25 + row * 28 + math.sin(angle) * 22
+            # Tiny brighter core dot
+            size_l = random.choice([2, 3, 3, 4])
+            ld.ellipse(
+                (ex - size_l, ey - size_l, ex + size_l, ey + size_l),
+                fill=(255, 255, 255, 255),
+            )
 
-    # Glow around the floodlights
-    glow = lights.filter(ImageFilter.GaussianBlur(radius=10))
-    img = Image.alpha_composite(img, glow)
+    # Strong bloom on lights
+    bloom1 = lights.filter(ImageFilter.GaussianBlur(radius=18))
+    bloom2 = lights.filter(ImageFilter.GaussianBlur(radius=6))
+    img = Image.alpha_composite(img, bloom1)
+    img = Image.alpha_composite(img, bloom2)
     img = Image.alpha_composite(img, lights)
 
-    # Crowd: dim warm specks in lower area
+    # Stands / crowd: warm pinpoints (many more, clearly visible)
     crowd = Image.new("RGBA", (w, h), (0, 0, 0, 0))
     cd2 = ImageDraw.Draw(crowd)
-    for _ in range(600):
-        cx = random.randint(0, w)
-        cy = random.randint(arc_bottom - 40, h - 20)
-        b = random.randint(60, 180)
-        cd2.ellipse(
-            (cx, cy, cx + 1, cy + 1),
-            fill=(b, int(b * 0.85), int(b * 0.5), random.randint(140, 220)),
-        )
-    crowd = crowd.filter(ImageFilter.GaussianBlur(radius=0.5))
-    img = Image.alpha_composite(img, crowd)
+    for _ in range(1800):
+        x = random.randint(0, w)
+        y = random.randint(arc_mid + 10, h - 30)
+        b = random.randint(90, 230)
+        cd2.ellipse((x, y, x + 1, y + 1), fill=(b, int(b * 0.82), int(b * 0.45), random.randint(180, 255)))
+    crowd_bloom = crowd.filter(ImageFilter.GaussianBlur(radius=0.6))
+    img = Image.alpha_composite(img, crowd_bloom)
 
     return img
 
 
 if __name__ == "__main__":
-    planet = make_planet(900)
-    planet_out = OUT / "planet-gold.webp"
-    planet.save(planet_out, "WEBP", quality=80, method=6)
-    print(f"planet-gold.webp: {planet_out.stat().st_size / 1024:.1f} KB")
+    planet = make_planet(1200)
+    planet_path = OUT / "planet-gold.webp"
+    planet.save(planet_path, "WEBP", quality=82, method=6)
+    print(f"planet-gold.webp: {planet_path.stat().st_size / 1024:.1f} KB")
 
-    stadium = make_stadium(1600, 900)
-    stadium_out = OUT / "stadium-lights.webp"
-    stadium.save(stadium_out, "WEBP", quality=78, method=6)
-    print(f"stadium-lights.webp: {stadium_out.stat().st_size / 1024:.1f} KB")
+    stadium = make_stadium(2000, 1000)
+    stadium_path = OUT / "stadium-lights.webp"
+    stadium.save(stadium_path, "WEBP", quality=80, method=6)
+    print(f"stadium-lights.webp: {stadium_path.stat().st_size / 1024:.1f} KB")
