@@ -214,6 +214,11 @@ const MODULES: Module[] = [
 export function ModulesGridSection() {
   return (
     <section className={styles.section} id="modulos-grid">
+      {/* Ambient backgrounds: planet on left, stadium arc on right, faded into bg */}
+      <div className={styles.ambient} aria-hidden="true">
+        <div className={styles.ambientGlobe} />
+        <div className={styles.ambientStadium} />
+      </div>
       <div className={styles.inner}>
         <div className={styles.head}>
           <span className={styles.pill}>12 formas de ganar. Elige la tuya.</span>
@@ -266,6 +271,25 @@ export function ModulesGridSection() {
             Explorar todos los módulos
             <IconArrow />
           </Link>
+          {/* Golden sparkles for perspective below the CTA */}
+          <div className={styles.sparkles} aria-hidden="true">
+            {[
+              { l: "10%", t: "30%", d: "0s" },
+              { l: "22%", t: "60%", d: "0.5s" },
+              { l: "35%", t: "20%", d: "1s" },
+              { l: "48%", t: "70%", d: "1.5s" },
+              { l: "58%", t: "30%", d: "0.8s" },
+              { l: "72%", t: "55%", d: "2s" },
+              { l: "85%", t: "25%", d: "1.2s" },
+              { l: "92%", t: "65%", d: "0.3s" },
+            ].map((s, i) => (
+              <span
+                key={i}
+                className={styles.sparkleDot}
+                style={{ left: s.l, top: s.t, animationDelay: s.d }}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>

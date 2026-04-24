@@ -7,8 +7,8 @@
   position: relative;
   padding: clamp(80px, 10vw, 140px) clamp(20px, 4vw, 56px);
   background:
-    radial-gradient(ellipse 60% 50% at 10% 0%, rgba(212,168,83,0.08), transparent 55%),
-    radial-gradient(ellipse 60% 40% at 90% 100%, rgba(46,134,171,0.06), transparent 60%),
+    radial-gradient(ellipse 40% 30% at 10% 25%, rgba(212,168,83,0.08), transparent 60%),
+    radial-gradient(ellipse 40% 25% at 92% 10%, rgba(170,190,230,0.05), transparent 65%),
     linear-gradient(180deg, #06060E 0%, #0A0A18 50%, #06060E 100%);
   color: #fff;
   overflow: hidden;
@@ -24,15 +24,99 @@
   mix-blend-mode: overlay;
 }
 
-/* Ambient globe glow on the left (like mockup) */
-.section::after {
+/* Ambient decorations: left globe + right stadium, faded into bg */
+.ambient {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.ambientGlobe,
+.ambientStadium {
+  position: absolute;
+  opacity: 0.55;
+}
+.ambientGlobe {
+  left: -220px;
+  top: -80px;
+  width: 720px;
+  height: 720px;
+  background-image: url("/img/modules-grid-bg/planet-gold.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  /* fade edges into the dark background (right + bottom) */
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 45% 45%, #000 30%, transparent 75%);
+          mask-image: radial-gradient(ellipse 60% 60% at 45% 45%, #000 30%, transparent 75%);
+}
+.ambientStadium {
+  right: -80px;
+  top: -40px;
+  width: 900px;
+  height: 500px;
+  background-image: url("/img/modules-grid-bg/stadium-lights.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.5;
+  -webkit-mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    rgba(0, 0, 0, 0.85) 40%,
+    rgba(0, 0, 0, 0.35) 75%,
+    transparent 100%
+  );
+          mask-image: linear-gradient(
+    to left,
+    #000 0%,
+    rgba(0, 0, 0, 0.85) 40%,
+    rgba(0, 0, 0, 0.35) 75%,
+    transparent 100%
+  );
+}
+
+/* Golden sparkles under the CTA */
+.sparkles {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  margin-top: 8px;
+  pointer-events: none;
+  overflow: hidden;
+}
+.sparkles::before,
+.sparkles::after {
   content: "";
   position: absolute;
-  top: 50%; left: -10%;
-  width: 500px; height: 500px;
-  transform: translateY(-50%);
-  background: radial-gradient(circle, rgba(212,168,83,0.1) 0%, transparent 60%);
-  pointer-events: none;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.sparkles::before {
+  /* soft warm glow */
+  width: 600px;
+  height: 120px;
+  background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(212,168,83,0.25), transparent 70%);
+  filter: blur(10px);
+}
+.sparkles::after {
+  /* horizontal shimmer line */
+  width: 70%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(212,168,83,0.6) 30%, rgba(245,208,122,1) 50%, rgba(212,168,83,0.6) 70%, transparent 100%);
+  box-shadow: 0 0 20px rgba(212,168,83,0.6);
+}
+.sparkleDot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #F5D07A;
+  box-shadow: 0 0 10px #F5D07A, 0 0 20px rgba(245,208,122,0.4);
+  animation: sparkleFade 3s ease-in-out infinite;
+}
+@keyframes sparkleFade {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.3); }
 }
 
 .inner {
@@ -267,27 +351,40 @@
 
 /* ==================================================================
    Responsive
+   Goal per design spec: mobile = 2 cards per row (6 rows) — never 1-col
    ================================================================== */
 @media (max-width: 1200px) {
   .grid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
   .card { min-height: 300px; }
+  .ambientGlobe { width: 560px; height: 560px; left: -200px; }
+  .ambientStadium { width: 700px; height: 400px; right: -100px; }
 }
 @media (max-width: 860px) {
   .grid { grid-template-columns: repeat(3, 1fr); }
   .card { min-height: 280px; padding: 24px 18px 20px; }
   .cardTitle { font-size: 20px; }
+  .ambientGlobe { width: 420px; height: 420px; left: -180px; opacity: 0.45; }
+  .ambientStadium { width: 520px; height: 320px; opacity: 0.4; }
 }
-@media (max-width: 620px) {
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-  .card { min-height: 240px; padding: 20px 16px 18px; }
-  .iconWrap { width: 56px; height: 56px; margin-bottom: 14px; }
-  .iconWrap svg { width: 26px; height: 26px; }
-  .cardTitle { font-size: 17px; margin-bottom: 8px; }
-  .cardDesc { font-size: 12.5px; }
+@media (max-width: 720px) {
+  /* 2 columns forced below 720px — keeps info tight, 6 rows total */
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .card { min-height: 220px; padding: 18px 14px 16px; }
+  .iconWrap { width: 52px; height: 52px; margin-bottom: 12px; }
+  .iconWrap svg { width: 24px; height: 24px; }
+  .cardTitle { font-size: 16px; margin-bottom: 8px; line-height: 1.2; }
+  .cardDesc { font-size: 12px; line-height: 1.45; }
+  .ambientGlobe { width: 320px; height: 320px; left: -140px; opacity: 0.35; }
+  .ambientStadium { width: 420px; height: 260px; opacity: 0.3; }
 }
-@media (max-width: 400px) {
-  .grid { grid-template-columns: 1fr; }
-  .card { min-height: 200px; }
+@media (max-width: 420px) {
+  /* Still 2 columns — never drop to 1 */
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .card { min-height: 200px; padding: 16px 12px 14px; }
+  .iconWrap { width: 46px; height: 46px; margin-bottom: 10px; }
+  .iconWrap svg { width: 22px; height: 22px; }
+  .cardTitle { font-size: 14.5px; }
+  .cardDesc { font-size: 11.5px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
