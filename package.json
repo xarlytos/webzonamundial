@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.91.1",
     "@gsap/react": "^2.1.2",
     "@sanity/image-url": "^2.1.1",
     "better-sqlite3": "^12.8.0",

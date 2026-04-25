@@ -3,3 +3,9 @@ node_modules/
 dist/
 data/registros.json
 data/waitlist.json
+data/noticias-ingested.json
+
+# Env (never commit secrets)
+.env
+.env.local
+.env.*.local
