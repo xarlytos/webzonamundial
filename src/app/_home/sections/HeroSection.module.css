@@ -607,15 +607,29 @@
   50% { transform: rotate(-2deg) translateY(-8px); }
 }
 
-/* ===== HEADLINE WRAPPER: rock-solid height across variants =====
-   The 'IA' variant has an extra small subline ('Con IA Coach de tu lado.')
-   that pushed layout down. We reserve the height of the TALLEST variant
-   (3 big lines + 1 sub) so the page never shifts when rotating. */
+/* ===== HEADLINE WRAPPER: all 3 variants stacked in one grid cell =====
+   Rock-solid technique: render all variants at the same time, in the
+   same CSS grid cell. The cell takes the natural height of the TALLEST
+   variant (intrinsic sizing) — page never shifts when rotating.
+   Only the active variant is visible; the others are opacity 0 + aria-hidden. */
 .zmH1Wrap {
-  min-height: calc((clamp(3rem, 7.2vw, 6.5rem) * 0.92) * 3 + 4.6rem);
-  display: flex;
-  align-items: flex-start;
-  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.zmH1Wrap > * {
+  grid-column: 1;
+  grid-row: 1;
+  transition: opacity .45s var(--zm-ease-out), filter .45s var(--zm-ease-out);
+}
+.zmH1VariantInactive {
+  opacity: 0;
+  pointer-events: none;
+  filter: blur(4px);
+  /* Keeps visibility for layout but removes from AT */
+}
+.zmH1VariantActive {
+  opacity: 1;
+  filter: blur(0);
   animation: zmH1Fade .55s var(--zm-ease-out);
 }
 @keyframes zmH1Fade {
@@ -629,13 +643,6 @@
 }
 @media (max-width: 1023px) {
   .zmLeft { min-height: 0; }
-  .zmH1Wrap { min-height: calc((clamp(2.75rem, 8vw, 4.5rem) * 0.95) * 3 + 3.2rem); }
-}
-@media (max-width: 640px) {
-  .zmH1Wrap { min-height: calc((clamp(2.5rem, 11vw, 3.75rem) * 0.95) * 3 + 2.6rem); }
-}
-@media (max-width: 380px) {
-  .zmH1Wrap { min-height: calc((clamp(2.25rem, 12vw, 3rem) * 0.95) * 3 + 2.2rem); }
 }
 
 /* ===== HEADLINE SLIDER DOTS (within hero, under left column) ===== */

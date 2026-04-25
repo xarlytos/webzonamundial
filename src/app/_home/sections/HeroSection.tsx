@@ -52,8 +52,8 @@ function Icon({ name, size = 18 }: { name: keyof typeof ICON_PATHS; size?: numbe
   );
 }
 
-/* ---------- Variants for headlines ---------- */
-function Headline({ variant }: { variant: Variant }) {
+/* ---------- Variants for headlines (single variant renderer) ---------- */
+function HeadlineVariant({ variant }: { variant: Variant }) {
   if (variant === "ia") {
     return (
       <h1 className={styles.zmH1}>
@@ -82,7 +82,6 @@ function Headline({ variant }: { variant: Variant }) {
       </h1>
     );
   }
-  // juega (default)
   return (
     <h1 className={styles.zmH1}>
       <span className={styles.zmH1Line}>El Mundial</span>
@@ -91,6 +90,29 @@ function Headline({ variant }: { variant: Variant }) {
       </span>
       <span className={`${styles.zmH1Line} ${styles.zmH1Gold}`}>Se juega.</span>
     </h1>
+  );
+}
+
+/* All variants are rendered simultaneously in the same grid cell so the
+   wrapper always sizes to the tallest. Only the active one is opaque. */
+const ALL_VARIANTS: Variant[] = ["juega", "ia", "fantasy"];
+
+function Headline({ variant }: { variant: Variant }) {
+  return (
+    <>
+      {ALL_VARIANTS.map((v) => {
+        const active = v === variant;
+        return (
+          <div
+            key={v}
+            className={active ? styles.zmH1VariantActive : styles.zmH1VariantInactive}
+            aria-hidden={active ? undefined : true}
+          >
+            <HeadlineVariant variant={v} />
+          </div>
+        );
+      })}
+    </>
   );
 }
 
@@ -128,7 +150,7 @@ function HeroLeft({
         </div>
       )}
 
-      <div key={variant} className={styles.zmH1Wrap}>
+      <div className={styles.zmH1Wrap}>
         <Headline variant={variant} />
       </div>
 
