@@ -1,0 +1,147 @@
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import {
+  NOTICIAS,
+  getNoticiaBySlug,
+  getRelatedNoticias,
+  getAllNoticiaSlugs,
+} from "@/data/noticias";
+import { ArticleView } from "./ArticleView";
+
+const SITE_URL = "https://zonamundial.app";
+
+interface Props {
+  params: { slug: string };
+}
+
+export async function generateStaticParams() {
+  return getAllNoticiaSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const n = getNoticiaBySlug(params.slug);
+  if (!n) {
+    return {
+      title: "Noticia no encontrada | ZonaMundial",
+      robots: { index: false, follow: false },
+    };
+  }
+
+  const url = `${SITE_URL}/noticias/${n.slug}`;
+  const description = n.seoDescription || n.excerpt;
+
+  return {
+    title: `${n.title} | ZonaMundial`,
+    description,
+    keywords: n.tags,
+    authors: [{ name: n.author.name }],
+    alternates: {
+      canonical: url,
+      languages: { es: url, en: url },
+    },
+    openGraph: {
+      type: "article",
+      url,
+      title: n.title,
+      description,
+      siteName: "ZonaMundial",
+      locale: "es_ES",
+      publishedTime: `${n.date}T08:00:00.000Z`,
+      modifiedTime: `${n.updatedAt || n.date}T08:00:00.000Z`,
+      authors: [n.author.name],
+      tags: n.tags,
+      images: n.realImage
+        ? [
+            {
+              url: n.realImage,
+              alt: n.imageCaption || n.title,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: n.title,
+      description,
+      images: n.realImage ? [n.realImage] : undefined,
+    },
+  };
+}
+
+export default function NoticiaPage({ params }: Props) {
+  const noticia = getNoticiaBySlug(params.slug);
+  if (!noticia) notFound();
+
+  const related = getRelatedNoticias(noticia, 4);
+  const url = `${SITE_URL}/noticias/${noticia.slug}`;
+
+  // JSON-LD: NewsArticle
+  const newsArticleLd = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: noticia.title,
+    description: noticia.seoDescription || noticia.excerpt,
+    image: noticia.realImage ? [noticia.realImage] : undefined,
+    datePublished: `${noticia.date}T08:00:00.000Z`,
+    dateModified: `${noticia.updatedAt || noticia.date}T08:00:00.000Z`,
+    author: {
+      "@type": "Person",
+      name: noticia.author.name,
+      jobTitle: noticia.author.role,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "ZonaMundial",
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/img/zonamundial-images/imagenes/IMG-20260302-WA0016-removebg-preview.webp`,
+      },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    keywords: noticia.tags.join(", "),
+    articleSection: noticia.cat,
+    inLanguage: "es-ES",
+  };
+
+  const breadcrumbsLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Inicio",
+        item: SITE_URL,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Noticias",
+        item: `${SITE_URL}/noticias`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: noticia.title,
+        item: url,
+      },
+    ],
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsArticleLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsLd) }}
+      />
+      <ArticleView noticia={noticia} related={related} url={url} />
+    </>
+  );
+}
+
+export const dynamicParams = false;
+export const revalidate = 600;
