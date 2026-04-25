@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { NOTICIAS, getNoticiasSorted } from "@/data/noticias";
+import { getAllPublicNoticias } from "@/lib/noticias-store";
 import NoticiasClient from "./NoticiasClient";
 
 const SITE_URL = "https://zonamundial.app";
@@ -28,10 +28,10 @@ export const metadata: Metadata = {
   },
 };
 
-export const revalidate = 600;
+export const revalidate = 60;
 
-export default function NoticiasPage() {
-  const posts = getNoticiasSorted();
+export default async function NoticiasPage() {
+  const posts = await getAllPublicNoticias();
 
   // JSON-LD: ItemList of news + Breadcrumbs
   const itemListLd = {
@@ -65,7 +65,7 @@ export default function NoticiasPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsLd) }}
       />
       <Suspense fallback={null}>
-        <NoticiasClient posts={posts} totalCount={NOTICIAS.length} />
+        <NoticiasClient posts={posts} totalCount={posts.length} />
       </Suspense>
     </>
   );

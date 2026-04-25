@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
-  getNoticiaBySlug,
-  getRelatedNoticias,
-  getAllNoticiaSlugs,
-} from "@/data/noticias";
+  getNoticiaBySlugPublic,
+  getAllPublicSlugs,
+  getRelatedNoticiasPublic,
+} from "@/lib/noticias-store";
 import { getAuthor } from "@/data/noticias-authors";
 import { ArticleView } from "./ArticleView";
 
@@ -15,11 +15,12 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return getAllNoticiaSlugs().map((slug) => ({ slug }));
+  const slugs = await getAllPublicSlugs();
+  return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const n = getNoticiaBySlug(params.slug);
+  const n = await getNoticiaBySlugPublic(params.slug);
   if (!n) {
     return {
       title: "Noticia no encontrada | ZonaMundial",
@@ -68,11 +69,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function NoticiaPage({ params }: Props) {
-  const noticia = getNoticiaBySlug(params.slug);
+export default async function NoticiaPage({ params }: Props) {
+  const noticia = await getNoticiaBySlugPublic(params.slug);
   if (!noticia) notFound();
 
-  const related = getRelatedNoticias(noticia, 4);
+  const related = await getRelatedNoticiasPublic(noticia, 4);
   const url = `${SITE_URL}/noticias/${noticia.slug}`;
   const author = getAuthor(noticia.authorId);
 
@@ -145,5 +146,7 @@ export default function NoticiaPage({ params }: Props) {
   );
 }
 
-export const dynamicParams = false;
-export const revalidate = 600;
+// Allow runtime ISR for newly auto-published slugs (auto-ingest pipeline).
+// Pages get pre-rendered at build for known slugs, plus on-demand for fresh ones.
+export const dynamicParams = true;
+export const revalidate = 60;

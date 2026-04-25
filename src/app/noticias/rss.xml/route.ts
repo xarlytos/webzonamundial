@@ -1,4 +1,4 @@
-import { getNoticiasSorted } from "@/data/noticias";
+import { getAllPublicNoticias } from "@/lib/noticias-store";
 import { getAuthor } from "@/data/noticias-authors";
 
 const SITE_URL = "https://zonamundial.app";
@@ -13,7 +13,7 @@ function escapeXml(s: string): string {
 }
 
 export async function GET() {
-  const items = getNoticiasSorted();
+  const items = await getAllPublicNoticias();
   const xmlItems = items
     .map((n) => {
       const url = `${SITE_URL}/noticias/${n.slug}`;

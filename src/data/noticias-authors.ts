@@ -7,7 +7,8 @@
  */
 
 export interface NoticiaAuthor {
-  id: string;
+  /** Stable id used as foreign key in Noticia.authorId — must match an AuthorId */
+  id: AuthorId;
   name: string;
   role: string;
   bio: string;
@@ -15,6 +16,8 @@ export interface NoticiaAuthor {
   /** Initial color theme used by the avatar gradient */
   accent: string;
 }
+
+export type AuthorId = "carlos-zamudio" | "gabriel-venegas";
 
 export const AUTHORS = {
   "carlos-zamudio": {
@@ -33,9 +36,7 @@ export const AUTHORS = {
     twitter: "@gvenegas",
     accent: "#5b21b6",
   },
-} as const satisfies Record<string, NoticiaAuthor>;
-
-export type AuthorId = keyof typeof AUTHORS;
+} as const satisfies Record<AuthorId, NoticiaAuthor>;
 
 export function getAuthor(id: AuthorId): NoticiaAuthor {
   return AUTHORS[id];

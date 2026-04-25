@@ -3,11 +3,11 @@ import { getAllSlugs as getAllSeleccionSlugs, GRUPOS } from "@/data/selecciones"
 import { getAllSedeSlugs } from "@/data/sedes";
 import { CREADORES } from "@/data/creadores";
 import { getAllMomentSlugs } from "@/data/momentos-iconicos";
-import { NOTICIAS } from "@/data/noticias";
+import { getAllPublicNoticias } from "@/lib/noticias-store";
 
 const BASE_URL = "https://zonamundial.app";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const lastModified = new Date();
 
   // Rutas estáticas principales
@@ -92,8 +92,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5,
   }));
 
-  // Rutas dinámicas: noticias individuales
-  const noticiaRoutes: MetadataRoute.Sitemap = NOTICIAS.map((n) => ({
+  // Rutas dinámicas: noticias individuales (estáticas + auto-publicadas)
+  const allNoticias = await getAllPublicNoticias();
+  const noticiaRoutes: MetadataRoute.Sitemap = allNoticias.map((n) => ({
     url: `${BASE_URL}/noticias/${n.slug}`,
     lastModified: new Date(`${n.updatedAt || n.date}T00:00:00.000Z`),
     changeFrequency: "weekly",
