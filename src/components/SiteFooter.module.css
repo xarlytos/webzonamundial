@@ -153,12 +153,8 @@
   .brand { grid-column: span 3; }
 }
 @media (max-width: 640px) {
-  .grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+  .grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .brand { grid-column: span 2; }
   .bottom { justify-content: center; text-align: center; }
   .bottomItem { font-size: 11px; }
-}
-@media (max-width: 400px) {
-  .grid { grid-template-columns: 1fr; }
-  .brand { grid-column: auto; }
 }
