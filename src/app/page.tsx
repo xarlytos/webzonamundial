@@ -23,6 +23,7 @@ import { SocialProofTicker } from "./_home/sections/SocialProofTicker";
 import { WaitlistSection } from "./_home/sections/WaitlistSection";
 import { FinalCTASection } from "./_home/sections/FinalCTASection";
 import { AlbumDominaSection } from "./_home/sections/AlbumDominaSection";
+import { AppRevealSection } from "./_home/sections/AppRevealSection";
 import { CinematicDivider } from "./_home/sections/CinematicDivider";
 
 export default function HomePage() {
@@ -76,6 +77,7 @@ export default function HomePage() {
       <GuaranteesBar items={h.guarantees} />
       <CommunityCreatorsSection />
       <AlbumDominaSection />
+      <AppRevealSection />
       <WaitlistSection />
       <SocialProofTicker items={h.testimonials} />
       <FinalCTASection />
