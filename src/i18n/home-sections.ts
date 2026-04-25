@@ -332,6 +332,41 @@ export const homeSections = {
       on: "ZonaMundial en",
     },
 
+    /* ============ AppRevealSection — coming-soon teaser ============ */
+    appReveal: {
+      pill: "MUY PRONTO",
+      title: "Algo grande",
+      titleGold: "se viene.",
+      subtitle:
+        "Estamos preparando la mejor experiencia para los verdaderos fanáticos del fútbol.",
+      notify: {
+        title: "Sé el primero en enterarte.",
+        desc: "Descarga la app en cuanto esté disponible.",
+      },
+      stores: {
+        appStoreSoon: "Próximamente en",
+        appStoreName: "App Store",
+        playStoreSoon: "Próximamente en",
+        playStoreName: "Google Play",
+      },
+      phoneLabel: "Zona Mundial",
+      phoneLoading: "Loading / Cargando...",
+      features: [
+        {
+          title: "Sé el primero",
+          desc: "Accede antes que nadie a la mejor app de fútbol.",
+        },
+        {
+          title: "Experiencia única",
+          desc: "Todo el fútbol mundial en tus manos.",
+        },
+        {
+          title: "Disponible pronto",
+          desc: "Muy pronto en App Store y Google Play.",
+        },
+      ],
+    },
+
     /* ============ Countdown label shared with Hero ============ */
     countdownLabel: "Copa del Mundo · EE.UU · México · Canadá",
   },
@@ -645,6 +680,40 @@ export const homeSections = {
       eyebrow: "FOLLOW",
       a11y: "ZonaMundial social links",
       on: "ZonaMundial on",
+    },
+
+    appReveal: {
+      pill: "COMING SOON",
+      title: "Something big",
+      titleGold: "is coming.",
+      subtitle:
+        "We're crafting the ultimate experience for true football fanatics.",
+      notify: {
+        title: "Be the first to know.",
+        desc: "Download the app the moment it's available.",
+      },
+      stores: {
+        appStoreSoon: "Coming soon to",
+        appStoreName: "App Store",
+        playStoreSoon: "Coming soon to",
+        playStoreName: "Google Play",
+      },
+      phoneLabel: "Zona Mundial",
+      phoneLoading: "Loading / Cargando...",
+      features: [
+        {
+          title: "Be first",
+          desc: "Get early access to the best football app.",
+        },
+        {
+          title: "Unique experience",
+          desc: "All world football in your hands.",
+        },
+        {
+          title: "Available soon",
+          desc: "Coming soon to App Store and Google Play.",
+        },
+      ],
     },
 
     countdownLabel: "World Cup · USA · Mexico · Canada",
