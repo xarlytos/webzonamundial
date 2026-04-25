@@ -1,24 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+/**
+ * Noticias hub — ESPN-style editorial layout.
+ * Top story (full-bleed) + 3 secondary cards + tag bar + dense article list
+ * + sidebar with "Lo más leído" + app CTA.
+ */
+
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Post } from "@/sanity/types";
-import { useLanguage } from "@/i18n/LanguageContext";
-import { AnimatedSection } from "@/components/AnimatedSection";
+import { useSearchParams } from "next/navigation";
+import type { Noticia } from "@/data/noticias";
+import styles from "./NoticiasIndex.module.css";
 
-gsap.registerPlugin(ScrollTrigger);
-
-const BG = "#060B14",
-  BG2 = "#0F1D32",
-  GOLD = "#c9a84c",
-  DIM = "#6a7a9a";
-const flagUrl = (c: string, w = 80) =>
-  c ? `https://flagcdn.com/w${w}/${c}.png` : null;
-
-const CATEGORY_COLORS = {
-  all: GOLD,
+const CAT_LABELS: Record<string, string> = {
+  all: "Todo",
+  analisis: "Análisis",
+  datos: "Datos",
+  historia: "Historia",
+  sedes: "Sedes",
+  selecciones: "Selecciones",
+  plataforma: "Plataforma",
+};
+const CAT_COLORS: Record<string, string> = {
+  all: "#c9a84c",
   analisis: "#3b82f6",
   datos: "#22c55e",
   historia: "#f59e0b",
@@ -27,474 +31,262 @@ const CATEGORY_COLORS = {
   plataforma: "#06b6d4",
 };
 
-const MONTHS_ES: Record<string, string> = {
-  "01": "Ene",
-  "02": "Feb",
-  "03": "Mar",
-  "04": "Abr",
-  "05": "May",
-  "06": "Jun",
-  "07": "Jul",
-  "08": "Ago",
-  "09": "Sep",
-  "10": "Oct",
-  "11": "Nov",
-  "12": "Dic",
+const flagUrl = (c: string) => `https://flagcdn.com/w40/${c}.png`;
+const MONTHS = ["Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Sep","Oct","Nov","Dic"];
+const fmtDate = (d: string) => {
+  const [y, m, day] = d.split("-");
+  return `${parseInt(day)} ${MONTHS[parseInt(m) - 1]} ${y}`;
 };
 
-const fmtBlogDate = (d: string) => {
-  const p = d.split("-");
-  return `${parseInt(p[2])} ${MONTHS_ES[p[1]]} ${p[0]}`;
-};
+function relTime(date: string): string {
+  const diff = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+  if (diff < 60) return "Ahora";
+  if (diff < 3600) return `Hace ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `Hace ${Math.floor(diff / 3600)} h`;
+  if (diff < 604800) return `Hace ${Math.floor(diff / 86400)} d`;
+  return fmtDate(date);
+}
 
-function AnimatedBadge({
-  children,
-  color,
-}: {
-  children: React.ReactNode;
-  color: string;
-}) {
+function CatPill({ cat, big = false }: { cat: string; big?: boolean }) {
+  const color = CAT_COLORS[cat] || "#c9a84c";
+  const label = CAT_LABELS[cat] || cat;
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold"
-      style={{
-        background: `${color}15`,
-        color: color,
-        border: `1px solid ${color}30`,
-      }}
+      className={`${styles.catPill} ${big ? styles.catPillBig : ""}`}
+      style={{ background: `${color}1a`, borderColor: `${color}55`, color }}
     >
-      {children}
+      {label}
     </span>
   );
 }
 
-function FeaturedCard({
-  post,
-  onClick,
-  index,
-  categories,
-  readTimeLabel,
-  sourcePrefix,
-}: {
-  post: Post;
-  onClick: (p: Post) => void;
-  index: number;
-  categories: { id: string; label: string; color: string }[];
-  readTimeLabel: string;
-  sourcePrefix: string;
-}) {
-  const cat = categories.find((c) => c.id === post.cat);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!cardRef.current) return;
-    gsap.fromTo(
-      cardRef.current,
-      { y: 60, opacity: 0, scale: 0.95 },
-      {
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        duration: 0.8,
-        delay: index * 0.15,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: "top 85%",
-          once: true,
-        },
-      }
-    );
-  }, [index]);
-
+function FlagsRow({ flags, max = 3 }: { flags: string[]; max?: number }) {
+  if (!flags?.length) return null;
   return (
-    <div ref={cardRef} onClick={() => onClick(post)} className="group cursor-pointer">
-      <div
-        className="relative overflow-hidden rounded-3xl border border-white/5 hover:border-[var(--cat-color)]/40 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_16px_48px_rgba(201,168,76,0.15)] group/card"
-        style={{ "--cat-color": cat?.color } as React.CSSProperties}
-      >
-        <div
-          className="absolute inset-0"
-          style={
-            post.realImage
-              ? {
-                  backgroundImage: `url(${post.realImage})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }
-              : { background: `linear-gradient(135deg,${cat?.color}20,#0F1D32)` }
-          }
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-[#060B14]/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--cat-color)]/10 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
-        <div className="relative p-8 min-h-[280px] flex flex-col justify-end">
-          <div className="flex items-center gap-3 mb-4">
-            {post.flags.length > 0 && (
-              <div className="flex gap-1.5">
-                {post.flags.slice(0, 5).map((f) => (
-                  <img
-                    key={f}
-                    src={flagUrl(f, 40) || ""}
-                    alt=""
-                    className="w-6 h-4 rounded object-cover shadow-lg border border-white/10"
-                  />
-                ))}
-              </div>
-            )}
-            <AnimatedBadge color={cat?.color || GOLD}>{cat?.label}</AnimatedBadge>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-3 group-hover/card:text-[#C9A84C] transition-colors leading-tight relative inline-block">
-            {post.title}
-            <span className="absolute left-0 -bottom-1 h-0.5 bg-gradient-to-r from-[#C9A84C] to-transparent w-0 group-hover/card:w-full transition-all duration-500" />
-          </h3>
-          <p className="text-sm text-[#8a94b0] mb-4 line-clamp-2">{post.excerpt}</p>
-          <div className="flex items-center gap-3 text-xs text-[#6a7a9a]">
-            <span>{fmtBlogDate(post.date)}</span>
-            <span className="w-1 h-1 rounded-full bg-[#6a7a9a]" />
-            <span>{post.readTime} {readTimeLabel}</span>
-          </div>
-          {post.imageCaption && (
-            <div className="mt-3 pt-3 border-t border-white/10">
-              <p className="text-[10px] text-[#4a5570] italic">{post.imageCaption}</p>
-              {post.imageSource && (
-                <p className="text-[9px] text-[#4a5570] mt-1">{sourcePrefix} {post.imageSource}</p>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+    <span className={styles.flagsRow}>
+      {flags.slice(0, max).map((f) => (
+        <img key={f} src={flagUrl(f)} alt="" />
+      ))}
+    </span>
   );
 }
 
-function ArticleCard({
-  post,
-  onClick,
-  categories,
+export default function NoticiasClient({
+  posts,
+  totalCount,
 }: {
-  post: Post;
-  onClick: (p: Post) => void;
-  categories: { id: string; label: string; color: string }[];
+  posts: Noticia[];
+  totalCount: number;
 }) {
-  const cat = categories.find((c) => c.id === post.cat);
-  const [hov, setHov] = useState(false);
+  const searchParams = useSearchParams();
+  const initialCat = searchParams.get("cat") || "all";
+  const [cat, setCat] = useState(initialCat);
+  const tickerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const c = searchParams.get("cat");
+    if (c && c !== cat) setCat(c);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
+  const filtered = useMemo(() => {
+    if (cat === "all") return posts;
+    return posts.filter((p) => p.cat === cat);
+  }, [cat, posts]);
+
+  const top = filtered[0];
+  const secondary = filtered.slice(1, 4);
+  const list = filtered.slice(4);
+
+  const trending = useMemo(() => posts.slice(0, 5), [posts]);
+
+  // Breaking ticker copy (reuse latest 5 headlines)
+  const tickerItems = useMemo(() => posts.slice(0, 6), [posts]);
 
   return (
-    <div
-      onClick={() => onClick(post)}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
-      className="group cursor-pointer"
-    >
-      <div
-        className="relative p-5 rounded-2xl border transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_12px_32px_rgba(201,168,76,0.1)] overflow-hidden"
-        style={{
-          background: hov ? `${cat?.color}08` : BG2,
-          borderColor: hov ? `${cat?.color}50` : "rgba(255,255,255,0.04)",
-        }}
-      >
-        {/* Glow de fondo en hover */}
-        <div
-          className="absolute -top-10 -right-10 w-32 h-32 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-          style={{ background: `radial-gradient(circle, ${cat?.color}20 0%, transparent 70%)`, filter: "blur(20px)" }}
-        />
-
-        <div className="relative z-10">
-          <div className="flex items-center gap-2 mb-3">
-            <span
-              className="px-2.5 py-1 rounded-md text-[10px] font-bold"
-              style={{ background: `${cat?.color}15`, color: cat?.color }}
-            >
-              {cat?.label}
-            </span>
-            {post.flags.slice(0, 3).map((f) => (
-              <img
-                key={f}
-                src={flagUrl(f, 30) || ""}
-                alt=""
-                className="w-4 h-3 rounded object-cover"
-              />
+    <div className={styles.page}>
+      {/* Breaking ticker */}
+      <div className={styles.ticker} aria-label="Última hora">
+        <span className={styles.tickerLabel}>EN VIVO</span>
+        <div className={styles.tickerTrack} ref={tickerRef}>
+          <div className={styles.tickerLane}>
+            {[...tickerItems, ...tickerItems].map((p, i) => (
+              <Link key={`${p.id}-${i}`} href={`/noticias/${p.slug}`} className={styles.tickerItem}>
+                <span className={styles.tickerDot} style={{ background: CAT_COLORS[p.cat] }} />
+                {p.title}
+              </Link>
             ))}
-            <span className="text-[10px] text-[#4a5570] ml-auto">{post.readTime} min</span>
           </div>
-          <h3
-            className="text-base font-bold mb-2 transition-colors relative inline-block"
-            style={{ color: hov ? GOLD : "#fff" }}
-          >
-            {post.title}
-            <span className="absolute left-0 -bottom-0.5 h-px bg-gradient-to-r from-[#c9a84c] to-transparent w-0 group-hover:w-full transition-all duration-500" />
-          </h3>
-          <p className="text-xs text-[#6a7a9a] line-clamp-2 group-hover:text-[#8a94b0] transition-colors">{post.excerpt}</p>
-          <div className="text-[10px] text-[#4a5570] mt-3 group-hover:text-[#6a7a9a] transition-colors">{fmtBlogDate(post.date)}</div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PostDetail({ post, onBack, categories, labels }: {
-  post: Post;
-  onBack: () => void;
-  categories: { id: string; label: string; color: string }[];
-  labels: { backBtn: string; readTime: string; fullArticle: string; ctaQ: string; ctaBtn: string; shareLabel: string; sourcePrefix: string };
-}) {
-  const cat = categories.find((c) => c.id === post.cat);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    gsap.fromTo(
-      containerRef.current,
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }
-    );
-  }, [post.id]);
-
-  return (
-    <div ref={containerRef} className="max-w-3xl mx-auto">
-      <button
-        onClick={onBack}
-        className="flex items-center gap-2 text-[#C9A84C] text-sm font-semibold mb-6 hover:gap-3 transition-all"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M19 12H5M12 19l-7-7 7-7"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        {labels.backBtn}
-      </button>
-
-      <div className="flex items-center gap-3 mb-6">
-        <AnimatedBadge color={cat?.color || GOLD}>{cat?.label}</AnimatedBadge>
-        <span className="text-sm text-[#4a5570]">{fmtBlogDate(post.date)}</span>
-        <span className="text-[#4a5570]">·</span>
-        <span className="text-sm text-[#4a5570]">{post.readTime} {labels.readTime}</span>
-      </div>
-
-      <h1 className="text-3xl sm:text-4xl font-black mb-6 leading-tight">{post.title}</h1>
-
-      {post.realImage && (
-        <div className="mb-6 rounded-2xl overflow-hidden border border-white/10">
-          <img
-            src={post.realImage}
-            alt={post.title}
-            className="w-full h-auto max-h-[400px] object-cover"
-          />
-          {post.imageCaption && (
-            <div className="p-3 bg-[#0B1825] border-t border-white/5">
-              <p className="text-xs text-[#6a7a9a] italic">{post.imageCaption}</p>
-              {post.imageSource && (
-                <p className="text-[10px] text-[#4a5570] mt-1">{labels.sourcePrefix} {post.imageSource}</p>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {post.flags.length > 0 && (
-        <div className="flex gap-2 mb-8">
-          {post.flags.map((f) => (
-            <img
-              key={f}
-              src={flagUrl(f, 80) || ""}
-              alt=""
-              className="w-10 h-7 rounded object-cover shadow-lg border border-white/10"
-            />
-          ))}
-        </div>
-      )}
-
-      <div className="p-8 rounded-2xl bg-[#0F1D32] border border-white/5 mb-8">
-        <p className="text-[#d0d4de] text-lg leading-relaxed mb-6">{post.excerpt}</p>
-        <div className="h-px bg-white/5 my-6" />
-        <p className="text-[#8a94b0] leading-relaxed">
-          {labels.fullArticle}
-        </p>
-        <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-[#c9a84c]/10 to-transparent border border-[#c9a84c]/20 text-center">
-          <p className="text-sm text-[#8a94b0] mb-4">{labels.ctaQ}</p>
-          <Link
-            href="/registro"
-            className="inline-block px-8 py-3 rounded-xl bg-gradient-to-r from-[#c9a84c] to-[#e8d48b] text-[#060B14] font-bold text-sm hover:shadow-lg hover:shadow-[#c9a84c]/25 transition-all"
-          >
-            {labels.ctaBtn}
-          </Link>
         </div>
       </div>
 
-      <div className="flex items-center gap-3 mb-10">
-        <span className="text-xs text-[#6a7a9a]">{labels.shareLabel}</span>
-        {["Twitter", "WhatsApp", "Copiar"].map((s) => (
-          <button
-            key={s}
-            className="px-4 py-2 rounded-lg text-xs font-semibold border border-[#c9a84c]/20 bg-[#c9a84c]/5 text-[#c9a84c] hover:bg-[#c9a84c]/10 hover:border-[#c9a84c]/30 transition-all"
-          >
-            {s}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
+      {/* Hero header */}
+      <header className={styles.header}>
+        <div className={styles.headerInner}>
+          <span className={styles.eyebrow}>NOTICIAS · MUNDIAL 2026</span>
+          <h1 className={styles.h1}>
+            La actualidad del <em>Mundial</em>, sin filtros.
+          </h1>
+          <p className={styles.headerSub}>
+            Análisis, datos, historia y guías para vivir la Copa del Mundo 2026 como un experto. Cobertura editorial diaria de selecciones, sedes, jugadores y mercados.
+          </p>
+          <div className={styles.headerStats}>
+            <span><strong>{totalCount}</strong> artículos</span>
+            <span aria-hidden>·</span>
+            <span>Actualizado <strong>{posts[0] ? relTime(posts[0].date) : "hoy"}</strong></span>
+            <span aria-hidden>·</span>
+            <span>6 categorías</span>
+          </div>
+        </div>
+      </header>
 
-export default function NoticiasClient({ posts }: { posts: Post[] }) {
-  const [cat, setCat] = useState("all");
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
-  const heroRef = useRef<HTMLDivElement>(null);
-  const categoriesRef = useRef<HTMLDivElement>(null);
-  const { t } = useLanguage();
-  const nT = t.noticiasPage;
+      {/* Category bar */}
+      <nav className={styles.catBar} aria-label="Categorías">
+        <div className={styles.catBarInner}>
+          {(["all","selecciones","analisis","datos","sedes","historia","plataforma"] as const).map((id) => {
+            const active = cat === id;
+            const color = CAT_COLORS[id];
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setCat(id)}
+                className={`${styles.catBtn} ${active ? styles.catBtnActive : ""}`}
+                style={
+                  active
+                    ? { background: `${color}1c`, borderColor: `${color}88`, color }
+                    : undefined
+                }
+              >
+                {CAT_LABELS[id]}
+              </button>
+            );
+          })}
+        </div>
+      </nav>
 
-  const CATEGORIES = [
-    { id: "all", label: nT.catAll, color: CATEGORY_COLORS.all },
-    { id: "analisis", label: nT.catAnalisis, color: CATEGORY_COLORS.analisis },
-    { id: "datos", label: nT.catDatos, color: CATEGORY_COLORS.datos },
-    { id: "historia", label: nT.catHistoria, color: CATEGORY_COLORS.historia },
-    { id: "sedes", label: nT.catSedes, color: CATEGORY_COLORS.sedes },
-    { id: "selecciones", label: nT.catSelecciones, color: CATEGORY_COLORS.selecciones },
-    { id: "plataforma", label: nT.catPlataforma, color: CATEGORY_COLORS.plataforma },
-  ];
-
-  const filtered = cat === "all" ? posts : posts.filter((p) => p.cat === cat);
-  const featured = filtered.filter((p) => p.featured);
-  const regular = filtered.filter((p) => !p.featured);
-
-  useEffect(() => {
-    if (!heroRef.current) return;
-    gsap.fromTo(
-      heroRef.current.children,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" }
-    );
-  }, []);
-
-  useEffect(() => {
-    if (!categoriesRef.current) return;
-    gsap.fromTo(
-      categoriesRef.current.children,
-      { y: 20, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.4,
-        stagger: 0.05,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: categoriesRef.current,
-          start: "top 90%",
-          once: true,
-        },
-      }
-    );
-  }, []);
-
-  return (
-    <div
-      className="min-h-screen"
-      style={{ background: BG, color: "#fff", fontFamily: "'Outfit',sans-serif" }}
-    >
-      <div className="max-w-6xl mx-auto px-4 pt-0 pb-12 sm:pb-16">
-        {selectedPost ? (
-          <PostDetail
-            post={selectedPost}
-            onBack={() => setSelectedPost(null)}
-            categories={CATEGORIES}
-            labels={{
-              backBtn: nT.backBtn,
-              readTime: nT.readTime,
-              fullArticle: nT.fullArticle,
-              ctaQ: nT.ctaQ,
-              ctaBtn: nT.ctaBtn,
-              shareLabel: nT.shareLabel,
-              sourcePrefix: nT.sourcePrefix,
-            }}
-          />
+      {/* MAIN GRID */}
+      <main className={styles.main}>
+        {filtered.length === 0 ? (
+          <div className={styles.empty}>No hay artículos en esta categoría aún.</div>
         ) : (
           <>
-            <div ref={heroRef} className="relative rounded-3xl overflow-hidden mb-12 p-8 sm:p-12">
-              {/* Background image */}
-              <div className="absolute inset-0">
-                <img
-                  src="/img/zonamundial-images/stadiums/estadio-azteca-cdmx.jpg"
-                  alt="Estadio Azteca en Ciudad de México, sede del Mundial 2026"
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#060B14] via-[#060B14]/85 to-[#060B14]/60" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#060B14] via-transparent to-transparent" />
-              </div>
+            {/* TOP STORY ROW */}
+            <section className={styles.topRow}>
+              {top && (
+                <Link href={`/noticias/${top.slug}`} className={styles.topStory}>
+                  {top.realImage && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={top.realImage} alt={top.imageCaption || top.title} className={styles.topImg} />
+                  )}
+                  <div className={styles.topOverlay} />
+                  <div className={styles.topBody}>
+                    <div className={styles.topMeta}>
+                      <CatPill cat={top.cat} big />
+                      <FlagsRow flags={top.flags} />
+                      <span className={styles.timeRel}>{relTime(top.date)}</span>
+                    </div>
+                    <h2 className={styles.topTitle}>{top.title}</h2>
+                    <p className={styles.topExcerpt}>{top.excerpt}</p>
+                    <span className={styles.topCta}>
+                      Leer artículo
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                        <path d="M5 12h14" /><path d="M13 6l6 6-6 6" />
+                      </svg>
+                    </span>
+                  </div>
+                </Link>
+              )}
 
-              <div className="relative z-10 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#c9a84c]/10 border border-[#c9a84c]/20 mb-6 backdrop-blur-sm">
-                  <span className="w-2 h-2 rounded-full bg-[#c9a84c] animate-pulse" />
-                  <span className="text-[#c9a84c] text-xs font-bold tracking-wider uppercase">
-                    {nT.badge}
-                  </span>
-                </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black mb-6 leading-tight">
-                  {nT.title1}
-                  <br />
-                  <span className="bg-gradient-to-r from-[#c9a84c] via-[#e8d48b] to-[#c9a84c] bg-clip-text text-transparent">
-                    {nT.title2}
-                  </span>
-                </h1>
-                <p className="text-lg text-[#8a94b0] max-w-xl leading-relaxed">
-                  {nT.subtitle}
-                </p>
-              </div>
-            </div>
-
-            <div
-              ref={categoriesRef}
-              className="flex gap-2 mb-10 overflow-x-auto pb-2 scrollbar-hide"
-            >
-              {CATEGORIES.map((c) => (
-                <button
-                  key={c.id}
-                  onClick={() => setCat(c.id)}
-                  className="px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all duration-300 hover:scale-105 active:scale-95"
-                  style={{
-                    background: cat === c.id ? `${c.color}15` : "transparent",
-                    border: `1px solid ${cat === c.id ? `${c.color}50` : "rgba(255,255,255,0.08)"}`,
-                    color: cat === c.id ? c.color : DIM,
-                    boxShadow: cat === c.id ? `0 4px 20px ${c.color}15` : "none",
-                  }}
-                >
-                  {c.label}
-                </button>
-              ))}
-            </div>
-
-            {featured.length > 0 && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
-                {featured.map((p, i) => (
-                  <FeaturedCard key={p.id} post={p} onClick={setSelectedPost} index={i} categories={CATEGORIES} readTimeLabel={nT.readTime} sourcePrefix={nT.sourcePrefix} />
+              <div className={styles.topSecondary}>
+                {secondary.map((p) => (
+                  <Link key={p.id} href={`/noticias/${p.slug}`} className={styles.secCard}>
+                    {p.realImage && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.realImage} alt="" className={styles.secImg} />
+                    )}
+                    <div className={styles.secBody}>
+                      <CatPill cat={p.cat} />
+                      <h3>{p.title}</h3>
+                      <span className={styles.secMeta}>
+                        {fmtDate(p.date)} · {p.readTime} min
+                      </span>
+                    </div>
+                  </Link>
                 ))}
               </div>
-            )}
+            </section>
 
-            <AnimatedSection
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-              stagger={0.06}
-              y={30}
-            >
-              {regular.map((p) => (
-                <ArticleCard key={p.id} post={p} onClick={setSelectedPost} categories={CATEGORIES} />
-              ))}
-            </AnimatedSection>
-
-            {filtered.length === 0 && (
-              <div className="text-center py-20 text-[#6a7a9a]">
-                {nT.noArticles}
+            {/* CONTENT + SIDEBAR */}
+            <section className={styles.bottomRow}>
+              <div className={styles.listColumn}>
+                <h2 className={styles.sectionH}>Más artículos</h2>
+                {list.length === 0 ? (
+                  <p className={styles.muted}>Pronto añadiremos más historias en esta categoría.</p>
+                ) : (
+                  <ul className={styles.articleList}>
+                    {list.map((p) => (
+                      <li key={p.id}>
+                        <Link href={`/noticias/${p.slug}`} className={styles.listItem}>
+                          {p.realImage && (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img src={p.realImage} alt="" className={styles.listThumb} />
+                          )}
+                          <div className={styles.listBody}>
+                            <div className={styles.listMeta}>
+                              <CatPill cat={p.cat} />
+                              <FlagsRow flags={p.flags} max={2} />
+                              <span className={styles.listDate}>{fmtDate(p.date)}</span>
+                            </div>
+                            <h3>{p.title}</h3>
+                            <p>{p.excerpt}</p>
+                            <span className={styles.listRead}>{p.readTime} min de lectura</span>
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-            )}
+
+              {/* SIDEBAR */}
+              <aside className={styles.sidebar}>
+                <div className={styles.sideBlock}>
+                  <h3>Lo más leído</h3>
+                  <ol>
+                    {trending.map((p, i) => (
+                      <li key={p.id}>
+                        <span className={styles.rank}>{i + 1}</span>
+                        <Link href={`/noticias/${p.slug}`}>
+                          <strong>{p.title}</strong>
+                          <span>{CAT_LABELS[p.cat]} · {p.readTime} min</span>
+                        </Link>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className={`${styles.sideBlock} ${styles.sidePromo}`}>
+                  <small>JUEGA GRATIS</small>
+                  <h3>Predicciones del Mundial 2026</h3>
+                  <p>Compite con creadores y amigos. Lista de espera abierta.</p>
+                  <Link href="/registro">Pre-regístrate →</Link>
+                </div>
+
+                <div className={styles.sideBlock}>
+                  <h3>Síguenos</h3>
+                  <div className={styles.sideSocial}>
+                    <a href="https://www.instagram.com/zona.mundial" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://www.facebook.com/share/1Ay733gLRU/" target="_blank" rel="noopener noreferrer">Facebook</a>
+                    <a href="https://www.tiktok.com/@zonamundialfutbol" target="_blank" rel="noopener noreferrer">TikTok</a>
+                    <a href="/noticias/rss.xml">RSS</a>
+                  </div>
+                </div>
+              </aside>
+            </section>
           </>
         )}
-      </div>
+      </main>
     </div>
   );
 }
