@@ -135,7 +135,7 @@ export async function rewriteDraft(draft: DraftNoticia): Promise<RewriteOutput |
 export async function applyRewrite(draft: DraftNoticia): Promise<DraftNoticia> {
   const out = await rewriteDraft(draft);
   if (!out) {
-    // keep stub draft as-is, mark as needing manual review
+    // Fallback: rewrite failed → keep stub but flag for review (NOT published)
     return { ...draft, status: "review" };
   }
   return {
@@ -147,7 +147,10 @@ export async function applyRewrite(draft: DraftNoticia): Promise<DraftNoticia> {
     tags: out.tags || [],
     body: out.body,
     cat: (out.cat as NoticiaCategory) || draft.cat,
-    status: "review", // never auto-publish; human review pending
+    // Auto-publish: a successful rewrite is editorial-ready and goes live
+    // immediately. Failed rewrites stay at "review" and never appear in the
+    // public site (filtered out in the data layer).
+    status: "published",
     readTime: Math.max(2, Math.round(out.body.length * 1.3)),
   };
 }

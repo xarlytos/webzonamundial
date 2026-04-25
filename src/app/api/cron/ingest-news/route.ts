@@ -11,32 +11,11 @@
  */
 
 import { NextResponse } from "next/server";
-import { promises as fs } from "node:fs";
-import path from "node:path";
-import { ingestNews, type DraftNoticia } from "@/lib/noticias-ingest";
+import { revalidatePath } from "next/cache";
+import { ingestNews } from "@/lib/noticias-ingest";
 import { applyRewrite } from "@/lib/noticias-rewriter";
 import { WORLD_CUP_QUERIES } from "@/lib/gnews";
-
-const STORE_PATH = path.join(process.cwd(), "data", "noticias-ingested.json");
-
-interface Store {
-  generatedAt: string;
-  drafts: DraftNoticia[];
-}
-
-async function readStore(): Promise<Store> {
-  try {
-    const raw = await fs.readFile(STORE_PATH, "utf-8");
-    return JSON.parse(raw) as Store;
-  } catch {
-    return { generatedAt: new Date().toISOString(), drafts: [] };
-  }
-}
-
-async function writeStore(store: Store): Promise<void> {
-  await fs.mkdir(path.dirname(STORE_PATH), { recursive: true });
-  await fs.writeFile(STORE_PATH, JSON.stringify(store, null, 2), "utf-8");
-}
+import { readIngestStore, writeIngestStore, getStorePath } from "@/lib/noticias-store";
 
 export async function GET(req: Request) {
   // Auth: Vercel Cron sends Authorization: Bearer ${CRON_SECRET}
@@ -48,7 +27,7 @@ export async function GET(req: Request) {
     }
   }
 
-  const store = await readStore();
+  const store = await readIngestStore();
   const knownHashes = new Set(store.drafts.map((d) => d.sourceUrlHash));
 
   // Run ALL the World Cup beat queries every cron tick to ensure no topic
@@ -92,7 +71,20 @@ export async function GET(req: Request) {
     store.drafts = store.drafts.slice(-300);
   }
   store.generatedAt = new Date().toISOString();
-  await writeStore(store);
+  await writeIngestStore(store);
+
+  // Force ISR cache invalidation so new articles appear immediately on the
+  // public site (next request will re-render hub + every article page).
+  try {
+    revalidatePath("/noticias");
+    revalidatePath("/noticias/[slug]", "page");
+    revalidatePath("/noticias/rss.xml");
+    revalidatePath("/sitemap.xml");
+  } catch (err) {
+    console.error("[cron] revalidate failed", (err as Error).message);
+  }
+
+  const published = store.drafts.filter((d) => d.status === "published").length;
 
   return NextResponse.json({
     ok: true,
@@ -105,7 +97,8 @@ export async function GET(req: Request) {
     rewriteEnabled,
     errors: result.errors,
     totalStored: store.drafts.length,
-    storePath: "data/noticias-ingested.json",
+    publishedCount: published,
+    storePath: getStorePath(),
   });
 }
 
